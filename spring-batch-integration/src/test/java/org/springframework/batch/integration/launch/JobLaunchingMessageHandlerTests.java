@@ -34,15 +34,15 @@ public class JobLaunchingMessageHandlerTests extends AbstractJUnit4SpringContext
 	@Autowired
 	public MessageBus messageBus;
 
-	@Before
-	public void setUp() {
+	@org.junit.Before
+public void setUp() {
 		jobLauncher = new StubJobLauncher();
 		messageHandler = new JobLaunchingMessageHandler(jobLauncher);
 		jobsChannel = (AbstractMessageChannel) applicationContext.getBean("jobs");
 	}
 	
-	@Test
-	public void testSimpleDelivery() throws Exception{
+	@org.junit.Test
+public void testSimpleDelivery() throws Exception{
 		messageHandler.launch(new JobLaunchRequest(new JobSupport("testjob"), null));
 		
 		assertEquals("Wrong job count", 1, jobLauncher.jobs.size());

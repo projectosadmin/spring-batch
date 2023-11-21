@@ -17,30 +17,33 @@ package org.springframework.batch.item.database.support;
 
 import javax.sql.DataSource;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
+import org.junit.Before;
 import org.springframework.jdbc.support.incrementer.*;
-
+import static org.junit.Assert.*;
 /**
  * @author Lucas Ward
  *
  */
-public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
+public class DefaultDataFieldMaxValueIncrementerFactoryTests {
 
 	private DefaultDataFieldMaxValueIncrementerFactory factory;
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	@org.junit.Before
+public void setUp() throws Exception {
+		
 		
 		DataSource dataSource = (DataSource)MockControl.createControl(DataSource.class).getMock();
 		factory = new DefaultDataFieldMaxValueIncrementerFactory(dataSource);
 	}
 	
-	public void testSupportedDatabaseType(){
+	@org.junit.Test
+public void testSupportedDatabaseType(){
 		assertTrue(factory.isSupportedIncrementerType("db2"));
 		assertTrue(factory.isSupportedIncrementerType("db2zos"));
 		assertTrue(factory.isSupportedIncrementerType("mysql"));
@@ -52,11 +55,13 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 		assertTrue(factory.isSupportedIncrementerType("sybase"));
 	}
 	
-	public void testUnsupportedDatabaseType(){
+	@org.junit.Test
+public void testUnsupportedDatabaseType(){
 		assertFalse(factory.isSupportedIncrementerType("invalidtype"));
 	}
 	
-	public void testInvalidDatabaseType(){
+	@org.junit.Test
+public void testInvalidDatabaseType(){
 		try{
 			factory.getIncrementer("invalidtype", "NAME");
 			fail();
@@ -66,7 +71,8 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 		}
 	}
 	
-	public void testNullIncrementerName(){
+	@org.junit.Test
+public void testNullIncrementerName(){
 		try{
 			factory.getIncrementer("db2", null);
 			fail();
@@ -76,40 +82,49 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 		}
 	}
 	
-	public void testDb2(){
+	@org.junit.Test
+public void testDb2(){
 		assertTrue(factory.getIncrementer("db2", "NAME") instanceof DB2SequenceMaxValueIncrementer);
 	}
 	
-	public void testDb2zos(){
+	@org.junit.Test
+public void testDb2zos(){
 		assertTrue(factory.getIncrementer("db2zos", "NAME") instanceof DB2MainframeSequenceMaxValueIncrementer);
 	}
 
-	public void testMysql(){
+	@org.junit.Test
+public void testMysql(){
 		assertTrue(factory.getIncrementer("mysql", "NAME") instanceof MySQLMaxValueIncrementer);
 	}
 
-	public void testOracle(){
+	@org.junit.Test
+public void testOracle(){
 		factory.setIncrementerColumnName("ID");
 		assertTrue(factory.getIncrementer("oracle", "NAME") instanceof OracleSequenceMaxValueIncrementer);
 	}
 
-	public void testDerby(){
+	@org.junit.Test
+public void testDerby(){
 		assertTrue(factory.getIncrementer("derby", "NAME") instanceof DerbyMaxValueIncrementer);
 	}
 
-	public void testHsql(){
+	@org.junit.Test
+public void testHsql(){
 		assertTrue(factory.getIncrementer("hsql", "NAME") instanceof HsqlMaxValueIncrementer);
 	}
 	
-	public void testPostgres(){
+	@org.junit.Test
+public void testPostgres(){
 		assertTrue(factory.getIncrementer("postgres", "NAME") instanceof PostgreSQLSequenceMaxValueIncrementer);
 	}
 
-	public void testMsSqlServer(){
+	@org.junit.Test
+public void testMsSqlServer(){
 		assertTrue(factory.getIncrementer("sqlserver", "NAME") instanceof SqlServerMaxValueIncrementer);
 	}
 
-	public void testSybase(){
+	@org.junit.Test
+public void testSybase(){
 		assertTrue(factory.getIncrementer("sybase", "NAME") instanceof SybaseMaxValueIncrementer);
 	}
 

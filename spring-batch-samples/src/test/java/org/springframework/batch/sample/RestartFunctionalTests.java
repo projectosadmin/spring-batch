@@ -21,71 +21,76 @@ import org.springframework.batch.core.converter.DefaultJobParametersConverter;
 import org.springframework.batch.support.PropertiesConverter;
 import org.springframework.jdbc.core.JdbcOperations;
 
+import static org.junit.Assert.*;
+
 /**
  * Simple restart scenario.
- * 
+ *
  * @author Robert Kasanicky
  * @author Dave Syer
  */
 public class RestartFunctionalTests extends AbstractBatchLauncherTests {
 
-	// auto-injected attributes
-	private JdbcOperations jdbcTemplate;
+    // auto-injected attributes
+    private JdbcOperations jdbcTemplate;
 
-	/**
-	 * Public setter for the jdbcTemplate.
-	 * 
-	 * @param jdbcTemplate the jdbcTemplate to set
-	 */
-	public void setJdbcTemplate(JdbcOperations jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
+    /**
+     * Public setter for the jdbcTemplate.
+     *
+     * @param jdbcTemplate the jdbcTemplate to set
+     */
+    public void setJdbcTemplate(JdbcOperations jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.test.AbstractSingleSpringContextTests#onTearDown()
-	 */
-	protected void onTearDown() throws Exception {
-		jdbcTemplate.update("DELETE FROM TRADE");
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.test.AbstractSingleSpringContextTests#onTearDown()
+     */
+    @org.junit.After
+    public void onTearDown() throws Exception {
+        super.onTearDown();
+        jdbcTemplate.update("DELETE FROM TRADE");
+    }
 
-	/**
-	 * Job fails on first run, because the module throws exception after
-	 * processing more than half of the input. On the second run, the job should
-	 * finish successfully, because it continues execution where the previous
-	 * run stopped (module throws exception after fixed number of processed
-	 * records).
-	 * @throws Exception
-	 */
-	public void testRestart() throws Exception {
+    /**
+     * Job fails on first run, because the module throws exception after
+     * processing more than half of the input. On the second run, the job should
+     * finish successfully, because it continues execution where the previous
+     * run stopped (module throws exception after fixed number of processed
+     * records).
+     *
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testRestart() throws Exception {
 
-		int before = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM TRADE");
+        int before = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRADE", Integer.class);
 
-		try {
-			runJob();
-			fail("First run of the job is expected to fail.");
-		}
-		catch (UnexpectedJobExecutionException expected) {
-			// expected
-			assertTrue("Not planned exception: " + expected.getMessage(), expected.getMessage().toLowerCase().indexOf(
-					"planned") >= 0);
-		}
+        try {
+            runJob();
+            fail("First run of the job is expected to fail.");
+        } catch (UnexpectedJobExecutionException expected) {
+            // expected
+            assertTrue("Not planned exception: " + expected.getMessage(), expected.getMessage().toLowerCase().indexOf(
+                    "planned") >= 0);
+        }
 
-		int medium = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM TRADE");
-		// assert based on commit interval = 2
-		assertEquals(before + 2, medium);
+        int medium = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRADE",Integer.class);
+        // assert based on commit interval = 2
+        assertEquals(before + 2, medium);
 
-		runJob();
+        runJob();
 
-		int after = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM TRADE");
+        int after = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRADE",Integer.class);
 
-		assertEquals(before + 5, after);
-	}
+        assertEquals(before + 5, after);
+    }
 
-	// load the application context and launch the job
-	private void runJob() throws Exception {
-		launcher.run(getJob(), new DefaultJobParametersConverter().getJobParameters(PropertiesConverter
-				.stringToProperties("restart=true")));
-	}
+    // load the application context and launch the job
+    private void runJob() throws Exception {
+        launcher.run(getJob(), new DefaultJobParametersConverter().getJobParameters(PropertiesConverter
+                .stringToProperties("restart=true")));
+    }
 
 }

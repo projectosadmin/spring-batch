@@ -56,7 +56,7 @@ public class JobSupport implements BeanNameAware, Job {
 	 * Convenience constructor to immediately add name (which is mandatory but
 	 * not final).
 	 * 
-	 * @param name
+	 * @param name name
 	 */
 	public JobSupport(String name) {
 		super();

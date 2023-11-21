@@ -16,9 +16,9 @@
 
 package org.springframework.batch.item;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ItemRecoveryHandlerTests extends TestCase {
+public class ItemRecoveryHandlerTests {
 
 	ItemRecoverer recoverer = new ItemRecoverer() {
 		public Object recover(Object data, Throwable cause) {
@@ -26,7 +26,8 @@ public class ItemRecoveryHandlerTests extends TestCase {
 		}
 	};
 
-	public void testRecover() throws Exception {
+	@org.junit.Test
+public void testRecover() throws Exception {
 		try {
 			recoverer.recover("foo", null);
 		} catch (Exception e) {

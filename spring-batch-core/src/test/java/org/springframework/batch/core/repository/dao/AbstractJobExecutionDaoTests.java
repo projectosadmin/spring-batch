@@ -1,144 +1,154 @@
 package org.springframework.batch.core.repository.dao;
 
-import java.util.Date;
-import java.util.List;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
-public abstract class AbstractJobExecutionDaoTests extends AbstractTransactionalDataSourceSpringContextTests {
+import java.util.Date;
+import java.util.List;
 
-	JobExecutionDao dao;
+import static org.junit.Assert.*;
 
-	JobInstance jobInstance = new JobInstance(new Long(1), new JobParameters(), "execTestJob");
 
-	JobExecution execution = new JobExecution(jobInstance);
+public abstract class AbstractJobExecutionDaoTests extends AbstractDaoTest {
 
-	/**
-	 * @return tested object ready for use
-	 */
-	protected abstract JobExecutionDao getJobExecutionDao();
+    JobExecutionDao dao;
 
-	protected void onSetUp() throws Exception {
-		dao = getJobExecutionDao();
-	}
+    abstract JobExecutionDao getJobExecutionDao();
 
-	/**
-	 * Save and find a job execution.
-	 */
-	public void testSaveAndFind() {
+    JobInstance jobInstance = new JobInstance(new Long(1), new JobParameters(), "execTestJob");
 
-		dao.saveJobExecution(execution);
+    JobExecution execution = new JobExecution(jobInstance);
 
-		List executions = dao.findJobExecutions(jobInstance);
-		assertTrue(executions.size() == 1);
-		assertEquals(execution, executions.get(0));
-	}
+    @Before
+    public void init() {
+        dao = getJobExecutionDao();
+    }
 
-	/**
-	 * Saving sets id to the entity.
-	 */
-	public void testSaveAddsIdAndVersion() {
+    /**
+     * Save and find a job execution.
+     */
+@org.junit.Test
+public void testSaveAndFind() {
 
-		assertNull(execution.getId());
-		assertNull(execution.getVersion());
-		dao.saveJobExecution(execution);
-		assertNotNull(execution.getId());
-		assertNotNull(execution.getVersion());
-	}
+        dao.saveJobExecution(execution);
 
-	/**
-	 * Execution count increases by one with every save for the same job
-	 * instance.
-	 */
-	public void testGetExecutionCount() {
+        List executions = dao.findJobExecutions(jobInstance);
+        assertTrue(executions.size() == 1);
+        assertEquals(execution, executions.get(0));
+    }
 
-		JobExecution exec1 = new JobExecution(jobInstance);
-		JobExecution exec2 = new JobExecution(jobInstance);
+    /**
+     * Saving sets id to the entity.
+     */
+@org.junit.Test
+public void testSaveAddsIdAndVersion() {
 
-		dao.saveJobExecution(exec1);
-		assertEquals(1, dao.getJobExecutionCount(jobInstance));
+        assertNull(execution.getId());
+        assertNull(execution.getVersion());
+        dao.saveJobExecution(execution);
+        assertNotNull(execution.getId());
+        assertNotNull(execution.getVersion());
+    }
 
-		dao.saveJobExecution(exec2);
-		assertEquals(2, dao.getJobExecutionCount(jobInstance));
-	}
+    /**
+     * Execution count increases by one with every save for the same job
+     * instance.
+     */
+@org.junit.Test
+public void testGetExecutionCount() {
 
-	/**
-	 * Update and retrieve job execution - check attributes have changed as
-	 * expected.
-	 */
-	public void testUpdateExecution() {
-		execution.setStatus(BatchStatus.STARTED);
-		dao.saveJobExecution(execution);
+        JobExecution exec1 = new JobExecution(jobInstance);
+        JobExecution exec2 = new JobExecution(jobInstance);
 
-		execution.setStatus(BatchStatus.COMPLETED);
-		dao.updateJobExecution(execution);
+        dao.saveJobExecution(exec1);
+        assertEquals(1, dao.getJobExecutionCount(jobInstance));
 
-		JobExecution updated = (JobExecution) dao.findJobExecutions(jobInstance).get(0);
-		assertEquals(execution, updated);
-		assertEquals(BatchStatus.COMPLETED, updated.getStatus());
-	}
+        dao.saveJobExecution(exec2);
+        assertEquals(2, dao.getJobExecutionCount(jobInstance));
+    }
 
-	/**
-	 * Check the execution with most recent start time is returned
-	 */
-	public void testGetLastExecution() {
-		JobExecution exec1 = new JobExecution(jobInstance);
-		exec1.setCreateTime(new Date(0));
+    /**
+     * Update and retrieve job execution - check attributes have changed as
+     * expected.
+     */
+@org.junit.Test
+public void testUpdateExecution() {
+        execution.setStatus(BatchStatus.STARTED);
+        dao.saveJobExecution(execution);
 
-		ExecutionContext ctx = new ExecutionContext();
-		ctx.put("key", "value");
-		
-		JobExecution exec2 = new JobExecution(jobInstance);
-		exec2.setExecutionContext(ctx);
-		exec2.setCreateTime(new Date(1));
+        execution.setStatus(BatchStatus.COMPLETED);
+        dao.updateJobExecution(execution);
 
-		dao.saveJobExecution(exec1);
-		dao.saveJobExecution(exec2);
-		dao.saveOrUpdateExecutionContext(exec2);
+        JobExecution updated = (JobExecution) dao.findJobExecutions(jobInstance).get(0);
+        assertEquals(execution, updated);
+        assertEquals(BatchStatus.COMPLETED, updated.getStatus());
+    }
 
-		JobExecution last = dao.getLastJobExecution(jobInstance);
-		assertEquals(exec2, last);
-		assertEquals("value", last.getExecutionContext().getString("key"));
-	}
+    /**
+     * Check the execution with most recent start time is returned
+     */
+@org.junit.Test
+public void testGetLastExecution() {
+        JobExecution exec1 = new JobExecution(jobInstance);
+        exec1.setCreateTime(new Date(0));
 
-	public void testSaveAndFindContext() {
-		dao.saveJobExecution(execution);
-		ExecutionContext ctx = new ExecutionContext();
-		ctx.put("key", "value");
-		execution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(execution);
+        ExecutionContext ctx = new ExecutionContext();
+        ctx.put("key", "value");
 
-		ExecutionContext retrieved = dao.findExecutionContext(execution);
-		assertEquals(ctx, retrieved);
-	}
+        JobExecution exec2 = new JobExecution(jobInstance);
+        exec2.setExecutionContext(ctx);
+        exec2.setCreateTime(new Date(1));
 
-	public void testSaveAndFindEmptyContext() {
-		dao.saveJobExecution(execution);
-		ExecutionContext ctx = new ExecutionContext();
-		execution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(execution);
+        dao.saveJobExecution(exec1);
+        dao.saveJobExecution(exec2);
+        dao.saveOrUpdateExecutionContext(exec2);
 
-		ExecutionContext retrieved = dao.findExecutionContext(execution);
-		assertEquals(ctx, retrieved);
-	}
+        JobExecution last = dao.getLastJobExecution(jobInstance);
+        assertEquals(exec2, last);
+        assertEquals("value", last.getExecutionContext().getString("key"));
+    }
 
-	public void testUpdateContext() {
-		dao.saveJobExecution(execution);
-		ExecutionContext ctx = new ExecutionContext();
-		ctx.put("key", "value");
-		execution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(execution);
+@org.junit.Test
+public void testSaveAndFindContext() {
+        dao.saveJobExecution(execution);
+        ExecutionContext ctx = new ExecutionContext();
+        ctx.put("key", "value");
+        execution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(execution);
 
-		ctx.putLong("longKey", 7);
-		dao.saveOrUpdateExecutionContext(execution);
+        ExecutionContext retrieved = dao.findExecutionContext(execution);
+        assertEquals(ctx, retrieved);
+    }
 
-		ExecutionContext retrieved = dao.findExecutionContext(execution);
-		assertEquals(ctx, retrieved);
-		assertEquals(7, retrieved.getLong("longKey"));
-	}
+@org.junit.Test
+public void testSaveAndFindEmptyContext() {
+        dao.saveJobExecution(execution);
+        ExecutionContext ctx = new ExecutionContext();
+        execution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(execution);
+
+        ExecutionContext retrieved = dao.findExecutionContext(execution);
+        assertEquals(ctx, retrieved);
+    }
+
+@org.junit.Test
+public void testUpdateContext() {
+        dao.saveJobExecution(execution);
+        ExecutionContext ctx = new ExecutionContext();
+        ctx.put("key", "value");
+        execution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(execution);
+
+        ctx.putLong("longKey", 7);
+        dao.saveOrUpdateExecutionContext(execution);
+
+        ExecutionContext retrieved = dao.findExecutionContext(execution);
+        assertEquals(ctx, retrieved);
+        assertEquals(7, retrieved.getLong("longKey"));
+    }
 }

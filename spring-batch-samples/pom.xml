@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>spring-batch-samples</artifactId>
-  <version>1.1.4.RELEASE</version>
+  <version>1.1.5</version>
 	<packaging>jar</packaging>
 	<name>Samples</name>
 	<description>
@@ -11,8 +11,8 @@
 	<parent>
 		<groupId>org.springframework.batch</groupId>
 		<artifactId>spring-batch</artifactId>
-		<version>1.1.4.RELEASE</version>
-		<relativePath>..</relativePath>
+		<version>1.1.5</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<profiles>
 		<profile>
@@ -157,7 +157,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -173,15 +173,21 @@
 			<artifactId>cglib-nodep</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>backport-util-concurrent</groupId>
 			<artifactId>backport-util-concurrent</artifactId>
 			<optional>true</optional>
+		</dependency>-->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.14</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.ibatis</groupId>
-			<artifactId>ibatis-sqlmap</artifactId>
-			<version>2.3.0</version>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>3.0.3</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -256,7 +262,7 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -267,7 +273,7 @@
 							<tasks>
 								<typedef resource="foundrylogic/vpp/typedef.properties" />
 								<taskdef resource="foundrylogic/vpp/taskdef.properties" />
-								<!-- Reference script for HSQLDB - N.B. not under source control, but packagaed in jar. -->
+								&lt;!&ndash; Reference script for HSQLDB - N.B. not under source control, but packagaed in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -281,7 +287,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-hsqldb.sql" />
 								</vppcopy>
-								<!-- Reference script for DB2 - N.B. not under source control, but packagaed in jar. -->
+								&lt;!&ndash; Reference script for DB2 - N.B. not under source control, but packagaed in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -295,7 +301,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-db2.sql" />
 								</vppcopy>
-								<!-- Reference script for Derby - N.B. not under source control, but packagaed in jar. -->
+								&lt;!&ndash; Reference script for Derby - N.B. not under source control, but packagaed in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -309,7 +315,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-derby.sql" />
 								</vppcopy>
-								<!-- Reference script for Oracle - N.B. not under source control, but packagaed in jar. -->
+								&lt;!&ndash; Reference script for Oracle - N.B. not under source control, but packagaed in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -323,7 +329,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-oracle10g.sql" />
 								</vppcopy>
-								<!-- Reference script for PostgreSQL - N.B. not under source control, but packagaed in jar. -->
+								&lt;!&ndash; Reference script for PostgreSQL - N.B. not under source control, but packagaed in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -337,7 +343,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-postgresql.sql" />
 								</vppcopy>
-								<!-- Reference script for MySQL - N.B. not under source control, but packaged in jar. -->
+								&lt;!&ndash; Reference script for MySQL - N.B. not under source control, but packaged in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -351,7 +357,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-mysql.sql" />
 								</vppcopy>
-								<!-- Reference script for MS SQLServer - N.B. not under source control, but packaged in jar. -->
+								&lt;!&ndash; Reference script for MS SQLServer - N.B. not under source control, but packaged in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -365,7 +371,7 @@
 									<fileset dir="${basedir}/src/main/sql" includes="business-schema.sql.vpp" />
 									<mapper type="glob" from="*.sql.vpp" to="*-sqlserver.sql" />
 								</vppcopy>
-								<!-- Reference script for Sybase - N.B. not under source control, but packaged in jar. -->
+								&lt;!&ndash; Reference script for Sybase - N.B. not under source control, but packaged in jar. &ndash;&gt;
 								<vppcopy todir="${basedir}/target/generated-resources" overwrite="true">
 									<config>
 										<context>
@@ -386,7 +392,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 </project>

@@ -20,8 +20,8 @@ import org.springframework.batch.item.ClearFailedException;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.orm.hibernate3.HibernateOperations;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateOperations;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.util.Assert;
 
 /**

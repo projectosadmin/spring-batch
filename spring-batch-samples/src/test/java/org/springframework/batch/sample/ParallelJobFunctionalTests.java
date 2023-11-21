@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.batch.sample.item.writer.StagingItemWriter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import static org.junit.Assert.*;
 
 public class ParallelJobFunctionalTests extends
 		AbstractValidatingBatchLauncherTests {
@@ -17,14 +18,16 @@ public class ParallelJobFunctionalTests extends
 
 	protected void validatePostConditions() throws Exception {
 		int count;
-		count = jdbcTemplate.queryForInt(
+		count = jdbcTemplate.queryForObject(
 				"SELECT COUNT(*) from BATCH_STAGING where PROCESSED=?",
+				Integer.class,
 				new Object[] {StagingItemWriter.NEW});
 		assertEquals(0, count);
-		int total = jdbcTemplate.queryForInt(
-				"SELECT COUNT(*) from BATCH_STAGING");
-		count = jdbcTemplate.queryForInt(
+		int total = jdbcTemplate.queryForObject(
+				"SELECT COUNT(*) from BATCH_STAGING", Integer.class);
+		count = jdbcTemplate.queryForObject(
 				"SELECT COUNT(*) from BATCH_STAGING where PROCESSED=?",
+				Integer.class,
 				new Object[] {StagingItemWriter.DONE});
 		assertEquals(total, count);
 	}

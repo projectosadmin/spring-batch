@@ -10,7 +10,7 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.core.io.ByteArrayResource;
-
+import static org.junit.Assert.*;
 public class StaxEventItemReaderCommonTests extends CommonItemStreamItemReaderTests {
 
 	private final String FOOS = "<foos> <foo value=\"1\"/> <foo value=\"2\"/> <foo value=\"3\"/> <foo value=\"4\"/> <foo value=\"5\"/> </foos>";

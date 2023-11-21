@@ -82,7 +82,7 @@ public class DefaultTransactionalEventReader extends AbstractEventReaderWrapper 
 	 * be equal to the next return of next().
 	 *
 	 * @see XMLEvent
-	 * @throws XMLStreamException
+	 * @throws XMLStreamException XMLStreamException
 	 */
 	public XMLEvent peek() throws XMLStreamException {
 		return (recorder.hasNext()) ? recorder.peek() : wrappedEventReader.peek();

@@ -4,15 +4,16 @@ import java.util.Date;
 
 import org.easymock.MockControl;
 import org.springmodules.validation.valang.functions.Function;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class FutureDateFunctionTests extends TestCase {
+public class FutureDateFunctionTests {
 
 	private FutureDateFunction function;
 	private MockControl argumentControl;
 	private Function argument;
 	
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		argumentControl = MockControl.createControl(Function.class);
 		argument = (Function) argumentControl.getMock();
 
@@ -20,7 +21,8 @@ public class FutureDateFunctionTests extends TestCase {
 		function = new FutureDateFunction(new Function[] {argument}, 0, 0);
 	}
 	
-	public void testFunctionWithNonDateValue() {
+	@org.junit.Test
+public void testFunctionWithNonDateValue() {
 		
 		//set-up mock argument - set return value to non Date value
 		argument.getResult(null);
@@ -36,7 +38,8 @@ public class FutureDateFunctionTests extends TestCase {
 		}
 	}
 	
-	public void testFunctionWithFutureDate() throws Exception {
+	@org.junit.Test
+public void testFunctionWithFutureDate() throws Exception {
 
 		//set-up mock argument - set return value to future Date
 		argument.getResult(null);
@@ -47,7 +50,8 @@ public class FutureDateFunctionTests extends TestCase {
 		assertTrue(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testFunctionWithPastDate() throws Exception {
+	@org.junit.Test
+public void testFunctionWithPastDate() throws Exception {
 
 		//set-up mock argument - set return value to future Date
 		argument.getResult(null);

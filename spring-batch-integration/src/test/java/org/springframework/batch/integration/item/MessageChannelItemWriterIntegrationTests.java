@@ -41,8 +41,8 @@ public class MessageChannelItemWriterIntegrationTests {
 	@Autowired
 	private ItemWriter itemWriter;
 	
-	@Test
-	public void testSend() throws Exception {
+	@org.junit.Test
+public void testSend() throws Exception {
 		itemWriter.write("foo");
 		Message<?> message = channel.receive(10);
 		assertNotNull(message);

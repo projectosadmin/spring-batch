@@ -60,9 +60,9 @@ public class RecursiveCollectionItemTransformer implements ItemTransformer {
 
 	/**
 	 * Convert the date to a format that can be output and then write it out.
-	 * @param data
-	 * @param converted
-	 * @throws Exception
+	 * @param data data
+	 * @param converted converted
+	 * @throws Exception Exception
 	 */
 	private void transformRecursively(Object data, TransformHolder converted) throws Exception {
 

@@ -3,19 +3,20 @@ package org.springframework.batch.item.support;
 import java.util.Collection;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.support.AggregateItemReader;
 
-public class AggregateItemReaderTests extends TestCase {
+public class AggregateItemReaderTests {
 
 	private MockControl inputControl;
 	private ItemReader input;
 	private AggregateItemReader provider;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 
 		//create mock for input
 		inputControl = MockControl.createControl(ItemReader.class);
@@ -26,7 +27,8 @@ public class AggregateItemReaderTests extends TestCase {
 		provider.setItemReader(input);
 	}
 
-	public void testNext() throws Exception {
+	@org.junit.Test
+public void testNext() throws Exception {
 
 		//set-up mock input
 		input.read();

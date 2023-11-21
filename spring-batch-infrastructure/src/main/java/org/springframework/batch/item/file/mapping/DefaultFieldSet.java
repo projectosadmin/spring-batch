@@ -44,7 +44,7 @@ public class DefaultFieldSet implements FieldSet {
 	 */
 	private String[] tokens;
 
-	private List names;
+	private List<String> names;
 
 	public DefaultFieldSet(String[] tokens) {
 		this.tokens = tokens == null ? null : (String[]) tokens.clone();
@@ -69,7 +69,7 @@ public class DefaultFieldSet implements FieldSet {
 		if (names == null) {
 			throw new IllegalStateException("Field names are not known");
 		}
-		return (String[]) names.toArray();
+		return names.toArray(new String[0]);
 	}
 	
 	/* (non-Javadoc)
@@ -84,7 +84,7 @@ public class DefaultFieldSet implements FieldSet {
 	 * @see org.springframework.batch.item.file.mapping.IFieldSet#getValues()
 	 */
 	public String[] getValues() {
-		return (String[]) tokens.clone();
+		return tokens.clone();
 	}
 
 	/*
@@ -145,7 +145,7 @@ public class DefaultFieldSet implements FieldSet {
 
 		String value = readAndTrim(index);
 
-		return trueValue.equals(value) ? true : false;
+		return trueValue.equals(value);
 	}
 
 	/*

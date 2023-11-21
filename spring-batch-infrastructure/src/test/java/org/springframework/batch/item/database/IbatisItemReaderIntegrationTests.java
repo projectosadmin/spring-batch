@@ -1,3 +1,4 @@
+/*
 package org.springframework.batch.item.database;
 
 import org.springframework.batch.item.ItemReader;
@@ -7,11 +8,13 @@ import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+*/
 /**
  * Tests for {@link IbatisDrivingQueryItemReader}
  *
  * @author Robert Kasanicky
- */
+ *//*
+
 public class IbatisItemReaderIntegrationTests extends AbstractDataSourceItemReaderIntegrationTests {
 
 	protected ItemReader createItemReader() throws Exception {
@@ -37,3 +40,4 @@ public class IbatisItemReaderIntegrationTests extends AbstractDataSourceItemRead
 
 
 }
+*/

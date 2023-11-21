@@ -19,13 +19,13 @@ package org.springframework.batch.support.transaction;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class TransactionAwareListFactoryTests extends TestCase {
+public class TransactionAwareListFactoryTests {
 
 	TransactionAwareProxyFactory factory = new TransactionAwareProxyFactory(Arrays.asList(new String[] { "foo",
 			"bar", "spam" }));
@@ -34,30 +34,35 @@ public class TransactionAwareListFactoryTests extends TestCase {
 
 	List list;
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		list = (List) factory.createInstance();
 	}
 
-	public void testAdd() {
+	@org.junit.Test
+public void testAdd() {
 		assertEquals(3, list.size());
 		list.add("bucket");
 		assertTrue(list.contains("bucket"));
 	}
 
-	public void testRemove() {
+	@org.junit.Test
+public void testRemove() {
 		assertEquals(3, list.size());
 		assertTrue(list.contains("spam"));
 		list.remove("spam");
 		assertFalse(list.contains("spam"));
 	}
 
-	public void testClear() {
+	@org.junit.Test
+public void testClear() {
 		assertEquals(3, list.size());
 		list.clear();
 		assertEquals(0, list.size());
 	}
 
-	public void testTransactionalAdd() throws Exception {
+	@org.junit.Test
+public void testTransactionalAdd() throws Exception {
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				testAdd();
@@ -67,7 +72,8 @@ public class TransactionAwareListFactoryTests extends TestCase {
 		assertEquals(4, list.size());
 	}
 
-	public void testTransactionalRemove() throws Exception {
+	@org.junit.Test
+public void testTransactionalRemove() throws Exception {
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				testRemove();
@@ -77,7 +83,8 @@ public class TransactionAwareListFactoryTests extends TestCase {
 		assertEquals(2, list.size());
 	}
 
-	public void testTransactionalClear() throws Exception {
+	@org.junit.Test
+public void testTransactionalClear() throws Exception {
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				testClear();
@@ -87,7 +94,8 @@ public class TransactionAwareListFactoryTests extends TestCase {
 		assertEquals(0, list.size());
 	}
 
-	public void testTransactionalAddWithRollback() throws Exception {
+	@org.junit.Test
+public void testTransactionalAddWithRollback() throws Exception {
 		try {
 			transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {
@@ -103,7 +111,8 @@ public class TransactionAwareListFactoryTests extends TestCase {
 		assertEquals(3, list.size());
 	}
 
-	public void testTransactionalRemoveWithRollback() throws Exception {
+	@org.junit.Test
+public void testTransactionalRemoveWithRollback() throws Exception {
 		try {
 			transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {
@@ -119,7 +128,8 @@ public class TransactionAwareListFactoryTests extends TestCase {
 		assertEquals(3, list.size());
 	}
 
-	public void testTransactionalClearWithRollback() throws Exception {
+	@org.junit.Test
+public void testTransactionalClearWithRollback() throws Exception {
 		try {
 			transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {

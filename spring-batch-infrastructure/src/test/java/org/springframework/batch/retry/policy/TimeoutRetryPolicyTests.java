@@ -16,13 +16,14 @@
 
 package org.springframework.batch.retry.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryContext;
 
-public class TimeoutRetryPolicyTests extends TestCase {
+public class TimeoutRetryPolicyTests {
 
-	public void testTimeoutPreventsRetry() throws Exception {
+	@org.junit.Test
+public void testTimeoutPreventsRetry() throws Exception {
 		TimeoutRetryPolicy policy = new TimeoutRetryPolicy();
 		policy.setTimeout(100);
 		RetryContext context = policy.open(null, null);
@@ -33,7 +34,8 @@ public class TimeoutRetryPolicyTests extends TestCase {
 		policy.close(context);
 	}
 
-	public void testRetryCount() throws Exception {
+	@org.junit.Test
+public void testRetryCount() throws Exception {
 		TimeoutRetryPolicy policy = new TimeoutRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		assertNotNull(context);
@@ -44,7 +46,8 @@ public class TimeoutRetryPolicyTests extends TestCase {
 		assertEquals("foo", context.getLastThrowable().getMessage());
 	}
 
-	public void testParent() throws Exception {
+	@org.junit.Test
+public void testParent() throws Exception {
 		TimeoutRetryPolicy policy = new TimeoutRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		RetryContext child = policy.open(null, context);

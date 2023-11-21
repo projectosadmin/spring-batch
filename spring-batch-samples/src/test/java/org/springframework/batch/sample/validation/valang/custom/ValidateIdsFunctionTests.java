@@ -3,20 +3,21 @@ package org.springframework.batch.sample.validation.valang.custom;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 import org.easymock.MockControl;
 
 import org.springframework.batch.sample.domain.LineItem;
 
 import org.springmodules.validation.valang.functions.Function;
 
-public class ValidateIdsFunctionTests extends TestCase {
+public class ValidateIdsFunctionTests {
 
 	private ValidateIdsFunction function;
 	private MockControl argumentControl;
 	private Function argument;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		argumentControl = MockControl.createControl(Function.class);
 		argument = (Function) argumentControl.getMock();
 
@@ -24,7 +25,8 @@ public class ValidateIdsFunctionTests extends TestCase {
 		function = new ValidateIdsFunction(new Function[] {argument}, 0, 0);
 	}
 	
-	public void testIdMin() throws Exception {
+	@org.junit.Test
+public void testIdMin() throws Exception {
 	
 		//create line item with correct item id
 		LineItem item = new LineItem();
@@ -51,7 +53,8 @@ public class ValidateIdsFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testIdMax() throws Exception {
+	@org.junit.Test
+public void testIdMax() throws Exception {
 
 		//create line item with correct item id
 		LineItem item = new LineItem();

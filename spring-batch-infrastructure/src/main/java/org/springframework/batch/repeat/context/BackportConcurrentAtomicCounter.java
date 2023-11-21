@@ -1,9 +1,12 @@
+/*
 package org.springframework.batch.repeat.context;
 
+*/
 /**
  * @author Dave Syer
  * 
- */
+ *//*
+
 class BackportConcurrentAtomicCounter implements AtomicCounter {
 
 	private edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicInteger counter = new edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicInteger();
@@ -16,4 +19,4 @@ class BackportConcurrentAtomicCounter implements AtomicCounter {
 		return counter.intValue();
 	}
 
-}
+}*/

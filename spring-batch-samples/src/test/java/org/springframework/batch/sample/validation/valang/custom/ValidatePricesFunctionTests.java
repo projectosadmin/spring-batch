@@ -9,15 +9,16 @@ import org.easymock.MockControl;
 import org.springframework.batch.sample.domain.LineItem;
 
 import org.springmodules.validation.valang.functions.Function;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ValidatePricesFunctionTests extends TestCase {
+public class ValidatePricesFunctionTests {
 
 	private ValidatePricesFunction function;
 	private MockControl argumentControl;
 	private Function argument;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		argumentControl = MockControl.createControl(Function.class);
 		argument = (Function) argumentControl.getMock();
 
@@ -25,7 +26,8 @@ public class ValidatePricesFunctionTests extends TestCase {
 		function = new ValidatePricesFunction(new Function[] {argument}, 0, 0);
 	}
 	
-	public void testItemPriceMin() throws Exception {
+	@org.junit.Test
+public void testItemPriceMin() throws Exception {
 	
 		//create line item with correct item price
 		LineItem item = new LineItem();
@@ -52,7 +54,8 @@ public class ValidatePricesFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testItemPriceMax() throws Exception {
+	@org.junit.Test
+public void testItemPriceMax() throws Exception {
 
 		//create line item with correct item price
 		LineItem item = new LineItem();

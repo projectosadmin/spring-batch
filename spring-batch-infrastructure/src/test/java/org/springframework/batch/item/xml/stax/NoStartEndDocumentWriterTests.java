@@ -4,7 +4,7 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 
@@ -13,7 +13,7 @@ import org.easymock.MockControl;
  * 
  * @author Robert Kasanicky
  */
-public class NoStartEndDocumentWriterTests extends TestCase {
+public class NoStartEndDocumentWriterTests {
 
 	// object under test
 	private NoStartEndDocumentStreamWriter writer;
@@ -24,7 +24,8 @@ public class NoStartEndDocumentWriterTests extends TestCase {
 	private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 	
 	
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		wrappedWriter = (XMLEventWriter) wrappedWriterControl.getMock();
 		writer = new NoStartEndDocumentStreamWriter(wrappedWriter);
 	}
@@ -33,7 +34,8 @@ public class NoStartEndDocumentWriterTests extends TestCase {
 	/**
 	 * StartDocument and EndDocument events are not passed to the wrapped writer.
 	 */
-	public void testNoStartEnd() throws Exception {
+	@org.junit.Test
+public void testNoStartEnd() throws Exception {
 		XMLEvent event = eventFactory.createComment("testEvent");
 		
 		//mock expects only a single event

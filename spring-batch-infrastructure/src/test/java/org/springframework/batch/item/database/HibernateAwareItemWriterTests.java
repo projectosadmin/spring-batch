@@ -18,7 +18,7 @@ package org.springframework.batch.item.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ClearFailedException;
 import org.springframework.batch.item.FlushFailedException;
@@ -26,14 +26,14 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.repeat.support.RepeatSynchronizationManager;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
+import static org.junit.Assert.*;
 /**
  * @author Dave Syer
  * 
  */
-public class HibernateAwareItemWriterTests extends TestCase {
+public class HibernateAwareItemWriterTests {
 
 	private class HibernateTemplateWrapper extends HibernateTemplate {
 		public void flush() throws DataAccessException {
@@ -69,7 +69,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		writer.setDelegate(new StubItemWriter());
 		context = new RepeatContextSupport(null);
 		RepeatSynchronizationManager.register(context);
@@ -80,7 +81,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#tearDown()
 	 */
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		String key = writer.getResourceKey();
 		if (TransactionSynchronizationManager.hasResource(key)) {
 			TransactionSynchronizationManager.unbindResource(key);	
@@ -92,9 +94,10 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#afterPropertiesSet()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		writer = new HibernateAwareItemWriter();
 		try {
 			writer.afterPropertiesSet();
@@ -110,9 +113,10 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#afterPropertiesSet()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAfterPropertiesSetWithDelegate() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSetWithDelegate() throws Exception {
 		writer.afterPropertiesSet();
 	}
 
@@ -121,7 +125,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#write(java.lang.Object)}.
 	 * @throws Exception 
 	 */
-	public void testWrite() throws Exception {
+	@org.junit.Test
+public void testWrite() throws Exception {
 		writer.write("foo");
 		assertEquals(1, list.size());
 		assertTrue(list.contains("foo"));
@@ -131,7 +136,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#write(java.lang.Object)}.
 	 */
-	public void testFlushWithFailure() throws Exception{
+	@org.junit.Test
+public void testFlushWithFailure() throws Exception{
 		final RuntimeException ex = new RuntimeException("bar");
 		writer.setHibernateTemplate(new HibernateTemplate() {
 			public void flush() throws DataAccessException {
@@ -151,7 +157,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#write(java.lang.Object)}.
 	 * @throws Exception 
 	 */
-	public void testWriteAndFlushWithFailure() throws Exception {
+	@org.junit.Test
+public void testWriteAndFlushWithFailure() throws Exception {
 		final RuntimeException ex = new RuntimeException("bar");
 		writer.setHibernateTemplate(new HibernateTemplateWrapper() {
 			public void flush() throws DataAccessException {
@@ -185,7 +192,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#flush()}.
 	 */
-	public void testFlush() throws Exception{
+	@org.junit.Test
+public void testFlush() throws Exception{
 		writer.flush();
 		assertEquals(3, list.size());
 		assertTrue(list.contains("flush"));
@@ -197,7 +205,8 @@ public class HibernateAwareItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.HibernateAwareItemWriter#clear()}.
 	 */
-	public void testClear() throws Exception{
+	@org.junit.Test
+public void testClear() throws Exception{
 		writer.clear();
 		assertEquals(2, list.size());
 		assertTrue(list.contains("clear"));

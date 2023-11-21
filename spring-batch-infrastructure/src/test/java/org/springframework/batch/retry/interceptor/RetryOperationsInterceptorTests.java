@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -37,7 +37,7 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.ClassUtils;
 
-public class RetryOperationsInterceptorTests extends TestCase {
+public class RetryOperationsInterceptorTests {
 
 	private RetryOperationsInterceptor interceptor;
 
@@ -49,8 +49,9 @@ public class RetryOperationsInterceptorTests extends TestCase {
 
 	private static int transactionCount;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		interceptor = new RetryOperationsInterceptor();
 		target = new ServiceImpl();
 		service = (Service) ProxyFactory.getProxy(Service.class,
@@ -59,13 +60,15 @@ public class RetryOperationsInterceptorTests extends TestCase {
 		transactionCount = 0;
 	}
 
-	public void testDefaultInterceptorSunnyDay() throws Exception {
+	@org.junit.Test
+public void testDefaultInterceptorSunnyDay() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		service.service();
 		assertEquals(2, count);
 	}
 
-	public void testInterceptorChainWithRetry() throws Exception {
+	@org.junit.Test
+public void testInterceptorChainWithRetry() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		final List list = new ArrayList();
 		((Advised) service).addAdvice(new MethodInterceptor() {
@@ -82,7 +85,8 @@ public class RetryOperationsInterceptorTests extends TestCase {
 		assertEquals(2, list.size());
 	}
 
-	public void testRetryExceptionAfterTooManyAttempts() throws Exception {
+	@org.junit.Test
+public void testRetryExceptionAfterTooManyAttempts() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		RetryTemplate template = new RetryTemplate();
 		template.setRetryPolicy(new NeverRetryPolicy());
@@ -96,7 +100,8 @@ public class RetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, count);
 	}
 
-	public void testOutsideTransaction() throws Exception {
+	@org.junit.Test
+public void testOutsideTransaction() throws Exception {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				ClassUtils.addResourcePathToPackagePath(getClass(),
 						"retry-transaction-test.xml"));
@@ -110,7 +115,8 @@ public class RetryOperationsInterceptorTests extends TestCase {
 		assertEquals(2, transactionCount);
 	}
 
-	public void testIllegalMethodInvocationType() throws Throwable {
+	@org.junit.Test
+public void testIllegalMethodInvocationType() throws Throwable {
 		try {
 			interceptor.invoke(new MethodInvocation() {
 				public Method getMethod() {

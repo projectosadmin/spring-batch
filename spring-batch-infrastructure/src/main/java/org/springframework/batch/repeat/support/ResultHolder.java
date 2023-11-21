@@ -14,7 +14,7 @@ interface ResultHolder {
 	 * available yet.
 	 * 
 	 * @return the result, or null if there is none.
-	 * @throws IllegalStateException
+	 * @throws IllegalStateException IllegalStateException
 	 */
 	ExitStatus getResult();
 
@@ -23,7 +23,7 @@ interface ResultHolder {
 	 * none is available yet.
 	 * 
 	 * @return the error, or null if there is none.
-	 * @throws IllegalStateException
+	 * @throws IllegalStateException IllegalStateException
 	 */
 	Throwable getError();
 

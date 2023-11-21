@@ -15,7 +15,7 @@
  */
 
 package org.springframework.batch.repeat.support;
-
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
@@ -26,7 +26,8 @@ public class TaskExecutorRepeatTemplateTests extends SimpleRepeatTemplateTests {
 		return new TaskExecutorRepeatTemplate();
 	}
 	
-	public void testSetThrottleLimit() throws Exception {
+	@org.junit.Test
+public void testSetThrottleLimit() throws Exception {
 		try {
 			new TaskExecutorRepeatTemplate().setThrottleLimit(-1);
 		} catch (Exception e) {

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.sample.domain.Address;
@@ -31,32 +31,32 @@ import org.springframework.batch.sample.domain.Order;
 
 /**
  * @author Dave Syer
- * 
  */
-public class OrderTransformerTests extends TestCase {
+public class OrderTransformerTests {
 
-	private OrderTransformer converter = new OrderTransformer();
+    private OrderTransformer converter = new OrderTransformer();
 
-	public void testConvert() throws Exception {
-		converter.setAggregators(new HashMap() {
-			{
-				put("header", new DelimitedLineAggregator());
-				put("customer", new DelimitedLineAggregator());
-				put("address", new DelimitedLineAggregator());
-				put("billing", new DelimitedLineAggregator());
-				put("item", new DelimitedLineAggregator());
-				put("footer", new DelimitedLineAggregator());
-			}
-		});
-		Order order = new Order();
-		order.setOrderDate(new Date());
-		order.setCustomer(new Customer());
-		order.setBillingAddress(new Address());
-		order.setBilling(new BillingInfo());
-		order.setLineItems(Collections.EMPTY_LIST);
-		order.setTotalPrice(new BigDecimal(10));
-		Object result = converter.transform(order);
-		assertTrue(result instanceof Collection);
-	}
+    @org.junit.Test
+    public void testConvert() throws Exception {
+        converter.setAggregators(new HashMap() {
+            {
+                put("header", new DelimitedLineAggregator());
+                put("customer", new DelimitedLineAggregator());
+                put("address", new DelimitedLineAggregator());
+                put("billing", new DelimitedLineAggregator());
+                put("item", new DelimitedLineAggregator());
+                put("footer", new DelimitedLineAggregator());
+            }
+        });
+        Order order = new Order();
+        order.setOrderDate(new Date());
+        order.setCustomer(new Customer());
+        order.setBillingAddress(new Address());
+        order.setBilling(new BillingInfo());
+        order.setLineItems(Collections.EMPTY_LIST);
+        order.setTotalPrice(new BigDecimal(10));
+        Object result = converter.transform(order);
+        assertTrue(result instanceof Collection);
+    }
 
 }

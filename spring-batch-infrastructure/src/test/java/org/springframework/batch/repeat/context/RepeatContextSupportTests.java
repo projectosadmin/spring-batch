@@ -18,20 +18,21 @@ package org.springframework.batch.repeat.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author dsyer
  *
  */
-public class RepeatContextSupportTests extends TestCase {
+public class RepeatContextSupportTests {
 
 	private List list = new ArrayList();
 
 	/**
 	 * Test method for {@link org.springframework.batch.repeat.context.RepeatContextSupport#registerDestructionCallback(java.lang.String, java.lang.Runnable)}.
 	 */
-	public void testDestructionCallbackSunnyDay() throws Exception {
+	@org.junit.Test
+public void testDestructionCallbackSunnyDay() throws Exception {
 		RepeatContextSupport context = new RepeatContextSupport(null);
 		context.setAttribute("foo", "FOO");
 		context.registerDestructionCallback("foo", new Runnable() {
@@ -47,7 +48,8 @@ public class RepeatContextSupportTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.repeat.context.RepeatContextSupport#registerDestructionCallback(java.lang.String, java.lang.Runnable)}.
 	 */
-	public void testDestructionCallbackMissingAttribute() throws Exception {
+	@org.junit.Test
+public void testDestructionCallbackMissingAttribute() throws Exception {
 		RepeatContextSupport context = new RepeatContextSupport(null);
 		context.registerDestructionCallback("foo", new Runnable() {
 			public void run() {
@@ -62,7 +64,8 @@ public class RepeatContextSupportTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.repeat.context.RepeatContextSupport#registerDestructionCallback(java.lang.String, java.lang.Runnable)}.
 	 */
-	public void testDestructionCallbackWithException() throws Exception {
+	@org.junit.Test
+public void testDestructionCallbackWithException() throws Exception {
 		RepeatContextSupport context = new RepeatContextSupport(null);
 		context.setAttribute("foo", "FOO");
 		context.setAttribute("bar", "BAR");

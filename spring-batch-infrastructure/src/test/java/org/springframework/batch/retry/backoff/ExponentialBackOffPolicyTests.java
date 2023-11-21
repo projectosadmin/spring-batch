@@ -16,17 +16,18 @@
 
 package org.springframework.batch.retry.backoff;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Rob Harrop
  * @author Dave Syer
  */
-public class ExponentialBackOffPolicyTests extends TestCase {
+public class ExponentialBackOffPolicyTests {
 
 	private DummySleeper sleeper = new DummySleeper();
 
-	public void testSetMaxInterval() throws Exception {
+	@org.junit.Test
+public void testSetMaxInterval() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		strategy.setMaxInterval(1000);
 		assertTrue(strategy.toString().indexOf("maxInterval=1000") >= 0);
@@ -35,7 +36,8 @@ public class ExponentialBackOffPolicyTests extends TestCase {
 		assertTrue(strategy.toString().indexOf("maxInterval=1") >= 0);
 	}
 
-	public void testSetInitialInterval() throws Exception {
+	@org.junit.Test
+public void testSetInitialInterval() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		strategy.setInitialInterval(10000);
 		assertTrue(strategy.toString().indexOf("initialInterval=10000,") >= 0);
@@ -43,7 +45,8 @@ public class ExponentialBackOffPolicyTests extends TestCase {
 		assertTrue(strategy.toString().indexOf("initialInterval=1,") >= 0);
 	}
 
-	public void testSetMultiplier() throws Exception {
+	@org.junit.Test
+public void testSetMultiplier() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		strategy.setMultiplier(3.);
 		assertTrue(strategy.toString().indexOf("multiplier=3.") >= 0);
@@ -51,7 +54,8 @@ public class ExponentialBackOffPolicyTests extends TestCase {
 		assertTrue(strategy.toString().indexOf("multiplier=1.") >= 0);
 	}
 
-	public void testSingleBackOff() throws Exception {
+	@org.junit.Test
+public void testSingleBackOff() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		strategy.setSleeper(sleeper);
 		BackOffContext context = strategy.start(null);
@@ -59,7 +63,8 @@ public class ExponentialBackOffPolicyTests extends TestCase {
 		assertEquals(ExponentialBackOffPolicy.DEFAULT_INITIAL_INTERVAL, sleeper.getLastBackOff());
 	}
 
-	public void testMaximumBackOff() throws Exception {
+	@org.junit.Test
+public void testMaximumBackOff() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		strategy.setMaxInterval(50);
 		strategy.setSleeper(sleeper);
@@ -68,7 +73,8 @@ public class ExponentialBackOffPolicyTests extends TestCase {
 		assertEquals(50, sleeper.getLastBackOff());
 	}
 
-	public void testMultiBackOff() throws Exception {
+	@org.junit.Test
+public void testMultiBackOff() throws Exception {
 		ExponentialBackOffPolicy strategy = new ExponentialBackOffPolicy();
 		long seed = 40;
 		double multiplier = 1.2;

@@ -1,16 +1,18 @@
 package example;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ExampleItemReaderTests extends TestCase {
+public class ExampleItemReaderTests {
 
 	private ExampleItemReader reader = new ExampleItemReader();
 	
-	public void testReadOnce() throws Exception {
+	@org.junit.Test
+public void testReadOnce() throws Exception {
 		assertEquals("Hello world!", reader.read());
 	}
 
-	public void testReadTwice() throws Exception {
+	@org.junit.Test
+public void testReadTwice() throws Exception {
 		reader.read();
 		assertEquals(null, reader.read());
 	}

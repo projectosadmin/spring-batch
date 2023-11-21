@@ -15,13 +15,13 @@
  */
 package org.springframework.batch.item.file.mapping;
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 /**
  * @author Dave Syer
  * 
  */
-public class PassThroughFieldSetMapperTests extends TestCase {
+public class PassThroughFieldSetMapperTests {
 
 	private PassThroughFieldSetMapper mapper = new PassThroughFieldSetMapper();
 
@@ -29,7 +29,8 @@ public class PassThroughFieldSetMapperTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper#mapLine(org.springframework.batch.item.file.mapping.FieldSet)}.
 	 */
-	public void testMapLine() {
+	@org.junit.Test
+public void testMapLine() {
 		FieldSet fieldSet = new DefaultFieldSet(new String[] { "foo", "bar" });
 		assertEquals(fieldSet, mapper.mapLine(fieldSet));
 	}
@@ -38,7 +39,8 @@ public class PassThroughFieldSetMapperTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper#mapItem(java.lang.Object)}.
 	 */
-	public void testUnmapItemAsFieldSet() {
+	@org.junit.Test
+public void testUnmapItemAsFieldSet() {
 		FieldSet fieldSet = new DefaultFieldSet(new String[] { "foo", "bar" });
 		assertEquals(fieldSet, mapper.mapItem(fieldSet));
 	}
@@ -47,7 +49,8 @@ public class PassThroughFieldSetMapperTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper#mapItem(java.lang.Object)}.
 	 */
-	public void testUnmapItemAsString() {
+	@org.junit.Test
+public void testUnmapItemAsString() {
 		assertEquals(new DefaultFieldSet(new String[] { "foo" }), mapper.mapItem("foo"));
 	}
 
@@ -55,7 +58,8 @@ public class PassThroughFieldSetMapperTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper#mapItem(java.lang.Object)}.
 	 */
-	public void testUnmapItemAsNonString() {
+	@org.junit.Test
+public void testUnmapItemAsNonString() {
 		Object object = new Object();
 		assertEquals(new DefaultFieldSet(new String[] { "" + object }), mapper.mapItem(object));
 	}

@@ -18,16 +18,18 @@ package org.springframework.batch.support;
 
 import org.springframework.batch.support.ExceptionClassifierSupport;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
+public class ExceptionClassifierSupportTests {
 
-public class ExceptionClassifierSupportTests extends TestCase {
-
-	public void testClassifyNullIsDefault() {
+	@org.junit.Test
+public void testClassifyNullIsDefault() {
 		ExceptionClassifierSupport classifier = new ExceptionClassifierSupport();
 		assertEquals(classifier.classify(null), classifier.getDefault());
 	}
 
-	public void testClassifyRandomException() {
+	@org.junit.Test
+public void testClassifyRandomException() {
 		ExceptionClassifierSupport classifier = new ExceptionClassifierSupport();
 		assertEquals(classifier.classify(new IllegalStateException("Foo")), classifier.getDefault());
 	}

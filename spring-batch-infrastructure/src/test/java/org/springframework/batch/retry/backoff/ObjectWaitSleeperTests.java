@@ -16,14 +16,15 @@
 
 package org.springframework.batch.retry.backoff;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  */
-public class ObjectWaitSleeperTests extends TestCase {
+public class ObjectWaitSleeperTests {
 
-	public void testSingleBackOff() throws Exception {
+	@org.junit.Test
+public void testSingleBackOff() throws Exception {
 		long backOffPeriod = 50;
 		ObjectWaitSleeper strategy = new ObjectWaitSleeper();
 		long before = System.currentTimeMillis();

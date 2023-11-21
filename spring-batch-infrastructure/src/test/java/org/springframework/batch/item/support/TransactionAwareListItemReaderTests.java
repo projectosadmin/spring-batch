@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.batch.support.transaction.TransactionAwareProxyFactory;
@@ -29,29 +30,31 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-public class TransactionAwareListItemReaderTests extends TestCase {
+import static org.junit.Assert.*;
+public class TransactionAwareListItemReaderTests {
 
 	// TransactionAwareListItemProvider provider = new
 	// TransactionAwareListItemProvider(Arrays.asList(new String[] { "a",
 	// "b", "c" }));
 	ListItemReader provider;
-
-	protected void setUp() throws Exception {
-		super.setUp();
+@org.junit.Before
+public void setUp() throws Exception {
+		//
 		TransactionAwareProxyFactory factory = new TransactionAwareProxyFactory(Arrays.asList(new String[] { "a", "b",
 				"c" }));
 		provider = new ListItemReader((List) factory.createInstance());
 	}
 
-	public void testNext() throws Exception {
+	@org.junit.Test
+public void testNext() throws Exception {
 		assertEquals("a", provider.read());
 		assertEquals("b", provider.read());
 		assertEquals("c", provider.read());
 		assertEquals(null, provider.read());
 	}
 
-	public void testCommit() throws Exception {
+	@org.junit.Test
+public void testCommit() throws Exception {
 		PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();
 		final List taken = new ArrayList();
 		try {
@@ -78,7 +81,8 @@ public class TransactionAwareListItemReaderTests extends TestCase {
 		assertFalse(taken.contains("a"));
 	}
 
-	public void testTransactionalExhausted() throws Exception {
+	@org.junit.Test
+public void testTransactionalExhausted() throws Exception {
 		PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();
 		final List taken = new ArrayList();
 		new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
@@ -95,7 +99,8 @@ public class TransactionAwareListItemReaderTests extends TestCase {
 		assertEquals("a", taken.get(0));
 	}
 
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();
 		final List taken = new ArrayList();
 		try {

@@ -18,7 +18,7 @@ package org.springframework.batch.item.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStream;
@@ -30,13 +30,14 @@ import org.springframework.batch.item.support.CompositeItemStream;
  * @author Dave Syer
  * 
  */
-public class CompositeItemStreamTests extends TestCase {
+public class CompositeItemStreamTests {
 
 	private CompositeItemStream manager = new CompositeItemStream();
 
 	private List list = new ArrayList();
 
-	public void testRegisterAndOpen() {
+	@org.junit.Test
+public void testRegisterAndOpen() {
 		ItemStreamSupport stream = new ItemStreamSupport() {
 			public void open(ExecutionContext executionContext) throws ItemStreamException {
 				list.add("bar");
@@ -47,7 +48,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testRegisterTwice() {
+	@org.junit.Test
+public void testRegisterTwice() {
 		ItemStreamSupport stream = new ItemStreamSupport() {
 			public void open(ExecutionContext executionContext) throws ItemStreamException {
 				list.add("bar");
@@ -59,7 +61,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testMark() {
+	@org.junit.Test
+public void testMark() {
 		manager.register(new ItemStreamSupport() {
 			public void update(ExecutionContext executionContext) {
 				list.add("bar");
@@ -69,7 +72,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testClose() {
+	@org.junit.Test
+public void testClose() {
 		manager.register(new ItemStreamSupport() {
 			public void close(ExecutionContext executionContext) throws ItemStreamException {
 				list.add("bar");
@@ -79,7 +83,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testCloseDoesNotUnregister() {
+	@org.junit.Test
+public void testCloseDoesNotUnregister() {
 		manager.setStreams(new ItemStream[] { new ItemStreamSupport() {
 			public void open(ExecutionContext executionContext) throws ItemStreamException {
 				list.add("bar");

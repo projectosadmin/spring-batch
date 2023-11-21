@@ -75,8 +75,8 @@ public class PollableSourceRetryTests {
 	private PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();;
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testSimpleTransactionalPolling() throws Exception {
+	@org.junit.Test
+public void testSimpleTransactionalPolling() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,c,d,e,f,g,h,j,k")));
@@ -108,8 +108,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testNonTransactionalPollingWithRollback() throws Exception {
+	@org.junit.Test
+public void testNonTransactionalPollingWithRollback() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,c,d,e,f,g,h,j,k")));
@@ -143,8 +143,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testTransactionalHandlingWithUnconditionalRollback() throws Exception {
+	@org.junit.Test
+public void testTransactionalHandlingWithUnconditionalRollback() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,c,d,e,f,g,h,j,k")));
@@ -181,8 +181,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testTransactionalHandlingWithRollback() throws Exception {
+	@org.junit.Test
+public void testTransactionalHandlingWithRollback() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,fail,d,e,f,g,h,j,k")));
@@ -226,8 +226,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testTransactionalHandlingWithRepeat() throws Exception {
+	@org.junit.Test
+public void testTransactionalHandlingWithRepeat() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,fail,d,e,f,g,h,j,k")));
@@ -273,8 +273,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testTransactionalHandlingWithRetry() throws Exception {
+	@org.junit.Test
+public void testTransactionalHandlingWithRetry() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,b,fail,d,e,f,g,h,j,k")));
@@ -326,8 +326,8 @@ public class PollableSourceRetryTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testTransactionalHandlingWithRepeatAndRetry() throws Exception {
+	@org.junit.Test
+public void testTransactionalHandlingWithRepeatAndRetry() throws Exception {
 
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray("a,fail,c,d,e,f,g,h,j,k")));
@@ -376,8 +376,8 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param source
-	 * @param channel
+	 * @param source source
+	 * @param channel channel
 	 * @return
 	 */
 	private SourceEndpoint getSourceEndpoint(MessageSource<Object> source, MessageChannel channel) {
@@ -390,8 +390,8 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param handler
-	 * @param source
+	 * @param handler handler
+	 * @param source source
 	 * @return
 	 */
 	private DirectChannel getChannel(MessageTarget handler, MessageSource<Object> source) {
@@ -448,7 +448,7 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param itemKeyGenerator
+	 * @param itemKeyGenerator itemKeyGenerator
 	 * @return
 	 */
 	private StatefulRetryOperationsInterceptor getRetryOperationsInterceptor(ItemKeyGenerator itemKeyGenerator) {
@@ -473,7 +473,7 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param endpoint
+	 * @param endpoint endpoint
 	 */
 	private void addTransactionInterceptor(SourceEndpoint endpoint) {
 		org.springframework.integration.endpoint.interceptor.TransactionInterceptor transactionInterceptor = new org.springframework.integration.endpoint.interceptor.TransactionInterceptor(transactionManager);
@@ -489,8 +489,8 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param endpoint
-	 * @param commitInterval
+	 * @param endpoint endpoint
+	 * @param commitInterval commitInterval
 	 */
 	private void addRepeatInterceptor(SourceEndpoint endpoint, int commitInterval) {
 		final RepeatTemplate repeatTemplate = new RepeatTemplate();
@@ -514,7 +514,7 @@ public class PollableSourceRetryTests {
 	}
 
 	/**
-	 * @param commitInterval
+	 * @param commitInterval commitInterval
 	 * @return
 	 */
 	private RepeatOperationsInterceptor getRepeatOperationsInterceptor(int commitInterval) {

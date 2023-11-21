@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -41,7 +41,7 @@ import org.springframework.batch.support.PropertiesConverter;
  * @author Dave Syer
  * 
  */
-public class SimpleExportedJobLauncherTests extends TestCase {
+public class SimpleExportedJobLauncherTests {
 
 	private SimpleExportedJobLauncher launcher = new SimpleExportedJobLauncher();
 
@@ -49,8 +49,9 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 
 	private List list = new ArrayList();
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		launcher.setLauncher(new JobLauncher() {
 			public JobExecution run(Job job, JobParameters jobParameters) throws JobExecutionAlreadyRunningException {
 				JobExecution result = new JobExecution(null);
@@ -69,9 +70,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#afterPropertiesSet()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		launcher = new SimpleExportedJobLauncher();
 		try {
 			launcher.afterPropertiesSet();
@@ -86,9 +88,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#afterPropertiesSet()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAfterPropertiesSetWithLauncher() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSetWithLauncher() throws Exception {
 		launcher = new SimpleExportedJobLauncher();
 		launcher.setLauncher(new JobLauncher() {
 			public JobExecution run(Job job, JobParameters jobParameters) throws JobExecutionAlreadyRunningException {
@@ -107,7 +110,8 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#getStatistics()}.
 	 */
-	public void testGetStatistics() {
+	@org.junit.Test
+public void testGetStatistics() {
 		Properties props = launcher.getStatistics();
 		assertNotNull(props);
 		assertEquals(0, props.entrySet().size());
@@ -116,9 +120,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#getStatistics()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testGetStatisticsWithContent() throws Exception {
+	@org.junit.Test
+public void testGetStatisticsWithContent() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		launcher.run("foo");
 		Properties props = launcher.getStatistics();
@@ -129,9 +134,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#isRunning()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testIsRunning() throws Exception {
+	@org.junit.Test
+public void testIsRunning() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		launcher.run("foo");
 		assertTrue(launcher.isRunning());
@@ -140,9 +146,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#isRunning()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAlreadyRunning() throws Exception {
+	@org.junit.Test
+public void testAlreadyRunning() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		launcher.setLauncher(new JobLauncher() {
 			public JobExecution run(Job job, JobParameters jobParameters) throws JobExecutionAlreadyRunningException {
@@ -157,7 +164,8 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#run(java.lang.String)}.
 	 */
-	public void testRunNonExistentJob() {
+	@org.junit.Test
+public void testRunNonExistentJob() {
 		String value = launcher.run("foo");
 		assertTrue("Return value was not an exception: " + value, contains(value, "NoSuchJobException"));
 	}
@@ -166,9 +174,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#run(java.lang.String)}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRunJobWithParameters() throws Exception {
+	@org.junit.Test
+public void testRunJobWithParameters() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		String value = launcher.run("foo", "bar=spam,bucket=crap");
 		assertTrue(launcher.isRunning());
@@ -179,9 +188,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#run(java.lang.String)}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRunJobWithParametersAndFactory() throws Exception {
+	@org.junit.Test
+public void testRunJobWithParametersAndFactory() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		launcher.setJobParametersFactory(new JobParametersConverter() {
 			public JobParameters getJobParameters(Properties properties) {
@@ -200,9 +210,10 @@ public class SimpleExportedJobLauncherTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.launch.support.SimpleExportedJobLauncher#stop()}.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testStop() throws Exception {
+	@org.junit.Test
+public void testStop() throws Exception {
 		jobLocator.register(new ReferenceJobFactory(new JobSupport("foo")));
 		launcher.run("foo");
 		assertTrue(launcher.isRunning());

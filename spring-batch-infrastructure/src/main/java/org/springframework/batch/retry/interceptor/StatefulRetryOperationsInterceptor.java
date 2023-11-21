@@ -168,7 +168,7 @@ public class StatefulRetryOperationsInterceptor implements MethodInterceptor {
 		private final MethodInvocation invocation;
 
 		/**
-		 * @param invocation
+		 * @param invocation invocation
 		 */
 		private MethodInvocationRetryCallback(MethodInvocation invocation) {
 			this.invocation = invocation;

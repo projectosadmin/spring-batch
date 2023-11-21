@@ -15,52 +15,57 @@
  */
 package org.springframework.batch.item.file.transform;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.file.mapping.FieldSet;
 
 /**
  * @author Dave Syer
- *
  */
-public class LineAggregatorItemTransformerTests extends TestCase {
-	
-	private LineAggregatorItemTransformer transformer = new LineAggregatorItemTransformer();
+public class LineAggregatorItemTransformerTests {
 
-	/**
-	 * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#setAggregator(org.springframework.batch.item.file.transform.LineAggregator)}.
-	 * @throws Exception 
-	 */
-	public void testSetAggregator() throws Exception {
-		transformer.setAggregator(new LineAggregator() {
-			public String aggregate(FieldSet fieldSet) {
-				return "foo";
-			}
-		});
-		String value = (String) transformer.transform(new String[] {"a", "b"});
-		assertEquals("foo", value);
-	}
+    private LineAggregatorItemTransformer transformer = new LineAggregatorItemTransformer();
 
-	/**
-	 * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception 
-	 */
-	public void testTransform() throws Exception {
-		String value = (String) transformer.transform(new String[] {"a", "b"});
-		assertTrue("Wrong value: "+value, value.startsWith("a,b"));
-	}
+    /**
+     * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#setAggregator(org.springframework.batch.item.file.transform.LineAggregator)}.
+     *
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testSetAggregator() throws Exception {
+        transformer.setAggregator(new LineAggregator() {
+            public String aggregate(FieldSet fieldSet) {
+                return "foo";
+            }
+        });
+        String value = (String) transformer.transform(new String[]{"a", "b"});
+        assertEquals("foo", value);
+    }
 
-	/**
-	 * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception 
-	 */
-	public void testTransformWrongType() throws Exception {
-		try {
-			transformer.transform("foo");
-			fail("Expected ConversionException");
-		} catch (ConversionException e) {
-			// Expected
-		}
+    /**
+     * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#transform(java.lang.Object)}.
+     *
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testTransform() throws Exception {
+        String value = (String) transformer.transform(new String[]{"a", "b"});
+        assertTrue("Wrong value: " + value, value.startsWith("a,b"));
+    }
 
-	}
+    /**
+     * Test method for {@link org.springframework.batch.item.file.transform.LineAggregatorItemTransformer#transform(java.lang.Object)}.
+     *
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testTransformWrongType() throws Exception {
+        try {
+            transformer.transform("foo");
+            fail("Expected ConversionException");
+        } catch (ConversionException e) {
+            // Expected
+        }
+
+    }
 }

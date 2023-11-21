@@ -13,7 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
+import static org.junit.Assert.*;
 /**
  * Test case for jobs that are expected to update customer credit value by fixed
  * amount.
@@ -45,7 +45,7 @@ public abstract class AbstractCustomerCreditIncreaseTests extends AbstractValida
 	private List creditsBeforeUpdate;
 
 	/**
-	 * @param jdbcTemplate
+	 * @param jdbcTemplate jdbcTemplate
 	 */
 	public void setJdbcTemplate(JdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -128,7 +128,7 @@ public abstract class AbstractCustomerCreditIncreaseTests extends AbstractValida
 	}
 
 	/**
-	 * @param matches
+	 * @param matches matches
 	 */
 	protected void checkMatches(List matches) {
 		// no-op...

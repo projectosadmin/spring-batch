@@ -130,7 +130,7 @@ public class FlatFileItemReader extends AbstractBufferedItemReaderItemStream imp
 	 * Setter for resource property. The location of an input stream that can be
 	 * read.
 	 * 
-	 * @param resource
+	 * @param resource resource
 	 */
 	public void setResource(Resource resource) {
 		this.resource = resource;
@@ -178,7 +178,7 @@ public class FlatFileItemReader extends AbstractBufferedItemReaderItemStream imp
 	/**
 	 * Set the FieldSetMapper to be used for each line.
 	 * 
-	 * @param fieldSetMapper
+	 * @param fieldSetMapper fieldSetMapper
 	 */
 	public void setFieldSetMapper(FieldSetMapper fieldSetMapper) {
 		this.fieldSetMapper = fieldSetMapper;

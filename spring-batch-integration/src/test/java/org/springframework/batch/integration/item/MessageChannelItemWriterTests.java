@@ -43,8 +43,8 @@ public class MessageChannelItemWriterTests {
 	/**
 	 * Test method for {@link org.springframework.batch.integration.item.MessageChannelItemWriter#setChannel(org.springframework.integration.channel.MessageChannel)}.
 	 */
-	@Test
-	public void testSetChannel() {
+	@org.junit.Test
+public void testSetChannel() {
 		Method method = ReflectionUtils.findMethod(MessageChannelItemWriter.class, "setChannel", new Class<?>[] {MessageChannel.class});
 		assertNotNull(method);
 		Annotation[] annotations = AnnotationUtils.getAnnotations(method);
@@ -56,8 +56,8 @@ public class MessageChannelItemWriterTests {
 	 * Test method for {@link org.springframework.batch.integration.item.MessageChannelItemWriter#write(java.lang.Object)}.
 	 * @throws Exception 
 	 */
-	@Test
-	public void testWrite() throws Exception {
+	@org.junit.Test
+public void testWrite() throws Exception {
 		DirectChannel channel = new DirectChannel();
 		ThreadLocalChannel receiver = new ThreadLocalChannel();
 		channel.subscribe(receiver);
@@ -73,8 +73,8 @@ public class MessageChannelItemWriterTests {
 	 * Test method for {@link org.springframework.batch.integration.item.MessageChannelItemWriter#write(java.lang.Object)}.
 	 * @throws Exception 
 	 */
-	@Test
-	public void testWriteWithRollback() throws Exception {
+	@org.junit.Test
+public void testWriteWithRollback() throws Exception {
 		DirectChannel channel = new DirectChannel();
 		channel.subscribe(new MessageTarget() {
 			public boolean send(Message<?> message) {
@@ -96,8 +96,8 @@ public class MessageChannelItemWriterTests {
 	 * Test method for {@link org.springframework.batch.integration.item.MessageChannelItemWriter#write(java.lang.Object)}.
 	 * @throws Exception 
 	 */
-	@Test
-	public void testWriteWithRollbackOnEndpoint() throws Exception {
+	@org.junit.Test
+public void testWriteWithRollbackOnEndpoint() throws Exception {
 		DirectChannel channel = new DirectChannel();
 		HandlerEndpoint endpoint = new HandlerEndpoint(new MessageHandler() {
 			public Message<?> handle(Message<?> message) {

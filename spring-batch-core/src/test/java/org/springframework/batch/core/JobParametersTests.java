@@ -11,13 +11,13 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.SerializationUtils;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Lucas Ward
  * 
  */
-public class JobParametersTests extends TestCase {
+public class JobParametersTests {
 
 	JobParameters parameters;
 
@@ -33,8 +33,9 @@ public class JobParametersTests extends TestCase {
 
 	Date date2 = new Date(7809089900L);
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		parameters = getNewParameters();
 	}
 
@@ -59,7 +60,8 @@ public class JobParametersTests extends TestCase {
 		return new JobParameters(stringMap, longMap, doubleMap, dateMap);
 	}
 
-	public void testBadLongKeyException() throws Exception {
+	@org.junit.Test
+public void testBadLongKeyException() throws Exception {
 
 		Map badLongMap = new HashMap();
 		badLongMap.put(new Long(0), new Long(1));
@@ -73,7 +75,8 @@ public class JobParametersTests extends TestCase {
 		}
 	}
 
-	public void testBadLongConstructorException() throws Exception {
+	@org.junit.Test
+public void testBadLongConstructorException() throws Exception {
 
 		Map badLongMap = new HashMap();
 		badLongMap.put("key", "bad long");
@@ -87,7 +90,8 @@ public class JobParametersTests extends TestCase {
 		}
 	}
 	
-	public void testBadDoubleConstructorException() throws Exception {
+	@org.junit.Test
+public void testBadDoubleConstructorException() throws Exception {
 
 		Map badDoubleMap = new HashMap();
 		badDoubleMap.put("key", "bad double");
@@ -101,7 +105,8 @@ public class JobParametersTests extends TestCase {
 		}
 	}
 
-	public void testBadStringConstructorException() throws Exception {
+	@org.junit.Test
+public void testBadStringConstructorException() throws Exception {
 
 		Map badMap = new HashMap();
 		badMap.put("key", new Integer(2));
@@ -115,7 +120,8 @@ public class JobParametersTests extends TestCase {
 		}
 	}
 
-	public void testBadDateConstructorException() throws Exception {
+	@org.junit.Test
+public void testBadDateConstructorException() throws Exception {
 
 		Map badMap = new HashMap();
 		badMap.put("key", new java.sql.Date(System.currentTimeMillis()));
@@ -129,76 +135,92 @@ public class JobParametersTests extends TestCase {
 		}
 	}
 
-	public void testGetString() {
+	@org.junit.Test
+public void testGetString() {
 		assertEquals("value1", parameters.getString("string.key1"));
 		assertEquals("value2", parameters.getString("string.key2"));
 	}
 
-	public void testGetStringParameters() {
+	@org.junit.Test
+public void testGetStringParameters() {
 		assertEquals("value1", parameters.getStringParameters().get("string.key1"));
 		assertEquals("value2", parameters.getStringParameters().get("string.key2"));
 	}
 
-	public void testGetLong() {
+	@org.junit.Test
+public void testGetLong() {
 		assertEquals(new Long(1), parameters.getLong("long.key1"));
 		assertEquals(new Long(2), parameters.getLong("long.key2"));
 	}
 
-	public void testGetLongParameters() {
+	@org.junit.Test
+public void testGetLongParameters() {
 		assertEquals(new Long(1), parameters.getLongParameters().get("long.key1"));
 		assertEquals(new Long(2), parameters.getLongParameters().get("long.key2"));
 	}
 	
-	public void testGetDouble() {
+	@org.junit.Test
+public void testGetDouble() {
 		assertEquals(new Double(1.1), parameters.getDouble("double.key1"));
 		assertEquals(new Double(2.2), parameters.getDouble("double.key2"));
 	}
 	
-	public void testGetDoubleParameters() {
+	@org.junit.Test
+public void testGetDoubleParameters() {
 		assertEquals(new Double(1.1), parameters.getDoubleParameters().get("double.key1"));
 		assertEquals(new Double(2.2), parameters.getDoubleParameters().get("double.key2"));
 	}
 
-	public void testGetDate() {
+	@org.junit.Test
+public void testGetDate() {
 		assertEquals(date1, parameters.getDate("date.key1"));
 		assertEquals(date2, parameters.getDate("date.key2"));
 	}
 
-	public void testGetDateParameters() {
+	@org.junit.Test
+public void testGetDateParameters() {
 		assertEquals(date1, parameters.getDateParameters().get("date.key1"));
 		assertEquals(date2, parameters.getDateParameters().get("date.key2"));
 	}
 
-	public void testIsEmptyWhenEmpty() throws Exception {
+	@org.junit.Test
+public void testIsEmptyWhenEmpty() throws Exception {
 		assertTrue(new JobParameters().isEmpty());
 	}
 
-	public void testIsEmptyWhenNotEmpty() throws Exception {
+	@org.junit.Test
+public void testIsEmptyWhenNotEmpty() throws Exception {
 		assertFalse(parameters.isEmpty());
 	}
 
-	public void testEquals() {
+	@org.junit.Test
+public void testEquals() {
 		JobParameters testParameters = getNewParameters();
 		assertTrue(testParameters.equals(parameters));
 	}
 
-	public void testEqualsSelf() {
+	@org.junit.Test
+public void testEqualsSelf() {
 		assertTrue(parameters.equals(parameters));
 	}
 
-	public void testEqualsDifferent() {
+	@org.junit.Test
+public void testEqualsDifferent() {
 		assertFalse(parameters.equals(new JobParameters()));
 	}
 
-	public void testEqualsWrongType() {
+	@org.junit.Test
+public void testEqualsWrongType() {
 		assertFalse(parameters.equals("foo"));
 	}
 
-	public void testEqualsNull() {
+	@org.junit.Test
+public void testEqualsNull() {
 		assertFalse(parameters.equals(null));
 	}
 
-	public void testToStringOrder() {
+	@org.junit.Test
+public void testToStringOrder() {
 
 		Map props = parameters.getParameters();
 		StringBuffer stringBuilder = new StringBuffer();
@@ -238,17 +260,20 @@ public class JobParametersTests extends TestCase {
 		assertEquals(string1, string2);
 	}
 
-	public void testHashCodeEqualWhenEmpty() throws Exception {
+	@org.junit.Test
+public void testHashCodeEqualWhenEmpty() throws Exception {
 		int code = new JobParameters().hashCode();
 		assertEquals(code, new JobParameters().hashCode());
 	}
 
-	public void testHashCodeEqualWhenNotEmpty() throws Exception {
+	@org.junit.Test
+public void testHashCodeEqualWhenNotEmpty() throws Exception {
 		int code = getNewParameters().hashCode();
 		assertEquals(code, parameters.hashCode());
 	}
 	
-	public void testSerialization() {
+	@org.junit.Test
+public void testSerialization() {
 		JobParameters params = getNewParameters();
 		
 		byte[] serialized = SerializationUtils.serialize(params);

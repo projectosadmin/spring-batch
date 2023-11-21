@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.StepListener;
 import org.springframework.batch.core.BatchStatus;
@@ -52,7 +52,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 /**
  * Tests for {@link SimpleStepFactoryBean}.
  */
-public class SimpleStepFactoryBeanTests extends TestCase {
+public class SimpleStepFactoryBeanTests {
 
 	private List recovered = new ArrayList();
 
@@ -75,8 +75,9 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		}
 	};
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		job.setJobRepository(repository);
 		MapJobInstanceDao.clear();
 		MapJobExecutionDao.clear();
@@ -106,7 +107,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		return factory;
 	}
 
-	public void testSimpleJob() throws Exception {
+	@org.junit.Test
+public void testSimpleJob() throws Exception {
 
 		job.setSteps(new ArrayList());
 		AbstractStep step = (AbstractStep) getStepFactory("foo", "bar").getObject();
@@ -124,7 +126,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		assertTrue(written.contains("foo"));
 	}
 
-	public void testSimpleConcurrentJob() throws Exception {
+	@org.junit.Test
+public void testSimpleConcurrentJob() throws Exception {
 
 		job.setSteps(new ArrayList());
 		SimpleStepFactoryBean factory = getStepFactory("foo", "bar");
@@ -143,7 +146,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		assertTrue(written.contains("foo"));
 	}
 
-	public void testSimpleJobWithItemListeners() throws Exception {
+	@org.junit.Test
+public void testSimpleJobWithItemListeners() throws Exception {
 
 		final List throwables = new ArrayList();
 
@@ -193,7 +197,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		assertEquals(3, recovered.size());
 	}
 
-	public void testExceptionTerminates() throws Exception {
+	@org.junit.Test
+public void testExceptionTerminates() throws Exception {
 		SimpleStepFactoryBean factory = getStepFactory(new String[] { "foo", "bar", "spam" });
 		factory.setBeanName("exceptionStep");
 		factory.setItemWriter(new AbstractItemWriter() {
@@ -216,7 +221,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		assertEquals(BatchStatus.FAILED, jobExecution.getStatus());
 	}
 
-	public void testExceptionHandler() throws Exception {
+	@org.junit.Test
+public void testExceptionHandler() throws Exception {
 		SimpleStepFactoryBean factory = getStepFactory(new String[] { "foo", "bar", "spam" });
 		factory.setBeanName("exceptionStep");
 		factory.setExceptionHandler(new SimpleLimitExceptionHandler(1));
@@ -239,7 +245,8 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 	}
 
-	public void testChunkListeners() throws Exception {
+	@org.junit.Test
+public void testChunkListeners() throws Exception {
 		String[] items = new String[] { "1", "2", "3", "4", "5", "6", "7" };
 		int commitInterval = 3;
 
@@ -279,9 +286,10 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 
 	/**
 	 * Commit interval specified is not allowed to be zero or negative.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testCommitIntervalMustBeGreaterThanZero() throws Exception {
+	@org.junit.Test
+public void testCommitIntervalMustBeGreaterThanZero() throws Exception {
 		SimpleStepFactoryBean factory = getStepFactory("foo");
 		// nothing wrong here
 		factory.getObject();
@@ -299,9 +307,10 @@ public class SimpleStepFactoryBeanTests extends TestCase {
 
 	/**
 	 * Commit interval specified is not allowed to be zero or negative.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testCommitIntervalAndCompletionPolicyBothSet() throws Exception {
+	@org.junit.Test
+public void testCommitIntervalAndCompletionPolicyBothSet() throws Exception {
 		SimpleStepFactoryBean factory = getStepFactory("foo");
 
 		// but exception expected after setting commit interval and completion

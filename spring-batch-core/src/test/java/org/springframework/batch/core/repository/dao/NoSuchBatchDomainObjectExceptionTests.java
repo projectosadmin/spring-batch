@@ -17,15 +17,16 @@ package org.springframework.batch.core.repository.dao;
 
 import org.springframework.batch.core.repository.dao.NoSuchObjectException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  *
  */
-public class NoSuchBatchDomainObjectExceptionTests extends TestCase {
+public class NoSuchBatchDomainObjectExceptionTests {
 
-	public void testCreateException() throws Exception {
+	@org.junit.Test
+public void testCreateException() throws Exception {
 		NoSuchObjectException e = new NoSuchObjectException("Foo");
 		assertEquals("Foo", e.getMessage());
 	}

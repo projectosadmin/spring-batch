@@ -98,7 +98,7 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 
 		String exitDescription = truncateExitDescription(stepExecution.getExitStatus().getExitDescription());
 
-		stepExecution.setId(new Long(stepExecutionIncrementer.nextLongValue()));
+		stepExecution.setId(stepExecutionIncrementer.nextLongValue());
 		stepExecution.incrementVersion(); // should be 0 now
 		Object[] parameters = new Object[] { stepExecution.getId(), stepExecution.getVersion(),
 				stepExecution.getStepName(), stepExecution.getJobExecutionId(), stepExecution.getStartTime(),
@@ -118,8 +118,8 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 	 * Validate StepExecution. At a minimum, JobId, StartTime, and Status cannot
 	 * be null. EndTime can be null for an unfinished job.
 	 * 
-	 * @param jobExecution
-	 * @throws IllegalArgumentException
+	 * @param stepExecution stepExecution
+	 * @throws IllegalArgumentException IllegalArgumentException
 	 */
 	private void validateStepExecution(StepExecution stepExecution) {
 		Assert.notNull(stepExecution);
@@ -175,7 +175,8 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 
 			// Avoid concurrent modifications...
 			if (count == 0) {
-				int curentVersion = getJdbcTemplate().queryForInt(getQuery(CURRENT_VERSION_STEP_EXECUTION),
+				int curentVersion = getJdbcTemplate().queryForObject(getQuery(CURRENT_VERSION_STEP_EXECUTION),
+						Integer.class,
 						new Object[] { stepExecution.getId() });
 				throw new OptimisticLockingFailureException("Attempt to update step execution id="
 						+ stepExecution.getId() + " with wrong version (" + stepExecution.getVersion()
@@ -189,7 +190,7 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 
 	/**
 	 * Truncate the exit description if the length exceeds
-	 * {@link #EXIT_MESSAGE_LENGTH}.
+	 * {@link #DEFAULT_EXIT_MESSAGE_LENGTH}.
 	 * @param description the string to truncate
 	 * @return truncated description
 	 */
@@ -203,7 +204,7 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 		}
 	}
 
-	private class StepExecutionRowMapper implements RowMapper {
+	private class StepExecutionRowMapper implements RowMapper<StepExecution> {
 
 		private final JobExecution jobExecution;
 
@@ -214,9 +215,9 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 			this.step = step;
 		}
 
-		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public StepExecution mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-			StepExecution stepExecution = new StepExecution(step.getName(), jobExecution, new Long(rs.getLong(1)));
+			StepExecution stepExecution = new StepExecution(step.getName(), jobExecution, rs.getLong(1));
 			stepExecution.setStartTime(rs.getTimestamp(3));
 			stepExecution.setEndTime(rs.getTimestamp(4));
 			stepExecution.setStatus(BatchStatus.getStatus(rs.getString(5)));
@@ -250,7 +251,7 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 	}
 
 	public StepExecution getStepExecution(JobExecution jobExecution, Step step) {
-		List executions = getJdbcTemplate().query(getQuery(GET_STEP_EXECUTION),
+		List<StepExecution> executions = getJdbcTemplate().query(getQuery(GET_STEP_EXECUTION),
 				new Object[] { step.getName(), jobExecution.getId() }, new StepExecutionRowMapper(jobExecution, step));
 
 		Assert.state(executions.size() <= 1,
@@ -259,7 +260,7 @@ public class JdbcStepExecutionDao extends AbstractJdbcBatchMetadataDao implement
 			return null;
 		}
 		else {
-			return (StepExecution) executions.get(0);
+			return executions.get(0);
 		}
 	}
 

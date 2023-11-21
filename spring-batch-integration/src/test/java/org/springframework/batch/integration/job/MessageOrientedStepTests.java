@@ -72,8 +72,8 @@ public class MessageOrientedStepTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.job.MessageOrientedStep#setRequestChannel(org.springframework.integration.channel.MessageChannel)}.
 	 */
-	@Test
-	public void testSetRequestChannel() {
+	@org.junit.Test
+public void testSetRequestChannel() {
 		Method method = ReflectionUtils.findMethod(MessageOrientedStep.class, "setRequestChannel",
 				new Class<?>[] { MessageChannel.class });
 		assertNotNull(method);
@@ -86,8 +86,8 @@ public class MessageOrientedStepTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.job.MessageOrientedStep#setReplyChannel(org.springframework.integration.channel.MessageChannel)}.
 	 */
-	@Test
-	public void testSetReplyChannel() {
+	@org.junit.Test
+public void testSetReplyChannel() {
 		Method method = ReflectionUtils.findMethod(MessageOrientedStep.class, "setReplyChannel",
 				new Class<?>[] { MessageChannel.class });
 		assertNotNull(method);
@@ -99,10 +99,10 @@ public class MessageOrientedStepTests {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.integration.job.MessageOrientedStep#execute(org.springframework.batch.core.StepExecution)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	@Test
-	public void testExecuteWithTimeout() throws Exception {
+	@org.junit.Test
+public void testExecuteWithTimeout() throws Exception {
 		try {
 			step.setExecutionTimeout(1000);
 			step.setPollingInterval(100);
@@ -116,8 +116,8 @@ public class MessageOrientedStepTests {
 		}
 	}
 
-	@Test
-	public void testVanillaExecute() throws Exception {
+	@org.junit.Test
+public void testVanillaExecute() throws Exception {
 		requestChannel.subscribe(new MessageTarget() {
 			public boolean send(Message<?> message) {
 				JobExecutionRequest jobExecution = (JobExecutionRequest) message.getPayload();
@@ -128,8 +128,8 @@ public class MessageOrientedStepTests {
 		step.execute(jobExecution.createStepExecution(step));
 	}
 
-	@Test
-	public void testExecuteWithFailure() throws Exception {
+	@org.junit.Test
+public void testExecuteWithFailure() throws Exception {
 		requestChannel.subscribe(new MessageTarget() {
 			public boolean send(Message<?> message) {
 				JobExecutionRequest jobExecution = (JobExecutionRequest) message.getPayload();
@@ -148,8 +148,8 @@ public class MessageOrientedStepTests {
 		}
 	}
 
-	@Test
-	public void testExecuteOnRestart() throws Exception {
+	@org.junit.Test
+public void testExecuteOnRestart() throws Exception {
 		JobExecutionRequest jobExecutionRequest = new JobExecutionRequest(jobExecution);
 		jobExecutionRequest.setStatus(BatchStatus.COMPLETED);
 		// Send a message to the reply channel to simulate step that we were

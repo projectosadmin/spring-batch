@@ -35,8 +35,8 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 
 	private JobSupport job = new JobSupport("testJob");
 
-	@Before
-	public void setUp() {
+	@org.junit.Before
+public void setUp() {
 		requestChannel.purge(null);
 		responseChannel.purge(null);
 	}
@@ -44,7 +44,8 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 	@Test
 	@DirtiesContext
 	@SuppressWarnings("unchecked")
-	public void testNoReply() {
+	@org.junit.Test
+public void testNoReply() {
 		GenericMessage<JobLaunchRequest> trigger = new GenericMessage<JobLaunchRequest>(new JobLaunchRequest(job, new JobParameters()));
 		try {
 			requestChannel.send(trigger);
@@ -60,7 +61,8 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	@DirtiesContext
-	public void testReply() {
+	@org.junit.Test
+public void testReply() {
 		JobParametersBuilder builder = new JobParametersBuilder();
 		builder.addString("dontclash", "12");
 		GenericMessage<JobLaunchRequest> trigger = new GenericMessage<JobLaunchRequest>(new JobLaunchRequest(job, builder.toJobParameters()));

@@ -18,7 +18,7 @@ package org.springframework.batch.core.repository.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -31,7 +31,7 @@ import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer
  * @author Dave Syer
  * 
  */
-public class JdbcJobDaoQueryTests extends TestCase {
+public class JdbcJobDaoQueryTests {
 
 	JdbcJobExecutionDao jobExecutionDao;
 
@@ -41,7 +41,8 @@ public class JdbcJobDaoQueryTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		jobExecutionDao = new JdbcJobExecutionDao();
 		jobExecutionDao.setJobExecutionIncrementer(new DataFieldMaxValueIncrementer() {
@@ -61,7 +62,8 @@ public class JdbcJobDaoQueryTests extends TestCase {
 		});
 	}
 
-	public void testTablePrefix() throws Exception {
+	@org.junit.Test
+public void testTablePrefix() throws Exception {
 		jobExecutionDao.setTablePrefix("FOO_");
 		jobExecutionDao.setJdbcTemplate(new JdbcTemplate() {
 			public int update(String sql, Object[] args, int[] argTypes) throws DataAccessException {

@@ -22,7 +22,7 @@ package org.springframework.batch.item.file.transform;
 public class ConversionException extends RuntimeException {
 
 	/**
-	 * @param msg
+	 * @param msg msg
 	 */
 	public ConversionException(String msg) {
 		super(msg);

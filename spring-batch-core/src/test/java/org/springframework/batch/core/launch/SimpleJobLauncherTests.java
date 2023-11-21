@@ -19,7 +19,7 @@ package org.springframework.batch.core.launch;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.core.Job;
@@ -35,7 +35,7 @@ import org.springframework.core.task.TaskExecutor;
  * @author Lucas Ward
  * 
  */
-public class SimpleJobLauncherTests extends TestCase {
+public class SimpleJobLauncherTests {
 
 	private SimpleJobLauncher jobLauncher;
 
@@ -52,8 +52,9 @@ public class SimpleJobLauncherTests extends TestCase {
 
 	private JobRepository jobRepository;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 
 		jobLauncher = new SimpleJobLauncher();
 		jobRepository = (JobRepository) repositoryControl.getMock();
@@ -61,7 +62,8 @@ public class SimpleJobLauncherTests extends TestCase {
 
 	}
 
-	public void testRun() throws Exception {
+	@org.junit.Test
+public void testRun() throws Exception {
 
 		JobExecution jobExecution = new JobExecution(null);
 
@@ -77,7 +79,8 @@ public class SimpleJobLauncherTests extends TestCase {
 		repositoryControl.verify();
 	}
 
-	public void testTaskExecutor() throws Exception {
+	@org.junit.Test
+public void testTaskExecutor() throws Exception {
 		final List list = new ArrayList();
 		jobLauncher.setTaskExecutor(new TaskExecutor() {
 			public void execute(Runnable task) {
@@ -89,7 +92,8 @@ public class SimpleJobLauncherTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testRunWithException() throws Exception {
+	@org.junit.Test
+public void testRunWithException() throws Exception {
 		job = new JobSupport() {
 			public void execute(JobExecution execution) {
 				execution.setExitStatus(ExitStatus.FAILED);
@@ -104,7 +108,8 @@ public class SimpleJobLauncherTests extends TestCase {
 		}
 	}
 
-	public void testRunWithError() throws Exception {
+	@org.junit.Test
+public void testRunWithError() throws Exception {
 		job = new JobSupport() {
 			public void execute(JobExecution execution) {
 				execution.setExitStatus(ExitStatus.FAILED);
@@ -119,7 +124,8 @@ public class SimpleJobLauncherTests extends TestCase {
 		}
 	}
 
-	public void testInitialiseWithoutRepository() throws Exception {
+	@org.junit.Test
+public void testInitialiseWithoutRepository() throws Exception {
 		try {
 			new SimpleJobLauncher().afterPropertiesSet();
 			fail("Expected IllegalArgumentException");
@@ -130,7 +136,8 @@ public class SimpleJobLauncherTests extends TestCase {
 		}
 	}
 
-	public void testInitialiseWithRepository() throws Exception {
+	@org.junit.Test
+public void testInitialiseWithRepository() throws Exception {
 		jobLauncher = new SimpleJobLauncher();
 		jobLauncher.setJobRepository(jobRepository);
 		jobLauncher.afterPropertiesSet(); // no error

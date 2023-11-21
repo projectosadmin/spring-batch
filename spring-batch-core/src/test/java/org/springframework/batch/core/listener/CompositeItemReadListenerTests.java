@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.listener;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.core.ItemReadListener;
@@ -25,22 +25,24 @@ import org.springframework.batch.core.listener.CompositeItemReadListener;
  * @author Lucas Ward
  *
  */
-public class CompositeItemReadListenerTests extends TestCase {
+public class CompositeItemReadListenerTests {
 
 	MockControl listenerControl = MockControl.createControl(ItemReadListener.class);
 	
 	ItemReadListener listener;
 	CompositeItemReadListener compositeListener;
 	
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 	
 		listener = (ItemReadListener)listenerControl.getMock();
 		compositeListener = new CompositeItemReadListener();
 		compositeListener.register(listener);
 	}
 	
-	public void testBeforeRead(){
+	@org.junit.Test
+public void testBeforeRead(){
 		
 		listener.beforeRead();
 		listenerControl.replay();
@@ -48,7 +50,8 @@ public class CompositeItemReadListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 	
-	public void testAfterRead(){
+	@org.junit.Test
+public void testAfterRead(){
 		Object item = new Object();
 		listener.afterRead(item);
 		listenerControl.replay();
@@ -56,7 +59,8 @@ public class CompositeItemReadListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 	
-	public void testOnReadError(){
+	@org.junit.Test
+public void testOnReadError(){
 		
 		Exception ex = new Exception();
 		listener.onReadError(ex);
@@ -65,7 +69,8 @@ public class CompositeItemReadListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 
-	public void testSetListners() throws Exception {
+	@org.junit.Test
+public void testSetListners() throws Exception {
 		compositeListener.setListeners(new ItemReadListener[] {listener});
 		listener.beforeRead();
 		listenerControl.replay();

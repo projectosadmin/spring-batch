@@ -18,14 +18,14 @@ package org.springframework.batch.support;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 /**
  * Unit tests for {@link PropertiesConverter}
  * 
  * @author Robert Kasanicky
  */
-public class PropertiesConverterTests extends TestCase {
+public class PropertiesConverterTests {
 	
 	//convenience attributes for storing results of conversions
 	private Properties props = null;
@@ -34,7 +34,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Check that Properties can be converted to String and back correctly.
 	 */
-	public void testTwoWayRegularConversion() {
+	@org.junit.Test
+public void testTwoWayRegularConversion() {
 		
 		Properties storedProps = new Properties();
 		storedProps.setProperty("key1", "value1");
@@ -48,7 +49,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Check that Properties can be comma delimited.
 	 */
-	public void testRegularConversionWithComma() {
+	@org.junit.Test
+public void testRegularConversionWithComma() {
 		
 		Properties storedProps = new Properties();
 		storedProps.setProperty("key1", "value1");
@@ -62,7 +64,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Check that Properties can be comma delimited with extra whitespace.
 	 */
-	public void testRegularConversionWithCommaAndWhitespace() {
+	@org.junit.Test
+public void testRegularConversionWithCommaAndWhitespace() {
 		
 		Properties storedProps = new Properties();
 		storedProps.setProperty("key1", "value1");
@@ -76,7 +79,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Check that Properties can be newline delimited.
 	 */
-	public void testRegularConversionWithCommaAndNewline() {
+	@org.junit.Test
+public void testRegularConversionWithCommaAndNewline() {
 		
 		Properties storedProps = new Properties();
 		storedProps.setProperty("key1", "value1");
@@ -91,7 +95,8 @@ public class PropertiesConverterTests extends TestCase {
 	 * Converting a String to Properties and back does not return equal String!
 	 * See {@link PropertiesConverter} javadoc for more details.
 	 */
-	public void testInvalidConversion() {
+	@org.junit.Test
+public void testInvalidConversion() {
 		String value = "key=value";
 		string = PropertiesConverter.propertiesToString(PropertiesConverter.stringToProperties(value));
 		assertFalse(value.equals(string));
@@ -100,7 +105,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Null String should be converted to empty Properties
 	 */
-	public void testStringToPropertiesNull() {
+	@org.junit.Test
+public void testStringToPropertiesNull() {
 		props = PropertiesConverter.stringToProperties(null);
 		assertNotNull(props);
 		assertEquals("properties are empty", 0, props.size());
@@ -109,7 +115,8 @@ public class PropertiesConverterTests extends TestCase {
 	/**
 	 * Null or empty properties should be converted to empty String
 	 */
-	public void testPropertiesToStringNull() {
+	@org.junit.Test
+public void testPropertiesToStringNull() {
 		string = PropertiesConverter.propertiesToString(null);
 		assertEquals("", string);
 		

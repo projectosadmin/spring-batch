@@ -106,7 +106,7 @@ public class JobExecution extends Entity {
 	}
 
 	/**
-	 * @param exitStatus
+	 * @param exitStatus exitStatus
 	 */
 	public void setExitStatus(ExitStatus exitStatus) {
 		this.exitStatus = exitStatus;

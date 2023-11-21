@@ -2,7 +2,7 @@ package org.springframework.batch.item.file.transform;
 
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AbstractLineTokenizer}.
@@ -10,12 +10,13 @@ import junit.framework.TestCase;
  * @author Robert Kasanicky
  * @author Dave Syer
  */
-public class CommonLineTokenizerTests extends TestCase {
+public class CommonLineTokenizerTests {
 	
 	/**
 	 * Columns names are considered to be specified if they are not <code>null</code> or empty.
 	 */
-	public void testHasNames() {
+	@org.junit.Test
+public void testHasNames() {
 		AbstractLineTokenizer tokenizer = new AbstractLineTokenizer() {
 			protected List doTokenize(String line) {
 				return null;

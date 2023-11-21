@@ -2,6 +2,8 @@ package org.springframework.batch.item;
 
 import org.springframework.batch.item.sample.Foo;
 
+import static org.junit.Assert.*;
+
 /**
  * Common tests for readers implementing both {@link ItemReader} and
  * {@link ItemStream}. Expected input is five {@link Foo} objects with values 1
@@ -9,102 +11,107 @@ import org.springframework.batch.item.sample.Foo;
  */
 public abstract class CommonItemStreamItemReaderTests extends CommonItemReaderTests {
 
-	protected ExecutionContext executionContext = new ExecutionContext();
+    protected ExecutionContext executionContext = new ExecutionContext();
 
-	/**
-	 * Cast the reader to ItemStream.
-	 */
-	protected ItemStream testedAsStream() {
-		return (ItemStream) tested;
-	}
+    /**
+     * Cast the reader to ItemStream.
+     */
+    protected ItemStream testedAsStream() {
+        return (ItemStream) tested;
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		testedAsStream().open(executionContext);
-	}
+    @org.junit.Before
+    public void setUp() throws Exception {
+        super.setUp();
+        testedAsStream().open(executionContext);
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		testedAsStream().close(executionContext);
-	}
+    @org.junit.After
+    public void tearDown() throws Exception {
 
-	/**
-	 * Restart scenario - read items, update execution context, create new
-	 * reader and restore from restart data - the new input source should
-	 * continue where the old one finished.
-	 */
-	public void testRestart() throws Exception {
+        testedAsStream().close(executionContext);
+    }
 
-		testedAsStream().update(executionContext);
+    /**
+     * Restart scenario - read items, update execution context, create new
+     * reader and restore from restart data - the new input source should
+     * continue where the old one finished.
+     */
+    @org.junit.Test
+    public void testRestart() throws Exception {
 
-		Foo foo1 = (Foo) tested.read();
-		assertEquals(1, foo1.getValue());
+        testedAsStream().update(executionContext);
 
-		Foo foo2 = (Foo) tested.read();
-		assertEquals(2, foo2.getValue());
+        Foo foo1 = (Foo) tested.read();
+        assertEquals(1, foo1.getValue());
 
-		testedAsStream().update(executionContext);
+        Foo foo2 = (Foo) tested.read();
+        assertEquals(2, foo2.getValue());
 
-		// create new input source
-		tested = getItemReader();
+        testedAsStream().update(executionContext);
 
-		testedAsStream().open(executionContext);
+        // create new input source
+        tested = getItemReader();
 
-		Foo fooAfterRestart = (Foo) tested.read();
-		assertEquals(3, fooAfterRestart.getValue());
-	}
+        testedAsStream().open(executionContext);
 
-	/**
-	 * Restart scenario - read items, rollback to last marked position, update
-	 * execution context, create new reader and restore from restart data - the
-	 * new input source should continue where the old one finished.
-	 */
-	public void testResetAndRestart() throws Exception {
+        Foo fooAfterRestart = (Foo) tested.read();
+        assertEquals(3, fooAfterRestart.getValue());
+    }
 
-		testedAsStream().update(executionContext);
+    /**
+     * Restart scenario - read items, rollback to last marked position, update
+     * execution context, create new reader and restore from restart data - the
+     * new input source should continue where the old one finished.
+     */
+    @org.junit.Test
+    public void testResetAndRestart() throws Exception {
 
-		Foo foo1 = (Foo) tested.read();
-		assertEquals(1, foo1.getValue());
+        testedAsStream().update(executionContext);
 
-		Foo foo2 = (Foo) tested.read();
-		assertEquals(2, foo2.getValue());
-		
-		tested.mark();
-		
-		Foo foo3 = (Foo) tested.read();
-		assertEquals(3, foo3.getValue());
-		
-		tested.reset();
+        Foo foo1 = (Foo) tested.read();
+        assertEquals(1, foo1.getValue());
 
-		testedAsStream().update(executionContext);
+        Foo foo2 = (Foo) tested.read();
+        assertEquals(2, foo2.getValue());
 
-		// create new input source
-		tested = getItemReader();
+        tested.mark();
 
-		testedAsStream().open(executionContext);
+        Foo foo3 = (Foo) tested.read();
+        assertEquals(3, foo3.getValue());
 
-		Foo fooAfterRestart = (Foo) tested.read();
-		assertEquals(3, fooAfterRestart.getValue());
-	}
+        tested.reset();
 
-	public void testReopen() throws Exception {
-		testedAsStream().update(executionContext);
+        testedAsStream().update(executionContext);
 
-		Foo foo1 = (Foo) tested.read();
-		assertEquals(1, foo1.getValue());
+        // create new input source
+        tested = getItemReader();
 
-		Foo foo2 = (Foo) tested.read();
-		assertEquals(2, foo2.getValue());
+        testedAsStream().open(executionContext);
 
-		testedAsStream().update(executionContext);
+        Foo fooAfterRestart = (Foo) tested.read();
+        assertEquals(3, fooAfterRestart.getValue());
+    }
 
-		// create new input source
-		testedAsStream().close(executionContext);
+    @org.junit.Test
+    public void testReopen() throws Exception {
+        testedAsStream().update(executionContext);
 
-		testedAsStream().open(executionContext);
+        Foo foo1 = (Foo) tested.read();
+        assertEquals(1, foo1.getValue());
 
-		Foo fooAfterRestart = (Foo) tested.read();
-		assertEquals(3, fooAfterRestart.getValue());
-	}
+        Foo foo2 = (Foo) tested.read();
+        assertEquals(2, foo2.getValue());
+
+        testedAsStream().update(executionContext);
+
+        // create new input source
+        testedAsStream().close(executionContext);
+
+        testedAsStream().open(executionContext);
+
+        Foo fooAfterRestart = (Foo) tested.read();
+        assertEquals(3, fooAfterRestart.getValue());
+    }
 
 }

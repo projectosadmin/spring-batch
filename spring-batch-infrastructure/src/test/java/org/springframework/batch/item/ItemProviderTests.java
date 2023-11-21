@@ -18,10 +18,10 @@ package org.springframework.batch.item;
 
 import org.springframework.batch.item.support.AbstractItemReader;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 
-public class ItemProviderTests extends TestCase {
+public class ItemProviderTests {
 
 	ItemReader provider = new AbstractItemReader() {
 		public Object read() {
@@ -29,7 +29,8 @@ public class ItemProviderTests extends TestCase {
 		}
 	};
 
-	public void testNext() throws Exception {
+	@org.junit.Test
+public void testNext() throws Exception {
 		assertEquals("foo", provider.read());
 	}
 

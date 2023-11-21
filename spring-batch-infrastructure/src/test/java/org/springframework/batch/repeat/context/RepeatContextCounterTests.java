@@ -16,26 +16,29 @@
 
 package org.springframework.batch.repeat.context;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 
-public class RepeatContextCounterTests extends TestCase {
+public class RepeatContextCounterTests {
 	
 	RepeatContext parent = new RepeatContextSupport(null);
 	RepeatContext context = new RepeatContextSupport(parent);
 	
-	public void testAttributeCreated() {
+	@org.junit.Test
+public void testAttributeCreated() {
 		new RepeatContextCounter(context, "FOO");
 		assertTrue(context.hasAttribute("FOO"));
 	}
 	
-	public void testAttributeCreatedWithNullParent() {
+	@org.junit.Test
+public void testAttributeCreatedWithNullParent() {
 		new RepeatContextCounter(parent, "FOO", true);
 		assertTrue(parent.hasAttribute("FOO"));
 	}
 	
-	public void testVanillaIncrement() throws Exception {
+	@org.junit.Test
+public void testVanillaIncrement() throws Exception {
 		RepeatContextCounter counter = new RepeatContextCounter(context, "FOO");
 		assertEquals(0, counter.getCount());
 		counter.increment(1);
@@ -44,13 +47,15 @@ public class RepeatContextCounterTests extends TestCase {
 		assertEquals(3, counter.getCount());
 	}
 	
-	public void testAttributeCreatedInParent() throws Exception {
+	@org.junit.Test
+public void testAttributeCreatedInParent() throws Exception {
 		new RepeatContextCounter(context, "FOO", true);
 		assertFalse(context.hasAttribute("FOO"));		
 		assertTrue(parent.hasAttribute("FOO"));		
 	}
 
-	public void testParentIncrement() throws Exception {
+	@org.junit.Test
+public void testParentIncrement() throws Exception {
 		RepeatContextCounter counter = new RepeatContextCounter(context, "FOO", true);
 		assertEquals(0, counter.getCount());
 		counter.increment(1);

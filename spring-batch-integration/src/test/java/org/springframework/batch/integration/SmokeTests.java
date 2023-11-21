@@ -40,13 +40,13 @@ public class SmokeTests {
 		return result;
 	}
 
-	@Test
-	public void testDummyWithSimpleAssert() throws Exception {
+	@org.junit.Test
+public void testDummyWithSimpleAssert() throws Exception {
 		assertTrue(true);
 	}
 
-	@Test
-	public void testVanillaSendAndReceive() throws Exception {
+	@org.junit.Test
+public void testVanillaSendAndReceive() throws Exception {
 		smokein.send(new GenericMessage<String>("foo"));
 		Message<?> message = smokeout.receive(100);
 		String result = (String) (message == null ? null : message.getPayload());

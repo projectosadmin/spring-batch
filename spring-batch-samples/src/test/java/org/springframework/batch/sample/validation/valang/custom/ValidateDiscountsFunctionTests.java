@@ -8,15 +8,16 @@ import org.springframework.batch.sample.domain.LineItem;
 
 import org.easymock.MockControl;
 import org.springmodules.validation.valang.functions.Function;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ValidateDiscountsFunctionTests extends TestCase {
+public class ValidateDiscountsFunctionTests {
 
 	private ValidateDiscountsFunction function;
 	private MockControl argumentControl;
 	private Function argument;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		argumentControl = MockControl.createControl(Function.class);
 		argument = (Function) argumentControl.getMock();
 
@@ -24,7 +25,8 @@ public class ValidateDiscountsFunctionTests extends TestCase {
 		function = new ValidateDiscountsFunction(new Function[] {argument}, 0, 0);
 	}
 	
-	public void testDiscountPercentageMin() throws Exception {
+	@org.junit.Test
+public void testDiscountPercentageMin() throws Exception {
 	
 		//create line item with correct discount percentage and zero discount amount
 		LineItem item = new LineItem();
@@ -53,7 +55,8 @@ public class ValidateDiscountsFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testDiscountPercentageMax() throws Exception {
+	@org.junit.Test
+public void testDiscountPercentageMax() throws Exception {
 
 		//create line item with correct discount percentage and zero discount amount
 		LineItem item = new LineItem();
@@ -82,7 +85,8 @@ public class ValidateDiscountsFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testDiscountPriceMin() throws Exception {
+	@org.junit.Test
+public void testDiscountPriceMin() throws Exception {
 
 		//create line item with correct discount amount and zero discount percentage
 		LineItem item = new LineItem();
@@ -113,7 +117,8 @@ public class ValidateDiscountsFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testDiscountPriceMax() throws Exception {
+	@org.junit.Test
+public void testDiscountPriceMax() throws Exception {
 
 		//create line item with correct discount amount and zero discount percentage
 		LineItem item = new LineItem();
@@ -144,7 +149,8 @@ public class ValidateDiscountsFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testBothDiscountValuesNonZero() throws Exception {
+	@org.junit.Test
+public void testBothDiscountValuesNonZero() throws Exception {
 
 		//create line item with non-zero discount amount and non-zero discount percentage
 		LineItem item = new LineItem();

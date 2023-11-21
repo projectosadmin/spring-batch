@@ -20,19 +20,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  * 
  */
-public class BatchStatusTests extends TestCase {
+public class BatchStatusTests {
 
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.core.BatchStatus#toString()}.
 	 */
-	public void testToString() {
+	@org.junit.Test
+public void testToString() {
 		assertEquals("FAILED", BatchStatus.FAILED.toString());
 	}
 
@@ -40,7 +41,8 @@ public class BatchStatusTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.BatchStatus#getStatus(java.lang.String)}.
 	 */
-	public void testGetStatus() {
+	@org.junit.Test
+public void testGetStatus() {
 		assertEquals(BatchStatus.FAILED, BatchStatus.getStatus(BatchStatus.FAILED.toString()));
 	}
 
@@ -48,7 +50,8 @@ public class BatchStatusTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.BatchStatus#getStatus(java.lang.String)}.
 	 */
-	public void testGetStatusWrongCode() {
+	@org.junit.Test
+public void testGetStatusWrongCode() {
 		try {
 			BatchStatus.getStatus("foo");
 			fail();
@@ -62,11 +65,13 @@ public class BatchStatusTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.BatchStatus#getStatus(java.lang.String)}.
 	 */
-	public void testGetStatusNullCode() {
+	@org.junit.Test
+public void testGetStatusNullCode() {
 		assertNull(BatchStatus.getStatus(null));
 	}
 
-	public void testSerialization() throws Exception {
+	@org.junit.Test
+public void testSerialization() throws Exception {
 
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(bout);

@@ -19,7 +19,7 @@ package org.springframework.batch.item.file;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -33,14 +33,14 @@ import org.springframework.batch.item.file.transform.LineTokenizer;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-
+import static org.junit.Assert.*;
 /**
  * Tests for {@link FlatFileItemReader} - the fundamental item reading functionality.
  * 
  * @see FlatFileItemReaderAdvancedTests
  * @author Dave Syer
  */
-public class FlatFileItemReaderBasicTests extends TestCase {
+public class FlatFileItemReaderBasicTests {
 
 	// object under test
 	private FlatFileItemReader itemReader = new FlatFileItemReader();
@@ -67,7 +67,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Create inputFile, inject mock/stub dependencies for tested object, initialize the tested object
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		itemReader.setResource(getInputResource(TEST_STRING));
 		itemReader.setLineTokenizer(tokenizer);
@@ -80,7 +81,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Release resources.
 	 */
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		itemReader.close(null);
 	}
 
@@ -91,7 +93,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Regular usage of <code>read</code> method
 	 */
-	public void testRead() throws Exception {
+	@org.junit.Test
+public void testRead() throws Exception {
 		itemReader.open(executionContext);
 		assertEquals("[FlatFileInputTemplate-TestData]", itemReader.read().toString());
 	}
@@ -99,7 +102,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Regular usage of <code>read</code> method
 	 */
-	public void testReadExhausted() throws Exception {
+	@org.junit.Test
+public void testReadExhausted() throws Exception {
 		itemReader.open(executionContext);
 		assertEquals("[FlatFileInputTemplate-TestData]", itemReader.read().toString());
 		assertEquals(null, itemReader.read());
@@ -108,7 +112,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Regular usage of <code>read</code> method
 	 */
-	public void testReadWithTokenizerError() throws Exception {
+	@org.junit.Test
+public void testReadWithTokenizerError() throws Exception {
 		itemReader.setLineTokenizer(new LineTokenizer() {
 			public FieldSet tokenize(String line) {
 				throw new RuntimeException("foo");
@@ -124,7 +129,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 
-	public void testReadWithMapperError() throws Exception {
+	@org.junit.Test
+public void testReadWithMapperError() throws Exception {
 		itemReader.setFieldSetMapper(new FieldSetMapper() {
 			public Object mapLine(FieldSet fs) {
 				throw new RuntimeException("foo");
@@ -141,7 +147,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 
-	public void testReadBeforeOpen() throws Exception {
+	@org.junit.Test
+public void testReadBeforeOpen() throws Exception {
 		itemReader = new FlatFileItemReader();
 		itemReader.setResource(getInputResource(TEST_STRING));
 		itemReader.setFieldSetMapper(fieldSetMapper);
@@ -153,14 +160,16 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 	
-	public void testResourceUnavailableAfterPropertiesSet() throws Exception{
+	@org.junit.Test
+public void testResourceUnavailableAfterPropertiesSet() throws Exception{
 		
 		itemReader.setResource(null);
 		itemReader.afterPropertiesSet();
 		//no exception should be thrown
 	}
 	
-	public void testNullResourceInOpen() throws Exception{
+	@org.junit.Test
+public void testNullResourceInOpen() throws Exception{
 		
 		itemReader.setResource(null);
 		try{
@@ -173,7 +182,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	}
 	
 
-	public void testCloseBeforeOpen() throws Exception {
+	@org.junit.Test
+public void testCloseBeforeOpen() throws Exception {
 		itemReader = new FlatFileItemReader();
 		itemReader.setResource(getInputResource(TEST_STRING));
 		itemReader.setFieldSetMapper(fieldSetMapper);
@@ -183,7 +193,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		assertEquals("[FlatFileInputTemplate-TestData]", itemReader.read().toString());
 	}
 
-	public void testInitializationWithNullResource() throws Exception {
+	@org.junit.Test
+public void testInitializationWithNullResource() throws Exception {
 		itemReader = new FlatFileItemReader();
 		try {
 			itemReader.afterPropertiesSet();
@@ -193,12 +204,14 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 
-	public void testOpenTwiceHasNoEffect() throws Exception {
+	@org.junit.Test
+public void testOpenTwiceHasNoEffect() throws Exception {
 		itemReader.open(executionContext);
 		testRead();
 	}
 
-	public void testSetValidEncoding() throws Exception {
+	@org.junit.Test
+public void testSetValidEncoding() throws Exception {
 		itemReader = new FlatFileItemReader();
 		itemReader.setEncoding("UTF-8");
 		itemReader.setResource(getInputResource(TEST_STRING));
@@ -207,7 +220,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		testRead();
 	}
 
-	public void testSetNullEncoding() throws Exception {
+	@org.junit.Test
+public void testSetNullEncoding() throws Exception {
 		itemReader = new FlatFileItemReader();
 		itemReader.setEncoding(null);
 		itemReader.setResource(getInputResource(TEST_STRING));
@@ -219,7 +233,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 
-	public void testSetInvalidEncoding() throws Exception {
+	@org.junit.Test
+public void testSetInvalidEncoding() throws Exception {
 		itemReader = new FlatFileItemReader();
 		itemReader.setEncoding("foo");
 		itemReader.setResource(getInputResource(TEST_STRING));
@@ -233,17 +248,20 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		}
 	}
 
-	public void testEncoding() throws Exception {
+	@org.junit.Test
+public void testEncoding() throws Exception {
 		itemReader.setEncoding("UTF-8");
 		testRead();
 	}
 
-	public void testRecordSeparator() throws Exception {
+	@org.junit.Test
+public void testRecordSeparator() throws Exception {
 		itemReader.setRecordSeparatorPolicy(new DefaultRecordSeparatorPolicy());
 		testRead();
 	}
 
-	public void testComments() throws Exception {
+	@org.junit.Test
+public void testComments() throws Exception {
 		itemReader.setResource(getInputResource("% Comment\n" + TEST_STRING));
 		itemReader.setComments(new String[] { "%" });
 		testRead();
@@ -252,7 +270,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Header line is skipped and used to setup fieldSet column names.
 	 */
-	public void testColumnNamesInHeader() throws Exception {
+	@org.junit.Test
+public void testColumnNamesInHeader() throws Exception {
 		final String INPUT = "name1|name2\nvalue1|value2\nvalue3|value4";
 
 		itemReader = new FlatFileItemReader();
@@ -275,7 +294,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 	/**
 	 * Header line is skipped and used to setup fieldSet column names.
 	 */
-	public void testLinesToSkip() throws Exception {
+	@org.junit.Test
+public void testLinesToSkip() throws Exception {
 		final String INPUT = "foo bar spam\none two\nthree four";
 
 		itemReader = new FlatFileItemReader();
@@ -295,7 +315,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 		assertEquals("four", fs.readString(1));
 	}
 
-	public void testNonExistantResource() throws Exception {
+	@org.junit.Test
+public void testNonExistantResource() throws Exception {
 
 		Resource resource = new NonExistentResource();
 
@@ -315,7 +336,8 @@ public class FlatFileItemReaderBasicTests extends TestCase {
 
 	}
 
-	public void testRuntimeFileCreation() throws Exception {
+	@org.junit.Test
+public void testRuntimeFileCreation() throws Exception {
 
 		Resource resource = new NonExistentResource();
 

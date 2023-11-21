@@ -32,7 +32,7 @@ public class CompositeItemReadListener implements ItemReadListener {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param itemReadListeners
+	 * @param itemReadListeners itemReadListeners
 	 */
 	public void setListeners(ItemReadListener[] itemReadListeners) {
 		this.listeners.setItems(itemReadListeners);
@@ -41,7 +41,7 @@ public class CompositeItemReadListener implements ItemReadListener {
 	/**
 	 * Register additional listener.
 	 * 
-	 * @param itemReaderListener
+	 * @param itemReaderListener itemReaderListener
 	 */
 	public void register(ItemReadListener itemReaderListener) {
 		listeners.add(itemReaderListener);

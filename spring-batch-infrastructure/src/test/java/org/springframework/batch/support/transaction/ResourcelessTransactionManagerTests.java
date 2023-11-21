@@ -16,7 +16,7 @@
 
 package org.springframework.batch.support.transaction;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -25,13 +25,14 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class ResourcelessTransactionManagerTests extends TestCase {
+public class ResourcelessTransactionManagerTests {
 
 	ResourcelessTransactionManager transactionManager = new ResourcelessTransactionManager();
 
 	int txStatus = Integer.MIN_VALUE;
 
-	public void testCommit() throws Exception {
+	@org.junit.Test
+public void testCommit() throws Exception {
 		new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
@@ -46,7 +47,8 @@ public class ResourcelessTransactionManagerTests extends TestCase {
 		assertEquals(TransactionSynchronization.STATUS_COMMITTED, txStatus);
 	}
 
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		try {
 			new TransactionTemplate(transactionManager).execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {

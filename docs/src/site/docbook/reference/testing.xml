@@ -117,7 +117,8 @@
                             ClassUtils.getShortName(getClass()) + "-context.xml") };
     }
 
-    public void testLaunchJob() throws Exception {
+    @org.junit.Test
+public void testLaunchJob() throws Exception {
       launcher.run(job, jobParameters);
     }
 
@@ -149,7 +150,8 @@
 
     <programlisting>  public abstract class AbstractValidatingBatchLauncherTests extends AbstractBatchLauncherTests {
 
-    public void testLaunchJob() throws Exception {
+    @org.junit.Test
+public void testLaunchJob() throws Exception {
       validatePreConditions();
       super.testLaunchJob();
       validatePostConditions();

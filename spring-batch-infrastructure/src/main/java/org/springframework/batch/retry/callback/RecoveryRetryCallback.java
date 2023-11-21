@@ -84,7 +84,7 @@ public class RecoveryRetryCallback implements RetryCallback {
 	/**
 	 * Setter for injecting optional recovery handler.
 	 * 
-	 * @param recoverer
+	 * @param recoverer recoverer
 	 */
 	public void setRecoveryCallback(RecoveryCallback recoverer) {
 		this.recoverer = recoverer;

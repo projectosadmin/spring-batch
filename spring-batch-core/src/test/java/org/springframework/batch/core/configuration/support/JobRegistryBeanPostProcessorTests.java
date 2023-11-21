@@ -17,7 +17,7 @@ package org.springframework.batch.core.configuration.support;
 
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 import org.springframework.batch.core.configuration.support.MapJobRegistry;
@@ -31,11 +31,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Dave Syer
  * 
  */
-public class JobRegistryBeanPostProcessorTests extends TestCase {
+public class JobRegistryBeanPostProcessorTests {
 
 	private JobRegistryBeanPostProcessor processor = new JobRegistryBeanPostProcessor();
 
-	public void testInitialization() throws Exception {
+	@org.junit.Test
+public void testInitialization() throws Exception {
 		try {
 			processor.afterPropertiesSet();
 			fail("Expected IllegalArgumentException");
@@ -45,19 +46,22 @@ public class JobRegistryBeanPostProcessorTests extends TestCase {
 		}
 	}
 
-	public void testBeforeInitialization() throws Exception {
+	@org.junit.Test
+public void testBeforeInitialization() throws Exception {
 		// should be a no-op
 		assertEquals("foo", processor.postProcessAfterInitialization("foo",
 				"bar"));
 	}
 
-	public void testAfterInitializationWithWrongType() throws Exception {
+	@org.junit.Test
+public void testAfterInitializationWithWrongType() throws Exception {
 		// should be a no-op
 		assertEquals("foo", processor.postProcessAfterInitialization("foo",
 				"bar"));
 	}
 
-	public void testAfterInitializationWithCorrectType() throws Exception {
+	@org.junit.Test
+public void testAfterInitializationWithCorrectType() throws Exception {
 		MapJobRegistry registry = new MapJobRegistry();
 		processor.setJobRegistry(registry);
 		JobSupport configuration = new JobSupport();
@@ -67,7 +71,8 @@ public class JobRegistryBeanPostProcessorTests extends TestCase {
 		assertEquals(configuration, registry.getJob("foo"));
 	}
 
-	public void testAfterInitializationWithDuplicate() throws Exception {
+	@org.junit.Test
+public void testAfterInitializationWithDuplicate() throws Exception {
 		MapJobRegistry registry = new MapJobRegistry();
 		processor.setJobRegistry(registry);
 		JobSupport configuration = new JobSupport();
@@ -82,7 +87,8 @@ public class JobRegistryBeanPostProcessorTests extends TestCase {
 		}
 	}
 
-	public void testUnregisterOnDestroy() throws Exception {
+	@org.junit.Test
+public void testUnregisterOnDestroy() throws Exception {
 		MapJobRegistry registry = new MapJobRegistry();
 		processor.setJobRegistry(registry);
 		JobSupport configuration = new JobSupport();
@@ -98,7 +104,8 @@ public class JobRegistryBeanPostProcessorTests extends TestCase {
 		}
 	}
 
-	public void testExecutionWithApplicationContext() throws Exception {
+	@org.junit.Test
+public void testExecutionWithApplicationContext() throws Exception {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				"test-context.xml", getClass());
 		MapJobRegistry registry = (MapJobRegistry) context

@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.listener;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.core.ItemWriteListener;
@@ -24,22 +24,24 @@ import org.springframework.batch.core.ItemWriteListener;
  * @author Lucas Ward
  *
  */
-public class CompositeItemWriteListenerTests extends TestCase {
+public class CompositeItemWriteListenerTests {
 
 	MockControl listenerControl = MockControl.createControl(ItemWriteListener.class);
 	
 	ItemWriteListener listener;
 	CompositeItemWriteListener compositeListener;
 	
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 	
 		listener = (ItemWriteListener)listenerControl.getMock();
 		compositeListener = new CompositeItemWriteListener();
 		compositeListener.register(listener);
 	}
 	
-	public void testBeforeWrite(){
+	@org.junit.Test
+public void testBeforeWrite(){
 		Object item = new Object();
 		listener.beforeWrite(item);
 		listenerControl.replay();
@@ -47,7 +49,8 @@ public class CompositeItemWriteListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 	
-	public void testAfterWrite(){
+	@org.junit.Test
+public void testAfterWrite(){
 		Object item = new Object();
 		listener.afterWrite(item);
 		listenerControl.replay();
@@ -55,7 +58,8 @@ public class CompositeItemWriteListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 	
-	public void testOnWriteError(){
+	@org.junit.Test
+public void testOnWriteError(){
 		Object item = new Object();
 		Exception ex = new Exception();
 		listener.onWriteError(ex, item);
@@ -64,7 +68,8 @@ public class CompositeItemWriteListenerTests extends TestCase {
 		listenerControl.verify();
 	}
 
-	public void testSetListners() throws Exception {
+	@org.junit.Test
+public void testSetListners() throws Exception {
 		compositeListener.setListeners(new ItemWriteListener[] {listener});
 		Object item = new Object();
 		listener.beforeWrite(item);

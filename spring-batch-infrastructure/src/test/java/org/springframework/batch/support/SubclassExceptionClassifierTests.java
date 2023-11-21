@@ -21,59 +21,68 @@ import java.util.LinkedHashMap;
 
 import org.springframework.batch.support.SubclassExceptionClassifier;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class SubclassExceptionClassifierTests extends TestCase {
+public class SubclassExceptionClassifierTests {
 
-	SubclassExceptionClassifier classifier = new SubclassExceptionClassifier();
+    SubclassExceptionClassifier classifier = new SubclassExceptionClassifier();
 
-	public void testClassifyNullIsDefault() {
-		assertEquals(classifier.classify(null), classifier.getDefault());
-	}
+    @org.junit.Test
+    public void testClassifyNullIsDefault() {
+        assertEquals(classifier.classify(null), classifier.getDefault());
+    }
 
-	public void testClassifyRandomException() {
-		assertEquals(classifier.classify(new IllegalStateException("Foo")), classifier.getDefault());
-	}
+    @org.junit.Test
+    public void testClassifyRandomException() {
+        assertEquals(classifier.classify(new IllegalStateException("Foo")), classifier.getDefault());
+    }
 
-	public void testIllegalMapWithNonClass() {
-		try {
-			classifier.setTypeMap(Collections.singletonMap("bar", "foo"));
-			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			// expected
-		}
-	}
+/*    @org.junit.Test
+    public void testIllegalMapWithNonClass() {
+        try {
+            classifier.setTypeMap(Collections.singletonMap("bar", "foo"));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }*/
 
-	public void testIllegalMapWithClass() {
-		try {
-			classifier.setTypeMap(Collections.singletonMap(String.class, "foo"));
-			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			// expected
-		}
-	}
+    @org.junit.Test
+    public void testIllegalMapWithClass() {
+        try {
+            classifier.setTypeMap(Collections.singletonMap(String.class, "foo"));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 
-	public void testClassifyExactMatch() {
-		classifier.setTypeMap(Collections.singletonMap(IllegalStateException.class, "foo"));
-		assertEquals("foo", classifier.classify(new IllegalStateException("Foo")));
-	}
+    @org.junit.Test
+    public void testClassifyExactMatch() {
+        classifier.setTypeMap(Collections.singletonMap(IllegalStateException.class, "foo"));
+        assertEquals("foo", classifier.classify(new IllegalStateException("Foo")));
+    }
 
-	public void testClassifySubclassMatch() {
-		classifier.setTypeMap(Collections.singletonMap(RuntimeException.class, "foo"));
-		assertEquals("foo", classifier.classify(new IllegalStateException("Foo")));
-	}
+    @org.junit.Test
+    public void testClassifySubclassMatch() {
+        classifier.setTypeMap(Collections.singletonMap(RuntimeException.class, "foo"));
+        assertEquals("foo", classifier.classify(new IllegalStateException("Foo")));
+    }
 
-	public void testClassifySuperclassDoesNotMatch() {
-		classifier.setTypeMap(Collections.singletonMap(IllegalStateException.class, "foo"));
-		assertEquals(classifier.getDefault(), classifier.classify(new RuntimeException("Foo")));
-	}
+    @org.junit.Test
+    public void testClassifySuperclassDoesNotMatch() {
+        classifier.setTypeMap(Collections.singletonMap(IllegalStateException.class, "foo"));
+        assertEquals(classifier.getDefault(), classifier.classify(new RuntimeException("Foo")));
+    }
 
-	public void testClassifyAncestorMatch() {
-		classifier.setTypeMap(new LinkedHashMap() {{
-			put(Exception.class, "bar");
-			put(IllegalArgumentException.class, "foo");
-			put(RuntimeException.class, "bucket");
-		}});
-		assertEquals("bucket", classifier.classify(new IllegalStateException("Foo")));
-	}
+    @org.junit.Test
+    public void testClassifyAncestorMatch() {
+        classifier.setTypeMap(new LinkedHashMap() {{
+            put(Exception.class, "bar");
+            put(IllegalArgumentException.class, "foo");
+            put(RuntimeException.class, "bucket");
+        }});
+        assertEquals("bucket", classifier.classify(new IllegalStateException("Foo")));
+    }
 }

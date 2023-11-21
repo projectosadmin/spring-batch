@@ -20,30 +20,32 @@ import java.util.List;
 
 import javax.management.Notification;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.jmx.export.notification.UnableToSendNotificationException;
 
+import static org.junit.Assert.*;
+
 /**
  * @author Dave Syer
- * 
  */
-public class JobExecutionNotificationPublisherTests extends TestCase {
+public class JobExecutionNotificationPublisherTests {
 
-	JobExecutionNotificationPublisher publisher = new JobExecutionNotificationPublisher();
+    JobExecutionNotificationPublisher publisher = new JobExecutionNotificationPublisher();
 
-	public void testRepeatOperationsOpenUsed() throws Exception {
-		final List list = new ArrayList();
-		publisher.setNotificationPublisher(new NotificationPublisher() {
-			public void sendNotification(Notification notification) throws UnableToSendNotificationException {
-				list.add(notification);
-			}
-		});
-		publisher.onApplicationEvent(new SimpleMessageApplicationEvent(this, "foo"));
-		assertEquals(1, list.size());
-		String message = ((Notification) list.get(0)).getMessage();
-		assertTrue("Message does not contain 'foo': ", message.indexOf("foo") > 0);
-	}
+    @org.junit.Test
+    public void testRepeatOperationsOpenUsed() throws Exception {
+        final List list = new ArrayList();
+        publisher.setNotificationPublisher(new NotificationPublisher() {
+            public void sendNotification(Notification notification) throws UnableToSendNotificationException {
+                list.add(notification);
+            }
+        });
+        publisher.onApplicationEvent(new SimpleMessageApplicationEvent(this, "foo"));
+        assertEquals(1, list.size());
+        String message = ((Notification) list.get(0)).getMessage();
+        assertTrue("Message does not contain 'foo': ", message.indexOf("foo") > 0);
+    }
 
 }

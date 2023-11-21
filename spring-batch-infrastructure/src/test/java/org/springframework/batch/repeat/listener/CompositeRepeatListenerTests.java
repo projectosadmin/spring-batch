@@ -18,7 +18,7 @@ package org.springframework.batch.repeat.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatListener;
@@ -26,64 +26,67 @@ import org.springframework.batch.repeat.context.RepeatContextSupport;
 
 /**
  * @author Dave Syer
- * 
  */
-public class CompositeRepeatListenerTests extends TestCase {
+public class CompositeRepeatListenerTests {
 
-	private CompositeRepeatListener listener = new CompositeRepeatListener();
-	private RepeatContext context = new RepeatContextSupport(null);
+    private CompositeRepeatListener listener = new CompositeRepeatListener();
+    private RepeatContext context = new RepeatContextSupport(null);
 
-	private List list = new ArrayList();
+    private List<Object> list = new ArrayList<>();
 
-	/**
-	 * Test method for {@link CompositeRepeatListener#setListeners(RepeatListener[])}.
-	 */
-	public void testSetListeners() {
-		listener.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
-			public void open(RepeatContext context) {
-				list.add("fail");
-			}
-		}, new RepeatListenerSupport() {
-			public void open(RepeatContext context) {
-				list.add("continue");
-			}
-		} });
-		listener.open(context);
-		assertEquals(2, list.size());
-	}
+    /**
+     * Test method for {@link CompositeRepeatListener#setListeners(RepeatListener[])}.
+     */
+    @org.junit.Test
+    public void testSetListeners() {
+        listener.setListeners(new RepeatListener[]{new RepeatListenerSupport() {
+            public void open(RepeatContext context) {
+                list.add("fail");
+            }
+        }, new RepeatListenerSupport() {
+            public void open(RepeatContext context) {
+                list.add("continue");
+            }
+        }});
+        listener.open(context);
+        assertEquals(2, list.size());
+    }
 
-	/**
-	 * Test method for
-	 * {@link CompositeRepeatListener#register(RepeatListener)}.
-	 */
-	public void testSetListener() {
-		listener.register(new RepeatListenerSupport() {
-			public void before(RepeatContext context) {
-				list.add("fail");
-			}
-		});
-		listener.before(context);
-		assertEquals(1, list.size());
-	}
+    /**
+     * Test method for
+     * {@link CompositeRepeatListener#register(RepeatListener)}.
+     */
+    @org.junit.Test
+    public void testSetListener() {
+        listener.register(new RepeatListenerSupport() {
+            public void before(RepeatContext context) {
+                list.add("fail");
+            }
+        });
+        listener.before(context);
+        assertEquals(1, list.size());
+    }
 
-	public void testClose() {
-		listener.register(new RepeatListenerSupport() {
-			public void close(RepeatContext context) {
-				list.add("foo");
-			}
-		});
-		listener.close(context);
-		assertEquals(1, list.size());
-	}
+    @org.junit.Test
+    public void testClose() {
+        listener.register(new RepeatListenerSupport() {
+            public void close(RepeatContext context) {
+                list.add("foo");
+            }
+        });
+        listener.close(context);
+        assertEquals(1, list.size());
+    }
 
-	public void testOnError() {
-		listener.register(new RepeatListenerSupport() {
-			public void onError(RepeatContext context, Throwable e) {
-				list.add(e);
-			}
-		});
-		listener.onError(context, new RuntimeException("foo"));
-		assertEquals(1, list.size());
-	}
+    @org.junit.Test
+    public void testOnError() {
+        listener.register(new RepeatListenerSupport() {
+            public void onError(RepeatContext context, Throwable e) {
+                list.add(e);
+            }
+        });
+        listener.onError(context, new RuntimeException("foo"));
+        assertEquals(1, list.size());
+    }
 
 }

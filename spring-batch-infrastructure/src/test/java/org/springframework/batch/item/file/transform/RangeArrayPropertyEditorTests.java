@@ -1,13 +1,14 @@
 package org.springframework.batch.item.file.transform;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class RangeArrayPropertyEditorTests extends TestCase {
+public class RangeArrayPropertyEditorTests {
 
 	private Range[] ranges;
 	private RangeArrayPropertyEditor pe;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 
 		ranges = null;
 
@@ -22,7 +23,8 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 		};
 	}
 
-	public void testSetAsText() {
+	@org.junit.Test
+public void testSetAsText() {
 		pe.setAsText("15, 32, 1-10, 33");
 
 		// result should be 15-31, 32-32, 1-10, 33-unbound
@@ -37,7 +39,8 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 		assertFalse(ranges[3].hasMaxValue());
 	}
 
-	public void testSetAsTextWithNoSpaces() {
+	@org.junit.Test
+public void testSetAsTextWithNoSpaces() {
 		pe.setAsText("15,32");
 
 		// result should be 15-31, 32-unbound
@@ -48,14 +51,16 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 		assertFalse(ranges[1].hasMaxValue());
 	}
 
-	public void testGetAsText() {
+	@org.junit.Test
+public void testGetAsText() {
 
 		ranges = new Range[] { new Range(20), new Range(6, 15), new Range(2),
 				new Range(26, 95) };
 		assertEquals("20, 6-15, 2, 26-95", pe.getAsText());
 	}
 
-	public void testValidDisjointRanges() {
+	@org.junit.Test
+public void testValidDisjointRanges() {
 		pe.setForceDisjointRanges(true);
 
 		// test disjoint ranges
@@ -69,7 +74,8 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 
 	}
 
-	public void testInvalidOverlappingRanges() {
+	@org.junit.Test
+public void testInvalidOverlappingRanges() {
 
 		pe.setForceDisjointRanges(true);
 
@@ -82,7 +88,8 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 		}
 	}
 
-	public void testValidOverlappingRanges() {
+	@org.junit.Test
+public void testValidOverlappingRanges() {
 
 		// test joint ranges
 		pe.setAsText("1-10, 5-15");
@@ -94,7 +101,8 @@ public class RangeArrayPropertyEditorTests extends TestCase {
 
 	}
 
-	public void testInvalidInput() {
+	@org.junit.Test
+public void testInvalidInput() {
 
 		try {
 			pe.setAsText("1-5, b");

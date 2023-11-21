@@ -54,7 +54,7 @@ public class DelegatingItemReader extends AbstractItemReader implements Initiali
 
 	/**
 	 * Get the next object from the input source.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 * @see org.springframework.batch.item.ItemReader#read()
 	 */
 	public Object read() throws Exception {
@@ -63,7 +63,7 @@ public class DelegatingItemReader extends AbstractItemReader implements Initiali
 
 	/**
 	 * Setter for input source.
-	 * @param source
+	 * @param source source
 	 */
 	public void setItemReader(ItemReader source) {
 		this.itemReader = source;

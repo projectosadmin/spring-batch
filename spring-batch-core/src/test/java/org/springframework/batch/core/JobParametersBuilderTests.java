@@ -6,19 +6,20 @@ package org.springframework.batch.core;
 import java.util.Date;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Lucas Ward
  *
  */
-public class JobParametersBuilderTests extends TestCase {
+public class JobParametersBuilderTests {
 
 	JobParametersBuilder parametersBuilder = new JobParametersBuilder();
 	
 	Date date = new Date(System.currentTimeMillis());
 	
-	public void testToJobRuntimeParamters(){	
+	@org.junit.Test
+public void testToJobRuntimeParamters(){
 		parametersBuilder.addDate("SCHEDULE_DATE", date);
 		parametersBuilder.addLong("LONG", new Long(1));
 		parametersBuilder.addString("STRING", "string value");
@@ -28,7 +29,8 @@ public class JobParametersBuilderTests extends TestCase {
 		assertEquals("string value", parameters.getString("STRING"));
 	}
 
-	public void testOrderedTypes(){	
+	@org.junit.Test
+public void testOrderedTypes(){
 		parametersBuilder.addDate("SCHEDULE_DATE", date);
 		parametersBuilder.addLong("LONG", new Long(1));
 		parametersBuilder.addString("STRING", "string value");
@@ -38,7 +40,8 @@ public class JobParametersBuilderTests extends TestCase {
 		assertEquals("SCHEDULE_DATE", parameters.next());
 	}
 
-	public void testOrderedStrings(){	
+	@org.junit.Test
+public void testOrderedStrings(){
 		parametersBuilder.addString("foo", "value foo");
 		parametersBuilder.addString("bar", "value bar");
 		parametersBuilder.addString("spam", "value spam");

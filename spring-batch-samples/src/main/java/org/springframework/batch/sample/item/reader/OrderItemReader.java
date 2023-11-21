@@ -55,7 +55,7 @@ public class OrderItemReader extends DelegatingItemReader {
 	private FieldSetMapper shippingMapper;
 
 	/**
-	 * @throws Exception
+	 * @throws Exception Exception
 	 * @see org.springframework.batch.item.ItemReader#read()
 	 */
 	public Object read() throws Exception {

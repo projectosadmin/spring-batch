@@ -19,7 +19,7 @@ package org.springframework.batch.retry.policy;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
@@ -31,7 +31,7 @@ import org.springframework.batch.retry.RetryException;
 import org.springframework.batch.retry.callback.RecoveryRetryCallback;
 import org.springframework.batch.retry.support.RetryTemplate;
 
-public class RecoveryRetryPolicyTests extends TestCase {
+public class RecoveryRetryPolicyTests {
 
 	private RecoveryCallbackRetryPolicy policy = new RecoveryCallbackRetryPolicy();
 
@@ -39,7 +39,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 
 	private List list = new ArrayList();
 
-	public void testOpenSunnyDay() throws Exception {
+	@org.junit.Test
+public void testOpenSunnyDay() throws Exception {
 
 		final StringHolder item = new StringHolder("foo");
 		RetryCallback writer = new RetryCallback() {
@@ -56,7 +57,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertEquals(0, count);
 	}
 
-	public void testOpenWithWrongCallbackType() {
+	@org.junit.Test
+public void testOpenWithWrongCallbackType() {
 		try {
 			policy.open(new RetryCallback() {
 				public Object doWithRetry(RetryContext context) throws Throwable {
@@ -70,7 +72,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		}
 	}
 
-	public void testCanRetry() {
+	@org.junit.Test
+public void testCanRetry() {
 		policy.setDelegate(new AlwaysRetryPolicy());
 
 		RetryContext context = policy.open(new RecoveryRetryCallback("foo", new RetryCallback() {
@@ -85,7 +88,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertTrue(policy.canRetry(context));
 	}
 
-	public void testRegisterThrowable() {
+	@org.junit.Test
+public void testRegisterThrowable() {
 		policy.setDelegate(new NeverRetryPolicy());
 		RetryContext context = policy.open(new RecoveryRetryCallback("foo", new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
@@ -98,7 +102,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testClose() throws Exception {
+	@org.junit.Test
+public void testClose() throws Exception {
 		policy.setDelegate(new NeverRetryPolicy());
 		RetryContext context = policy.open(new RecoveryRetryCallback("foo", new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
@@ -115,7 +120,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testOpenTwice() throws Exception {
+	@org.junit.Test
+public void testOpenTwice() throws Exception {
 		RecoveryRetryCallback callback = new RecoveryRetryCallback("foo", new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
 				count++;
@@ -140,7 +146,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 
 	}
 
-	public void testRecover() throws Exception {
+	@org.junit.Test
+public void testRecover() throws Exception {
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(1));
 		final String input = "foo";
@@ -171,7 +178,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertEquals("foo", list.get(0));
 	}
 
-	public void testRecoverWithParent() throws Exception {
+	@org.junit.Test
+public void testRecoverWithParent() throws Exception {
 		RepeatContext parent = new RepeatContextSupport(null);
 		RepeatSynchronizationManager.register(new RepeatContextSupport(parent));
 		testRecover();
@@ -179,7 +187,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		RepeatSynchronizationManager.clear();
 	}
 
-	public void testRecoverWithTemplate() throws Exception {
+	@org.junit.Test
+public void testRecoverWithTemplate() throws Exception {
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(1));
 		final String input = "foo";
@@ -212,7 +221,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertEquals(input, list.get(0));
 	}
 
-	public void testExhaustedClearsHistoryAfterLastAttempt() throws Exception {
+	@org.junit.Test
+public void testExhaustedClearsHistoryAfterLastAttempt() throws Exception {
 		RecoveryRetryCallback callback = new RecoveryRetryCallback("foo", new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
 				count++;
@@ -238,7 +248,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertTrue(policy.canRetry(context));
 	}
 
-	public void testRetryCount() throws Exception {
+	@org.junit.Test
+public void testRetryCount() throws Exception {
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(1));
 		RetryContext context = policy.open(new RecoveryRetryCallback("foo", new RetryCallback() {
@@ -255,7 +266,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertEquals("foo", context.getLastThrowable().getMessage());
 	}
 
-	public void testRetryCountPreservedBetweenRetries() throws Exception {
+	@org.junit.Test
+public void testRetryCountPreservedBetweenRetries() throws Exception {
 		RecoveryRetryCallback callback = new RecoveryRetryCallback("bar", new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
 				count++;
@@ -275,7 +287,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		assertEquals(2, context.getRetryCount());
 	}
 
-	public void testKeyGeneratorNotConsistentAfterFailure() throws Throwable {
+	@org.junit.Test
+public void testKeyGeneratorNotConsistentAfterFailure() throws Throwable {
 
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(3));
@@ -313,7 +326,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 
 	}
 
-	public void testCacheCapacity() throws Exception {
+	@org.junit.Test
+public void testCacheCapacity() throws Exception {
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(1));
 		policy.setRetryContextCache(new MapRetryContextCache(1));
@@ -342,7 +356,8 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		}
 	}
 
-	public void testCacheCapacityNotReachedIfRecovered() throws Exception {
+	@org.junit.Test
+public void testCacheCapacityNotReachedIfRecovered() throws Exception {
 		policy = new RecoveryCallbackRetryPolicy();
 		policy.setDelegate(new SimpleRetryPolicy(1));
 		policy.setRetryContextCache(new MapRetryContextCache(2));
@@ -374,7 +389,7 @@ public class RecoveryRetryPolicyTests extends TestCase {
 		private String string;
 
 		/**
-		 * @param string
+		 * @param string string
 		 */
 		public StringHolder(String string) {
 			this.string = string;

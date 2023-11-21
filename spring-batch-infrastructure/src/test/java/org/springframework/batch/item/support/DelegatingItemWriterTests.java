@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.item.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemWriter;
@@ -25,7 +25,7 @@ import org.springframework.batch.item.support.DelegatingItemWriter;
  * @author Lucas Ward
  *
  */
-public class DelegatingItemWriterTests extends TestCase {
+public class DelegatingItemWriterTests {
 
 	MockControl writerControl = MockControl.createControl(ItemWriter.class);
 	ItemWriter itemWriter;
@@ -34,29 +34,33 @@ public class DelegatingItemWriterTests extends TestCase {
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		
 		itemWriter = (ItemWriter)writerControl.getMock();
 		delegatingWriter = new DelegatingItemWriter();
 		delegatingWriter.setDelegate(itemWriter);
 	}
 
-	public void testFlush() throws Exception{
+	@org.junit.Test
+public void testFlush() throws Exception{
 		itemWriter.flush();
 		writerControl.replay();
 		delegatingWriter.flush();
 		writerControl.verify();
 	}
 	
-	public void testClear() throws Exception{
+	@org.junit.Test
+public void testClear() throws Exception{
 		itemWriter.clear();
 		writerControl.replay();
 		delegatingWriter.clear();
 		writerControl.verify();
 	}
 	
-	public void testCreation() throws Exception{
+	@org.junit.Test
+public void testCreation() throws Exception{
 		try{
 			delegatingWriter.setDelegate(null);
 			delegatingWriter.afterPropertiesSet();
@@ -67,7 +71,8 @@ public class DelegatingItemWriterTests extends TestCase {
 		}
 	}
 	
-	public void testWrite() throws Exception{
+	@org.junit.Test
+public void testWrite() throws Exception{
 		
 		ProcessingWriter writer = new ProcessingWriter();
 		writer.setDelegate(itemWriter);

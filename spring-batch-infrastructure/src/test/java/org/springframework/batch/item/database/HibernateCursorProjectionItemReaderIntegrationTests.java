@@ -2,21 +2,26 @@ package org.springframework.batch.item.database;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.junit.Before;
+import org.springframework.batch.AbstractDaoTest;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.test.context.ContextConfiguration;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 /**
  * Tests for {@link HibernateCursorItemReader} using {@link StatelessSession}.
  * 
  * @author Robert Kasanicky
  */
-public class HibernateCursorProjectionItemReaderIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("/org/springframework/batch/item/database/data-source-context.xml")
+public class HibernateCursorProjectionItemReaderIntegrationTests extends AbstractDaoTest {
 
 	protected ItemReader reader;
 	protected ExecutionContext executionContext;
@@ -29,8 +34,9 @@ public class HibernateCursorProjectionItemReaderIntegrationTests extends Abstrac
 	 * (non-Javadoc)
 	 * @see org.springframework.test.AbstractTransactionalSpringContextTests#onSetUpInTransaction()
 	 */
-	protected void onSetUpInTransaction() throws Exception {
-		super.onSetUpInTransaction();
+	@Before
+	public void onSetUpInTransaction() throws Exception {
+
 		reader = createItemReader();
 		executionContext = new ExecutionContext();
 	}
@@ -55,7 +61,8 @@ public class HibernateCursorProjectionItemReaderIntegrationTests extends Abstrac
 		return inputSource;
 	}
 
-	public void testNormalProcessing() throws Exception {	
+	@org.junit.Test
+public void testNormalProcessing() throws Exception {	
 		((InitializingBean) reader).afterPropertiesSet();
 		((ItemStream) reader).open(new ExecutionContext());
 		Object[] foo1 = (Object[]) reader.read();

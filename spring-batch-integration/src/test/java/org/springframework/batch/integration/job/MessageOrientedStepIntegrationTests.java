@@ -42,8 +42,8 @@ public class MessageOrientedStepIntegrationTests {
 	@Autowired
 	private JobLocator jobLocator;
 
-	@Test
-	public void testLaunchJob() throws Exception {
+	@org.junit.Test
+public void testLaunchJob() throws Exception {
 		JobExecution jobExecution = jobLauncher.run(jobLocator.getJob("job"), new JobParameters());
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 	}

@@ -31,7 +31,7 @@ class EventSequence {
 	/**
 	 * Adds event to the list of stored events.
 	 * 
-	 * @param event
+	 * @param event event
 	 */
 	public void addEvent(XMLEvent event) {
 		events.add(event);

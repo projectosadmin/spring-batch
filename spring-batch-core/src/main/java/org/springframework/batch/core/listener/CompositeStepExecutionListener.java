@@ -34,7 +34,7 @@ public class CompositeStepExecutionListener implements StepExecutionListener {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setListeners(StepExecutionListener[] listeners) {
 		list.setItems(listeners);
@@ -43,7 +43,7 @@ public class CompositeStepExecutionListener implements StepExecutionListener {
 	/**
 	 * Register additional listener.
 	 * 
-	 * @param stepExecutionListener
+	 * @param stepExecutionListener stepExecutionListener
 	 */
 	public void register(StepExecutionListener stepExecutionListener) {
 		list.add(stepExecutionListener);

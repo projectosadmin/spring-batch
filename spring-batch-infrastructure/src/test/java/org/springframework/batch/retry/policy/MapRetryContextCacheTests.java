@@ -16,21 +16,23 @@
 
 package org.springframework.batch.retry.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.context.RetryContextSupport;
 
-public class MapRetryContextCacheTests extends TestCase {
+public class MapRetryContextCacheTests {
 
 	MapRetryContextCache cache = new MapRetryContextCache();
 
-	public void testPut() {
+	@org.junit.Test
+public void testPut() {
 		RetryContextSupport context = new RetryContextSupport(null);
 		cache.put("foo", context);
 		assertEquals(context, cache.get("foo"));
 	}
 
-	public void testRemove() {
+	@org.junit.Test
+public void testRemove() {
 		assertFalse(cache.containsKey("foo"));
 		RetryContextSupport context = new RetryContextSupport(null);
 		cache.put("foo", context);

@@ -22,9 +22,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
+import org.junit.After;
+import org.junit.Before;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.repeat.support.RepeatSynchronizationManager;
@@ -34,12 +36,12 @@ import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
+import static org.junit.Assert.*;
 /**
  * @author Dave Syer
  * 
  */
-public class BatchSqlUpdateItemWriterTests extends TestCase {
+public class BatchSqlUpdateItemWriterTests {
 
 	private BatchSqlUpdateItemWriter writer = new BatchSqlUpdateItemWriter();
 
@@ -57,7 +59,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	@org.junit.Before
+public void setUp() throws Exception {
 		ps = (PreparedStatement) control.getMock();
 		jdbcTemplate = new JdbcTemplate() {
 			public Object execute(String sql, PreparedStatementCallback action) throws DataAccessException {
@@ -86,7 +89,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#tearDown()
 	 */
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		if (TransactionSynchronizationManager.hasResource(writer.getResourceKey())) {
 			TransactionSynchronizationManager.unbindResource(writer.getResourceKey());
 		}
@@ -96,9 +100,10 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#afterPropertiesSet()}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		try {
 			writer.afterPropertiesSet();
 		}
@@ -112,9 +117,10 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#write(java.lang.Object)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWrite() throws Exception {
+	@org.junit.Test
+public void testWrite() throws Exception {
 		writer.setSql("foo");
 		writer.write("bar");
 		// Nothing happens till we flush
@@ -125,7 +131,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#clear()}.
 	 */
-	public void testClear() {
+	@org.junit.Test
+public void testClear() {
 		assertTrue(TransactionSynchronizationManager.hasResource(writer.getResourceKey()));
 		writer.clear();
 		assertFalse(TransactionSynchronizationManager.hasResource(writer.getResourceKey()));
@@ -136,7 +143,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#flush()}.
 	 * @throws SQLException 
 	 */
-	public void testFlush() throws SQLException {
+	@org.junit.Test
+public void testFlush() throws SQLException {
 		assertTrue(TransactionSynchronizationManager.hasResource(writer.getResourceKey()));
 		ps.addBatch(); // there is one item in the buffer to start
 		control.setVoidCallable();
@@ -151,9 +159,10 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#flush()}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteAndFlush() throws Exception {
+	@org.junit.Test
+public void testWriteAndFlush() throws Exception {
 		assertTrue(TransactionSynchronizationManager.hasResource(writer.getResourceKey()));
 		ps.addBatch();
 		control.setVoidCallable(2);
@@ -169,9 +178,10 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.database.BatchSqlUpdateItemWriter#flush()}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteAndFlushWithEmptyUpdate() throws Exception {
+	@org.junit.Test
+public void testWriteAndFlushWithEmptyUpdate() throws Exception {
 		assertTrue(TransactionSynchronizationManager.hasResource(writer.getResourceKey()));
 		ps.addBatch();
 		control.setVoidCallable(2);
@@ -191,7 +201,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 		assertTrue(list.contains("SQL"));
 	}
 
-	public void testWriteAndFlushWithFailure() throws Exception {
+	@org.junit.Test
+public void testWriteAndFlushWithFailure() throws Exception {
 		final RuntimeException ex = new RuntimeException("bar");
 		writer.setItemPreparedStatementSetter(new ItemPreparedStatementSetter() {
 			public void setValues(Object item, PreparedStatement ps) throws SQLException {
@@ -230,7 +241,8 @@ public class BatchSqlUpdateItemWriterTests extends TestCase {
 	/**
 	 * Flushing without writing items previously should be handled gracefully.
 	 */
-	public void testEmptyFlush() {
+	@org.junit.Test
+public void testEmptyFlush() {
 		// items are bound on write, so we unbind them first
 		TransactionSynchronizationManager.unbindResource(writer.getResourceKey());
 		writer.flush();

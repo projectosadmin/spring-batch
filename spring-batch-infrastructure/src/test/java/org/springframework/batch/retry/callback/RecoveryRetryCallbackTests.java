@@ -19,7 +19,7 @@ package org.springframework.batch.retry.callback;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryCallback;
 import org.springframework.batch.retry.RetryContext;
@@ -30,7 +30,7 @@ import org.springframework.batch.retry.context.RetryContextSupport;
 import org.springframework.batch.retry.policy.NeverRetryPolicy;
 import org.springframework.batch.retry.support.RetryTemplate;
 
-public class RecoveryRetryCallbackTests extends TestCase {
+public class RecoveryRetryCallbackTests {
 
 	List calls = new ArrayList();
 
@@ -42,8 +42,9 @@ public class RecoveryRetryCallbackTests extends TestCase {
 
 	RecoveryRetryCallback callback;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		template = new RetryTemplate();
 		recoverer = new StubItemKeyGeneratorRecoverer() {
 			public Object recover(Object data, Throwable cause) {
@@ -64,12 +65,14 @@ public class RecoveryRetryCallbackTests extends TestCase {
 		});
 	}
 
-	public void testDoWithRetrySuccessfulFirstTime() throws Exception {
+	@org.junit.Test
+public void testDoWithRetrySuccessfulFirstTime() throws Exception {
 		template.execute(callback);
 		assertEquals(1, count);
 	}
 
-	public void testContextInitializedWithItemAndCanRetry() throws Exception {
+	@org.junit.Test
+public void testContextInitializedWithItemAndCanRetry() throws Exception {
 		// We can use the policy to intercept the context and do something with
 		// the item...
 		callback = new RecoveryRetryCallback("bar", new RetryCallback() {
@@ -105,7 +108,8 @@ public class RecoveryRetryCallbackTests extends TestCase {
 		assertEquals("item(1)=bar", calls.get(1));
 	}
 
-	public void testContextInitializedWithItemAndRegisterThrowable() throws Exception {
+	@org.junit.Test
+public void testContextInitializedWithItemAndRegisterThrowable() throws Exception {
 		// We can use the policy to intercept the context and do something with
 		// the item...
 		callback = new RecoveryRetryCallback("bar", new RetryCallback() {
@@ -137,7 +141,8 @@ public class RecoveryRetryCallbackTests extends TestCase {
 		assertEquals("item=bar", calls.get(0));
 	}
 
-	public void testContextMarkedExhausted() throws Exception {
+	@org.junit.Test
+public void testContextMarkedExhausted() throws Exception {
 		RetryContext context = new RetryContextSupport(null);
 		context.setExhaustedOnly();
 		try {
@@ -148,12 +153,14 @@ public class RecoveryRetryCallbackTests extends TestCase {
 		}
 	}
 
-	public void testGetKey() throws Exception {
+	@org.junit.Test
+public void testGetKey() throws Exception {
 		callback = new RecoveryRetryCallback("foo", null, "key0");
 		assertEquals("key0", callback.getKey());
 	}
 
-	public void testRecoverWithoutSession() throws Exception {
+	@org.junit.Test
+public void testRecoverWithoutSession() throws Exception {
 		recoverer.recover("foo", null);
 		assertEquals(1, count);
 		assertEquals(1, calls.size());

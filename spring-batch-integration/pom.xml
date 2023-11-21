@@ -2,20 +2,22 @@
   <parent>
     <artifactId>spring-batch</artifactId>
     <groupId>org.springframework.batch</groupId>
-    <version>1.1.4.RELEASE</version>
+    <version>1.1.5</version>
     <relativePath>..</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>spring-batch-integration</artifactId>
-  <version>1.1.4.RELEASE</version>
+  <version>1.1.5</version>
   <name>Enterprise Integration</name>
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.0</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
@@ -78,7 +80,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.4</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>

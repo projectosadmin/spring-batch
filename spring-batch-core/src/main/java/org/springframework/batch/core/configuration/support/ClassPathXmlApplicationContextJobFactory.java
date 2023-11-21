@@ -88,8 +88,8 @@ public class ClassPathXmlApplicationContextJobFactory implements JobFactory {
 		private ConfigurableApplicationContext context;
 
 		/**
-		 * @param delegate
-		 * @param context
+		 * @param delegate delegate
+		 * @param context context
 		 */
 		public ContextClosingJob(Job delegate, ConfigurableApplicationContext context) {
 			super();
@@ -98,8 +98,8 @@ public class ClassPathXmlApplicationContextJobFactory implements JobFactory {
 		}
 
 		/**
-		 * @param execution
-		 * @throws JobExecutionException
+		 * @param execution execution
+		 * @throws JobExecutionException JobExecutionException
 		 * @see org.springframework.batch.core.Job#execute(org.springframework.batch.core.JobExecution)
 		 */
 		public void execute(JobExecution execution) throws JobExecutionException {

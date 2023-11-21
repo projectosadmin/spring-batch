@@ -39,7 +39,7 @@ public abstract class AbstractLineTokenizer implements LineTokenizer {
 	 * Setter for column names. Optional, but if set, then all lines must have
 	 * as many or fewer tokens.
 	 * 
-	 * @param names
+	 * @param names names
 	 */
 	public void setNames(String[] names) {
 		this.names = names;

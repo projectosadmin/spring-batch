@@ -51,8 +51,8 @@ public class StepExecutionMessageHandlerTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.job.StepExecutionMessageHandler#setStep(org.springframework.batch.core.Step)}.
 	 */
-	@Test
-	public void testSetStep() {
+	@org.junit.Test
+public void testSetStep() {
 		Method method = ReflectionUtils.findMethod(StepExecutionMessageHandler.class, "setStep",
 				new Class<?>[] { Step.class });
 		assertNotNull(method);
@@ -65,8 +65,8 @@ public class StepExecutionMessageHandlerTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.job.StepExecutionMessageHandler#setJobRepository(org.springframework.batch.core.repository.JobRepository)}.
 	 */
-	@Test
-	public void testSetJobRepository() {
+	@org.junit.Test
+public void testSetJobRepository() {
 		Method method = ReflectionUtils.findMethod(StepExecutionMessageHandler.class, "setJobRepository",
 				new Class<?>[] { JobRepository.class });
 		assertNotNull(method);
@@ -76,8 +76,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testVanillaHandle() throws Exception {
+	@org.junit.Test
+public void testVanillaHandle() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport();
 		StepExecutionMessageHandler handler = createHandler(jobRepository);
 		JobExecutionRequest message = handler.handle(new JobExecutionRequest(jobRepository.createJobExecution(
@@ -87,8 +87,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleWithInputs() throws Exception {
+	@org.junit.Test
+public void testHandleWithInputs() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport();
 		StepExecutionMessageHandler handler = createHandler(jobRepository);
 		JobExecutionRequest jobExecutionRequest = new JobExecutionRequest(jobRepository.createJobExecution(
@@ -101,8 +101,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleWithInputsAndOutputs() throws Exception {
+	@org.junit.Test
+public void testHandleWithInputsAndOutputs() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport();
 		StepExecutionMessageHandler handler = createHandler(jobRepository);
 		JobExecutionRequest jobExecutionRequest = new JobExecutionRequest(jobRepository.createJobExecution(
@@ -122,8 +122,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleFailedJob() throws Exception {
+	@org.junit.Test
+public void testHandleFailedJob() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport();
 		StepExecutionMessageHandler handler = createHandler(jobRepository);
 		JobExecution jobExecution = jobRepository.createJobExecution(new JobSupport("job"), new JobParameters());
@@ -133,8 +133,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleRestart() throws Exception {
+	@org.junit.Test
+public void testHandleRestart() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport() {
 			@Override
 			public StepExecution getLastStepExecution(JobInstance jobInstance, Step step) {
@@ -165,8 +165,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleRestartAlreadyComplete() throws Exception {
+	@org.junit.Test
+public void testHandleRestartAlreadyComplete() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport() {
 			@Override
 			public StepExecution getLastStepExecution(JobInstance jobInstance, Step step) {
@@ -190,8 +190,8 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testHandleRestartStartLimitExceeded() throws Exception {
+	@org.junit.Test
+public void testHandleRestartStartLimitExceeded() throws Exception {
 		JobRepositorySupport jobRepository = new JobRepositorySupport() {
 			@Override
 			public StepExecution getLastStepExecution(JobInstance jobInstance, Step step) {
@@ -219,7 +219,7 @@ public class StepExecutionMessageHandlerTests {
 	}
 
 	/**
-	 * @param jobRepository
+	 * @param jobRepository jobRepository
 	 * @return a handler for step executions
 	 * 
 	 */

@@ -18,7 +18,7 @@ package org.springframework.batch.item.file;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.mapping.DefaultFieldSet;
@@ -29,13 +29,13 @@ import org.springframework.batch.item.file.transform.LineTokenizer;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
-
+import static org.junit.Assert.*;
 /**
  * Tests for {@link FlatFileItemReader} - skip and restart functionality.
  * 
  * @see FlatFileItemReaderBasicTests
  */
-public class FlatFileItemReaderAdvancedTests extends TestCase {
+public class FlatFileItemReaderAdvancedTests {
 
 	// object under test
 	private FlatFileItemReader reader = new FlatFileItemReader();
@@ -62,7 +62,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 	 * Create inputFile, inject mock/stub dependencies for tested object,
 	 * initialize the tested object
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		reader.setResource(getInputResource(TEST_STRING));
 		reader.setLineTokenizer(tokenizer);
@@ -76,7 +77,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 	/**
 	 * Release resources and delete the temporary file
 	 */
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		reader.close(null);
 	}
 
@@ -87,9 +89,10 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 	/**
 	 * Test rollback functionality
 	 * 
-	 * @throws IOException
+	 * @throws IOException IOException
 	 */
-	public void testReset() throws Exception {
+	@org.junit.Test
+public void testReset() throws Exception {
 
 		reader.close(null);
 		reader.setResource(getInputResource("testLine1\ntestLine2\ntestLine3\ntestLine4\ntestLine5\ntestLine6"));
@@ -113,9 +116,10 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 	/**
 	 * Test skip and skipRollback functionality
 	 * 
-	 * @throws IOException
+	 * @throws IOException IOException
 	 */
-	public void testFailOnFirstChunk() throws Exception {
+	@org.junit.Test
+public void testFailOnFirstChunk() throws Exception {
 
 		reader.close(null);
 		reader.setResource(getInputResource("testLine1\ntestLine2\ntestLine3\ntestLine4\ntestLine5\ntestLine6"));
@@ -136,7 +140,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 
 	}
 
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 
 		reader.close(null);
 		reader.setResource(getInputResource("testLine1\ntestLine2\ntestLine3\ntestLine4\ntestLine5\ntestLine6"));
@@ -170,7 +175,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 		assertEquals(6, executionContext.getLong(ClassUtils.getShortName(FlatFileItemReader.class) + ".read.count"));
 	}
 
-	public void testRestartWithCustomRecordSeparatorPolicy() throws Exception {
+	@org.junit.Test
+public void testRestartWithCustomRecordSeparatorPolicy() throws Exception {
 		reader.setResource(getInputResource("testLine1\ntestLine2\ntestLine3\ntestLine4\ntestLine5\ntestLine6"));
 		reader.setRecordSeparatorPolicy(new RecordSeparatorPolicy() {
 			// 1 record = 2 lines
@@ -205,7 +211,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 		assertEquals("[testLine5testLine6]", reader.read().toString());
 	}
 
-	public void testRestartWithHeader() throws Exception {
+	@org.junit.Test
+public void testRestartWithHeader() throws Exception {
 
 		reader.close(null);
 		reader
@@ -242,7 +249,8 @@ public class FlatFileItemReaderAdvancedTests extends TestCase {
 		assertEquals(6, executionContext.getLong(ClassUtils.getShortName(FlatFileItemReader.class) + ".read.count"));
 	}
 
-	public void testRestartWithSkippedLines() throws Exception {
+	@org.junit.Test
+public void testRestartWithSkippedLines() throws Exception {
 
 		reader.close(null);
 		reader

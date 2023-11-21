@@ -16,7 +16,7 @@
 
 package org.springframework.batch.sample;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 
 /**
  * Abstract TestCase that automatically starts a Spring (@link Lifecycle) after
@@ -29,12 +29,16 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
  */
 public abstract class AbstractValidatingBatchLauncherTests extends AbstractBatchLauncherTests {
 
-	public void testLaunchJob() throws Exception {
+	@org.junit.Test
+public void testLaunchJob() throws Exception {
 		validatePreConditions();
 		super.testLaunchJob();
 		validatePostConditions();
 	}
 
+	public void onTearDown() throws Exception{
+
+	}
 	/**
 	 * Make sure input data meets expectations
 	 */

@@ -31,8 +31,8 @@ public class JobLaunchRequest {
 	private final JobParameters jobParameters;
 
 	/**
-	 * @param job
-	 * @param jobParameters
+	 * @param job job
+	 * @param jobParameters jobParameters
 	 */
 	public JobLaunchRequest(Job job, JobParameters jobParameters) {
 		super();

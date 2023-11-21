@@ -1,13 +1,18 @@
 package org.springframework.batch.item.database;
 
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.batch.AbstractDaoTest;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-import org.springframework.util.Assert;
+import static org.junit.Assert.*;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.Assert;
+import static org.junit.Assert.*;
 /**
  * Common scenarios for testing {@link ItemReader} implementations which read
  * data from database.
@@ -15,8 +20,8 @@ import org.springframework.util.Assert;
  * @author Lucas Ward
  * @author Robert Kasanicky
  */
-public abstract class AbstractDataSourceItemReaderIntegrationTests extends
-		AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("/org/springframework/batch/item/database/data-source-context.xml")
+public abstract class AbstractDataSourceItemReaderIntegrationTests extends AbstractDaoTest {
 
 	protected ItemReader reader;
 	protected ExecutionContext executionContext;
@@ -34,8 +39,9 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	 * (non-Javadoc)
 	 * @see org.springframework.test.AbstractTransactionalSpringContextTests#onSetUpInTransaction()
 	 */
-	protected void onSetUpInTransaction() throws Exception {
-		super.onSetUpInTransaction();
+	@Before
+	public void onSetUpInTransaction() throws Exception {
+
 		reader = createItemReader();
 		executionContext = new ExecutionContext();
 	}
@@ -44,15 +50,17 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	 * (non-Javadoc)
 	 * @see org.springframework.test.AbstractTransactionalSpringContextTests#onTearDownAfterTransaction()
 	 */
-	protected void onTearDownAfterTransaction() throws Exception {
+	@After
+	public void onTearDownAfterTransaction() throws Exception {
 		getAsItemStream(reader).close(null);
-		super.onTearDownAfterTransaction();
+
 	}
 
 	/**
 	 * Regular scenario - read all rows and eventually return null.
 	 */
-	public void testNormalProcessing() throws Exception {
+	@org.junit.Test
+public void testNormalProcessing() throws Exception {
 		getAsInitializingBean(reader).afterPropertiesSet();
 		getAsItemStream(reader).open(executionContext);
 		
@@ -79,7 +87,8 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	 * source and restore from restart data - the new input source should
 	 * continue where the old one finished.
 	 */
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 
 		getAsItemStream(reader).open(executionContext);
 		
@@ -103,7 +112,8 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	/**
 	 * Reading from an input source and then trying to restore causes an error.
 	 */
-	public void testInvalidRestore() throws Exception {
+	@org.junit.Test
+public void testInvalidRestore() throws Exception {
 
 		getAsItemStream(reader).open(executionContext);
 		
@@ -133,9 +143,10 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 
 	/**
 	 * Empty restart data should be handled gracefully.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRestoreFromEmptyData() throws Exception {
+	@org.junit.Test
+public void testRestoreFromEmptyData() throws Exception {
 		getAsItemStream(reader).open(executionContext);
 
 		Foo foo = (Foo) reader.read();
@@ -144,9 +155,10 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 
 	/**
 	 * Rollback scenario - input source rollbacks to last commit point.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		getAsItemStream(reader).open(executionContext);
 		
 		Foo foo1 = (Foo) reader.read();
@@ -167,9 +179,10 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	/**
 	 * Rollback scenario with restart - input source rollbacks to last
 	 * commit point.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRollbackAndRestart() throws Exception {
+	@org.junit.Test
+public void testRollbackAndRestart() throws Exception {
 
 		getAsItemStream(reader).open(executionContext);
 		
@@ -199,9 +212,10 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 	/**
 	 * Rollback scenario with restart - input source rollbacks to last
 	 * commit point.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRollbackOnFirstChunkAndRestart() throws Exception {
+	@org.junit.Test
+public void testRollbackOnFirstChunkAndRestart() throws Exception {
 
 		getAsItemStream(reader).open(executionContext);
 		
@@ -226,7 +240,8 @@ public abstract class AbstractDataSourceItemReaderIntegrationTests extends
 		assertEquals(foo2, reader.read());
 	}
 	
-	public void testMultipleRestarts() throws Exception {
+	@org.junit.Test
+public void testMultipleRestarts() throws Exception {
 		
 		getAsItemStream(reader).open(executionContext);
 		

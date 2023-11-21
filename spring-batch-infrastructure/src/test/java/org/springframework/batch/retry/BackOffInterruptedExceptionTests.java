@@ -28,7 +28,8 @@ public class BackOffInterruptedExceptionTests extends AbstractExceptionTests {
 		return new BackOffInterruptedException(msg, t);
 	}
 
-	public void testNothing() throws Exception {
+	@org.junit.Test
+public void testNothing() throws Exception {
 		// fool coverage tools...
 	}
 }

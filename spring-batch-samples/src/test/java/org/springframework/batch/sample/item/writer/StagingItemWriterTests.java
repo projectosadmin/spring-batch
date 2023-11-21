@@ -19,37 +19,44 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+
+import static org.junit.Assert.*;
+
+import org.springframework.batch.sample.AbstractDaoTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ClassUtils;
 
-public class StagingItemWriterTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("staging-test-context.xml")
+public class StagingItemWriterTests extends AbstractDaoTest {
 
-	private StagingItemWriter writer;
+    private StagingItemWriter writer;
 
-	public void setWriter(StagingItemWriter processor) {
-		this.writer = processor;
-	}
+    public void setWriter(StagingItemWriter processor) {
+        this.writer = processor;
+    }
 
-	protected String[] getConfigLocations() {
-		return new String[] { ClassUtils.addResourcePathToPackagePath(StagingItemWriter.class,
-				"staging-test-context.xml") };
-	}
+    protected String[] getConfigLocations() {
+        return new String[]{ClassUtils.addResourcePathToPackagePath(StagingItemWriter.class,
+                "staging-test-context.xml")};
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.test.AbstractTransactionalSpringContextTests#onSetUpBeforeTransaction()
-	 */
-	protected void onSetUpBeforeTransaction() throws Exception {
-		StepExecution stepExecution = new StepExecution("stepName", new JobExecution(new JobInstance(new Long(12L),
-				new JobParameters(), "testJob")));
-		writer.beforeStep(stepExecution);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.test.AbstractTransactionalSpringContextTests#onSetUpBeforeTransaction()
+     */
+    @org.junit.Before
+    public void onSetUpBeforeTransaction() throws Exception {
+        StepExecution stepExecution = new StepExecution("stepName", new JobExecution(new JobInstance(new Long(12L),
+                new JobParameters(), "testJob")));
+        writer.beforeStep(stepExecution);
+    }
 
-	public void testProcessInsertsNewItem() throws Exception {
-		int before = getJdbcTemplate().queryForInt("SELECT COUNT(*) from BATCH_STAGING");
-		writer.write("FOO");
-		int after = getJdbcTemplate().queryForInt("SELECT COUNT(*) from BATCH_STAGING");
-		assertEquals(before + 1, after);
-	}
+    @org.junit.Test
+    public void testProcessInsertsNewItem() throws Exception {
+        int before = getJdbcTemplate().queryForObject("SELECT COUNT(*) from BATCH_STAGING", Integer.class);
+        writer.write("FOO");
+        int after = getJdbcTemplate().queryForObject("SELECT COUNT(*) from BATCH_STAGING", Integer.class);
+        assertEquals(before + 1, after);
+    }
 
 }

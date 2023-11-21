@@ -14,7 +14,7 @@ public interface StepExecutionDao {
 	 * 
 	 * Postconditions: Id will be set to a unique Long.
 	 * 
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 */
 	void saveStepExecution(StepExecution stepExecution);
 
@@ -23,7 +23,7 @@ public interface StepExecutionDao {
 	 * 
 	 * Preconditions: Id must not be null.
 	 * 
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 */
 	void updateStepExecution(StepExecution stepExecution);
 

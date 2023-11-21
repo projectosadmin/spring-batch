@@ -17,7 +17,7 @@
 package org.springframework.batch.config;
 
 import org.springframework.batch.jms.ExternalRetryInBatchTests;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import static org.junit.Assert.*;
 import org.springframework.util.ClassUtils;
 
 public class DatasourceTests extends AbstractTransactionalDataSourceSpringContextTests {
@@ -26,10 +26,11 @@ public class DatasourceTests extends AbstractTransactionalDataSourceSpringContex
 		return new String[] { ClassUtils.addResourcePathToPackagePath(ExternalRetryInBatchTests.class, "jms-context.xml") };
 	}
 
-	public void testTemplate() throws Exception {
+	@org.junit.Test
+public void testTemplate() throws Exception {
 		System.err.println(System.getProperty("java.class.path"));
 		jdbcTemplate.execute("delete from T_FOOS");
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		jdbcTemplate.update("INSERT into T_FOOS (id,name,foo_date) values (?,?,null)", new Object[] { new Integer(0),

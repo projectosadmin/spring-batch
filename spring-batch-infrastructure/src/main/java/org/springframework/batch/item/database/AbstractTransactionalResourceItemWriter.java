@@ -69,7 +69,7 @@ public abstract class AbstractTransactionalResourceItemWriter implements ItemWri
 	 * Delegate to subclass to actually do the writing, but flushes aggressively
 	 * if the item was previously part of a failed chunk.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 * 
 	 * @see org.springframework.batch.item.ItemWriter#write(Object)
 	 */

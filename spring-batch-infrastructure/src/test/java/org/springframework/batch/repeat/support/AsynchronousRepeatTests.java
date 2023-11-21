@@ -24,6 +24,7 @@ import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.callback.ItemReaderRepeatCallback;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import static org.junit.Assert.*;
 
 public class AsynchronousRepeatTests extends AbstractTradeBatchTests {
 
@@ -32,9 +33,10 @@ public class AsynchronousRepeatTests extends AbstractTradeBatchTests {
 	 * executor. The result is a batch that runs in multiple threads (up to the
 	 * throttle limit of the template).
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testMultiThreadAsynchronousExecution() throws Exception {
+	@org.junit.Test
+public void testMultiThreadAsynchronousExecution() throws Exception {
 		TaskExecutorRepeatTemplate template = new TaskExecutorRepeatTemplate();
 		template.setTaskExecutor(new SimpleAsyncTaskExecutor());
 
@@ -65,9 +67,10 @@ public class AsynchronousRepeatTests extends AbstractTradeBatchTests {
 	 * Wrap an otherwise synchronous batch in a callback to an asynchronous
 	 * template.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testSingleThreadAsynchronousExecution() throws Exception {
+	@org.junit.Test
+public void testSingleThreadAsynchronousExecution() throws Exception {
 		TaskExecutorRepeatTemplate jobTemplate = new TaskExecutorRepeatTemplate();
 		final RepeatTemplate stepTemplate = new RepeatTemplate();
 		SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();

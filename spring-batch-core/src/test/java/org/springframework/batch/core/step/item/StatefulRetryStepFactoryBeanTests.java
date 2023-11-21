@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,7 +55,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Dave Syer
  * 
  */
-public class StatefulRetryStepFactoryBeanTests extends TestCase {
+public class StatefulRetryStepFactoryBeanTests {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -83,7 +83,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		MapJobInstanceDao.clear();
 		MapJobExecutionDao.clear();
@@ -106,11 +107,13 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 
 	}
 
-	public void testType() throws Exception {
+	@org.junit.Test
+public void testType() throws Exception {
 		assertEquals(Step.class, factory.getObjectType());
 	}
 
-	public void testDefaultValue() throws Exception {
+	@org.junit.Test
+public void testDefaultValue() throws Exception {
 		assertTrue(factory.getObject() instanceof Step);
 	}
 
@@ -120,9 +123,10 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 	 * try when the retryLimit is high enough (it is used to build an exception
 	 * handler).
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testSuccessfulRetryWithReadFailure() throws Exception {
+	@org.junit.Test
+public void testSuccessfulRetryWithReadFailure() throws Exception {
 		List items = TransactionAwareProxyFactory.createTransactionalList();
 		items.addAll(Arrays.asList(new String[] { "a", "b", "c" }));
 		ItemReader provider = new ListItemReader(items) {
@@ -155,7 +159,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 
 	}
 
-	public void testSkipAndRetry() throws Exception {
+	@org.junit.Test
+public void testSkipAndRetry() throws Exception {
 		factory.setSkippableExceptionClasses(new Class[] { Exception.class });
 		factory.setSkipLimit(2);
 		List items = TransactionAwareProxyFactory.createTransactionalList();
@@ -183,7 +188,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 		assertEquals(4, stepExecution.getItemCount().intValue());
 	}
 
-	public void testSkipAndRetryWithWriteFailure() throws Exception {
+	@org.junit.Test
+public void testSkipAndRetryWithWriteFailure() throws Exception {
 
 		factory.setSkippableExceptionClasses(new Class[] { RetryException.class });
 		factory.setListeners(new StepListener[] { new SkipListenerSupport() {
@@ -229,7 +235,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 		assertEquals(17, count);
 	}
 
-	public void testRetryWithNoSkip() throws Exception {
+	@org.junit.Test
+public void testRetryWithNoSkip() throws Exception {
 		factory.setRetryableExceptionClasses(new Class[] { Exception.class });
 		factory.setRetryLimit(4);
 		factory.setSkipLimit(0);
@@ -267,7 +274,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 		assertEquals(0, stepExecution.getItemCount().intValue());
 	}
 
-	public void testRetryWithSkipLimitBreach() throws Exception {
+	@org.junit.Test
+public void testRetryWithSkipLimitBreach() throws Exception {
 		factory.setRetryLimit(1);
 		factory.setSkipLimit(2);
 		factory.setCommitInterval(3);
@@ -306,7 +314,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 		assertEquals(2, stepExecution.getItemCount().intValue());
 	}
 
-	public void testRetryPolicy() throws Exception {
+	@org.junit.Test
+public void testRetryPolicy() throws Exception {
 		factory.setRetryPolicy(new SimpleRetryPolicy(4));
 		factory.setSkipLimit(0);
 		List items = TransactionAwareProxyFactory.createTransactionalList();
@@ -343,7 +352,8 @@ public class StatefulRetryStepFactoryBeanTests extends TestCase {
 		assertEquals(0, stepExecution.getItemCount().intValue());
 	}
 
-	public void testCacheLimitWithRetry() throws Exception {
+	@org.junit.Test
+public void testCacheLimitWithRetry() throws Exception {
 		factory.setRetryableExceptionClasses(new Class[] { Exception.class });
 		factory.setRetryLimit(2);
 		// set the cache limit lower than the number of unique un-recovered

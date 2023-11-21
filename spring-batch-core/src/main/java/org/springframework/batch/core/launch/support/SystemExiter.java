@@ -30,7 +30,7 @@ public interface SystemExiter {
 	 * Terminate the currently running Java Virtual Machine.
 	 * 
 	 * @param status exit status.
-	 * @throws SecurityException
+	 * @throws SecurityException SecurityException
 	 * 		if a security manager exists and its <code>checkExit</code>
      *        	method doesn't allow exit with the specified status.
      * @see System#exit(int)

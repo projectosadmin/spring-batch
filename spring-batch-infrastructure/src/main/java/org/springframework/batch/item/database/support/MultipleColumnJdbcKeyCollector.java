@@ -70,7 +70,7 @@ public class MultipleColumnJdbcKeyCollector extends ExecutionContextUserSupport 
 	/**
 	 * Construct a new ItemReader.
 	 * 
-	 * @param jdbcTemplate
+	 * @param jdbcTemplate jdbcTemplate
 	 * @param sql - SQL statement that returns all keys to process. object.
 	 */
 	public MultipleColumnJdbcKeyCollector(JdbcTemplate jdbcTemplate, String sql) {
@@ -121,7 +121,7 @@ public class MultipleColumnJdbcKeyCollector extends ExecutionContextUserSupport 
 	 * Set the query to use to retrieve keys in order to restore the previous
 	 * state for restart.
 	 * 
-	 * @param restartQuery
+	 * @param restartQuery restartQuery
 	 */
 	public void setRestartSql(String restartQuery) {
 		this.restartSql = restartQuery;
@@ -142,7 +142,7 @@ public class MultipleColumnJdbcKeyCollector extends ExecutionContextUserSupport 
 	/**
 	 * Set the {@link RowMapper} to be used to map a result set to keys.
 	 * 
-	 * @param keyMapper
+	 * @param keyMapper keyMapper
 	 */
 	public void setKeyMapper(RowMapper keyMapper) {
 		this.keyMapper = keyMapper;
@@ -151,7 +151,7 @@ public class MultipleColumnJdbcKeyCollector extends ExecutionContextUserSupport 
 	/**
 	 * Set the sql statement used to generate the keys list.
 	 * 
-	 * @param sql
+	 * @param sql sql
 	 */
 	public void setSql(String sql) {
 		this.sql = sql;

@@ -8,15 +8,16 @@ import org.easymock.MockControl;
 import org.springframework.batch.sample.domain.LineItem;
 
 import org.springmodules.validation.valang.functions.Function;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ValidateQuantitiesFunctionTests extends TestCase {
+public class ValidateQuantitiesFunctionTests {
 
 	private ValidateQuantitiesFunction function;
 	private MockControl argumentControl;
 	private Function argument;
 
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		argumentControl = MockControl.createControl(Function.class);
 		argument = (Function) argumentControl.getMock();
 
@@ -24,7 +25,8 @@ public class ValidateQuantitiesFunctionTests extends TestCase {
 		function = new ValidateQuantitiesFunction(new Function[] {argument}, 0, 0);
 	}
 	
-	public void testQuantityMin() throws Exception {
+	@org.junit.Test
+public void testQuantityMin() throws Exception {
 	
 		//create line item with correct item quantity
 		LineItem item = new LineItem();
@@ -51,7 +53,8 @@ public class ValidateQuantitiesFunctionTests extends TestCase {
 		assertFalse(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 	
-	public void testQuantityMax() throws Exception {
+	@org.junit.Test
+public void testQuantityMax() throws Exception {
 
 		//create line item with correct item quantity
 		LineItem item = new LineItem();

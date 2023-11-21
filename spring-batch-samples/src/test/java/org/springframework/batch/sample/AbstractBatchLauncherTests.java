@@ -19,7 +19,7 @@ package org.springframework.batch.sample;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.util.ClassUtils;
 
 /**
@@ -27,63 +27,62 @@ import org.springframework.util.ClassUtils;
  * for both the container and configuration separately and having them auto
  * wired in by type. This allows the two to be completely separated, and remove
  * any 'configuration coupling' between the two.
- * 
+ *
  * @author Lucas Ward
- * 
  */
-public abstract class AbstractBatchLauncherTests extends
-		AbstractDependencyInjectionSpringContextTests {
+
+public abstract class AbstractBatchLauncherTests extends AbstractDaoTest {
 
 //	private static final String CONTAINER_DEFINITION_LOCATION = "simple-container-definition.xml";
 
-	public AbstractBatchLauncherTests() {
-		setDependencyCheck(false);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.test.AbstractSingleSpringContextTests#getConfigLocations()
-	 */
-	protected String[] getConfigLocations() {
-		return new String[] { ClassUtils.addResourcePathToPackagePath(getClass(), ClassUtils.getShortName(getClass())
-				+ "-context.xml") };
-	}
+    public AbstractBatchLauncherTests() {
 
-	JobLauncher launcher;
-	private Job job;
-	
-	private JobParameters jobParameters = new JobParameters();
+    }
 
-	public void setLauncher(JobLauncher bootstrap) {
-		this.launcher = bootstrap;
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.test.AbstractSingleSpringContextTests#getConfigLocations()
+     */
+    protected String[] getConfigLocations() {
+        return new String[]{ClassUtils.addResourcePathToPackagePath(getClass(), ClassUtils.getShortName(getClass())
+                + "-context.xml")};
+    }
 
-	/**
-	 * Public setter for the {@link Job} property.
-	 * 
-	 * @param job the job to set
-	 */
-	public void setJob(Job job) {
-		this.job = job;
-	}
-	
-	public Job getJob() {
-		return job;
-	}
+    JobLauncher launcher;
+    private Job job;
 
-	protected String getJobName() {
-		return job.getName();
-	}
+    private JobParameters jobParameters = new JobParameters();
 
-	public void setJobParameters(JobParameters jobParameters) {
-		this.jobParameters = jobParameters;
-	}
+    public void setLauncher(JobLauncher bootstrap) {
+        this.launcher = bootstrap;
+    }
 
-	/**
-	 * @throws Exception
-	 * 
-	 */
-	public void testLaunchJob() throws Exception {
-		launcher.run(job, jobParameters);
-	}
+    /**
+     * Public setter for the {@link Job} property.
+     *
+     * @param job the job to set
+     */
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    protected String getJobName() {
+        return job.getName();
+    }
+
+    public void setJobParameters(JobParameters jobParameters) {
+        this.jobParameters = jobParameters;
+    }
+
+    /**
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testLaunchJob() throws Exception {
+        launcher.run(job, jobParameters);
+    }
 }

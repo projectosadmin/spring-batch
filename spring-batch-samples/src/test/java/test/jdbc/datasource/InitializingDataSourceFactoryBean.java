@@ -48,7 +48,7 @@ public class InitializingDataSourceFactoryBean extends AbstractFactoryBean {
 	private static boolean initialized = false;
 
 	/**
-	 * @throws Throwable
+	 * @throws Throwable Throwable
 	 * @see java.lang.Object#finalize()
 	 */
 	protected void finalize() throws Throwable {

@@ -26,7 +26,7 @@ public class DelegatingItemWriter implements ItemWriter, InitializingBean {
 	}
 	
 	/**
-	 * @param itemWriter
+	 * @param itemWriter itemWriter
 	 */
 	public DelegatingItemWriter(ItemWriter itemWriter) {
 		this();

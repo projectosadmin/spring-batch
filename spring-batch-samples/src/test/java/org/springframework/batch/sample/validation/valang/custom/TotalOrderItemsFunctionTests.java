@@ -7,9 +7,9 @@ import org.springframework.batch.sample.domain.LineItem;
 
 import org.easymock.MockControl;
 import org.springmodules.validation.valang.functions.Function;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class TotalOrderItemsFunctionTests extends TestCase {
+public class TotalOrderItemsFunctionTests {
 
 	private TotalOrderItemsFunction function;
 	private MockControl argument1Control;
@@ -17,7 +17,8 @@ public class TotalOrderItemsFunctionTests extends TestCase {
 	private MockControl argument2Control;
 	private Function argument2;
 	
-	public void setUp() {
+	    @org.junit.Before
+public void setUp() {
 		//create mock for first argument - set count to 3
 		argument1Control = MockControl.createControl(Function.class);
 		argument1 = (Function) argument1Control.getMock();
@@ -32,7 +33,8 @@ public class TotalOrderItemsFunctionTests extends TestCase {
 		function = new TotalOrderItemsFunction(new Function[] {argument1, argument2}, 0, 0);
 	}
 	
-	public void testFunctionWithNonListValue() {
+	@org.junit.Test
+public void testFunctionWithNonListValue() {
 		
 		argument2.getResult(null);
 		argument2Control.setReturnValue(this);
@@ -47,7 +49,8 @@ public class TotalOrderItemsFunctionTests extends TestCase {
 		}
 	}
 	
-	public void testFunctionWithCorrectItemCount() throws Exception {
+	@org.junit.Test
+public void testFunctionWithCorrectItemCount() throws Exception {
 
 		//create list with correct item count
 		LineItem item = new LineItem();
@@ -63,7 +66,8 @@ public class TotalOrderItemsFunctionTests extends TestCase {
 		assertTrue(((Boolean)function.doGetResult(null)).booleanValue());
 	}
 
-	public void testFunctionWithIncorrectItemCount() throws Exception {
+	@org.junit.Test
+public void testFunctionWithIncorrectItemCount() throws Exception {
 
 		//create list with incorrect item count
 		LineItem item = new LineItem();

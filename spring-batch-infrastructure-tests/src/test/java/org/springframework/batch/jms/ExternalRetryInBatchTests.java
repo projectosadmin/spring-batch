@@ -37,7 +37,7 @@ import org.springframework.batch.retry.policy.SimpleRetryPolicy;
 import org.springframework.batch.retry.support.RetryTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -77,7 +77,8 @@ public class ExternalRetryInBatchTests extends AbstractDependencyInjectionSpring
 		return new String[] { ClassUtils.addResourcePathToPackagePath(getClass(), "jms-context.xml" )};
 	}
 
-	protected void onSetUp() throws Exception {
+	@org.junit.Before
+public void onSetUp() throws Exception {
 		super.onSetUp();
 		getMessages(); // drain queue
 		jdbcTemplate.execute("delete from T_FOOS");
@@ -98,13 +99,14 @@ public class ExternalRetryInBatchTests extends AbstractDependencyInjectionSpring
 		retryTemplate = new RetryTemplate();
 	}
 
-	protected void onTearDown() throws Exception {
+	@org.junit.After
+public void onTearDown() throws Exception {
 		getMessages(); // drain queue
 		jdbcTemplate.execute("delete from T_FOOS");
 	}
 
 	private void assertInitialState() {
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 	}
 
@@ -112,7 +114,8 @@ public class ExternalRetryInBatchTests extends AbstractDependencyInjectionSpring
 
 	private List recovered = new ArrayList();
 
-	public void testExternalRetryRecoveryInBatch() throws Exception {
+	@org.junit.Test
+public void testExternalRetryRecoveryInBatch() throws Exception {
 		assertInitialState();
 
 		retryTemplate.setRetryPolicy(new RecoveryCallbackRetryPolicy(new SimpleRetryPolicy(1)));
@@ -188,7 +191,7 @@ public class ExternalRetryInBatchTests extends AbstractDependencyInjectionSpring
 		assertEquals(2, recovered.size());
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		// ... and so did the message session.

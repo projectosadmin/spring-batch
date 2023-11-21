@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -26,7 +26,7 @@ import org.springframework.util.ClassUtils;
  * 
  * @author Robert Kasanicky
  */
-public class StaxEventItemReaderTests extends TestCase {
+public class StaxEventItemReaderTests {
 
 	// object under test
 	private StaxEventItemReader source;
@@ -40,16 +40,19 @@ public class StaxEventItemReaderTests extends TestCase {
 
 	private ExecutionContext executionContext;
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		this.executionContext = new ExecutionContext();
 		source = createNewInputSouce();
 	}
 
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		source.afterPropertiesSet();
 	}
 
-	public void testAfterPropertesSetException() throws Exception {
+	@org.junit.Test
+public void testAfterPropertesSetException() throws Exception {
 		source.setResource(null);
 		source.afterPropertiesSet();
 
@@ -76,7 +79,8 @@ public class StaxEventItemReaderTests extends TestCase {
 	 * Regular usage scenario. ItemReader should pass XML fragments to deserializer wrapped with StartDocument and
 	 * EndDocument events.
 	 */
-	public void testFragmentWrapping() throws Exception {
+	@org.junit.Test
+public void testFragmentWrapping() throws Exception {
 		source.afterPropertiesSet();
 		source.open(executionContext);
 		// see asserts in the mock deserializer
@@ -90,7 +94,8 @@ public class StaxEventItemReaderTests extends TestCase {
 	/**
 	 * Cursor is moved before beginning of next fragment.
 	 */
-	public void testMoveCursorToNextFragment() throws XMLStreamException, FactoryConfigurationError, IOException {
+	@org.junit.Test
+public void testMoveCursorToNextFragment() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Resource resource = new ByteArrayResource(xml.getBytes());
 		XMLEventReader reader = XMLInputFactory.newInstance().createXMLEventReader(resource.getInputStream());
 
@@ -106,7 +111,8 @@ public class StaxEventItemReaderTests extends TestCase {
 	/**
 	 * Save restart data and restore from it.
 	 */
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 		source.open(executionContext);
 		source.read();
 		source.update(executionContext);
@@ -123,7 +129,8 @@ public class StaxEventItemReaderTests extends TestCase {
 //	/**
 //	 * Restore point must not exceed end of file, input source must not be already initialised when restoring.
 //	 */
-//	public void testInvalidRestore() {
+//	@org.junit.Test
+//public void testInvalidRestore() {
 //		ExecutionContext context = new ExecutionContext();
 //		context.putLong(ClassUtils.getShortName(StaxEventItemReader.class) + ".item.count", 100000);
 //		try {
@@ -136,7 +143,8 @@ public class StaxEventItemReaderTests extends TestCase {
 //		}
 //	}
 
-	public void testRestoreWorksFromClosedStream() throws Exception {
+	@org.junit.Test
+public void testRestoreWorksFromClosedStream() throws Exception {
 		source.close(executionContext);
 		source.update(executionContext);
 	}
@@ -144,7 +152,8 @@ public class StaxEventItemReaderTests extends TestCase {
 	/**
 	 * Rollback to last commited record.
 	 */
-	public void testRollback() throws Exception{
+	@org.junit.Test
+public void testRollback() throws Exception{
 		source.open(executionContext);
 		// rollback between deserializing records
 		List first = (List) source.read();
@@ -160,7 +169,8 @@ public class StaxEventItemReaderTests extends TestCase {
 	/**
 	 * Statistics return the current record count. Calling read after end of input does not increase the counter.
 	 */
-	public void testExecutionContext() throws Exception{
+	@org.junit.Test
+public void testExecutionContext() throws Exception{
 		final int NUMBER_OF_RECORDS = 2;
 		source.open(executionContext);
 		source.update(executionContext);
@@ -181,12 +191,14 @@ public class StaxEventItemReaderTests extends TestCase {
 		return executionContext.getLong(ClassUtils.getShortName(StaxEventItemReader.class) + ".read.count");
 	}
 
-	public void testCloseWithoutOpen() throws Exception {
+	@org.junit.Test
+public void testCloseWithoutOpen() throws Exception {
 		source.close(null);
 		// No error!
 	}
 
-	public void testClose() throws Exception {
+	@org.junit.Test
+public void testClose() throws Exception {
 		MockStaxEventItemReader newSource = new MockStaxEventItemReader();
 		Resource resource = new ByteArrayResource(xml.getBytes());
 		newSource.setResource(resource);
@@ -211,7 +223,8 @@ public class StaxEventItemReaderTests extends TestCase {
 		}
 	}
 
-	public void testOpenBadIOInput() {
+	@org.junit.Test
+public void testOpenBadIOInput() {
 
 		source.setResource(new AbstractResource() {
 			public String getDescription() {
@@ -235,7 +248,8 @@ public class StaxEventItemReaderTests extends TestCase {
 
 	}
 
-	public void testNonExistentResource() throws Exception {
+	@org.junit.Test
+public void testNonExistentResource() throws Exception {
 
 		source.setResource(new NonExistentResource());
 		source.afterPropertiesSet();
@@ -245,7 +259,8 @@ public class StaxEventItemReaderTests extends TestCase {
 			
 	}
 
-	public void testRuntimeFileCreation() throws Exception {
+	@org.junit.Test
+public void testRuntimeFileCreation() throws Exception {
 
 		source.setResource(new NonExistentResource());
 		source.afterPropertiesSet();
@@ -277,7 +292,7 @@ public class StaxEventItemReaderTests extends TestCase {
 		/**
 		 * A simple mapFragment implementation checking the StaxEventReaderItemReader basic read functionality.
 		 * 
-		 * @param eventReader
+		 * @param eventReader eventReader
 		 * @return list of the events from fragment body
 		 */
 		public Object deserializeFragment(XMLEventReader eventReader) {

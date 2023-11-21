@@ -22,20 +22,22 @@ import java.util.List;
 
 import org.springframework.batch.item.support.ListItemReader;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ListItemReaderTests extends TestCase {
+public class ListItemReaderTests {
 
 	ListItemReader provider = new ListItemReader(Arrays.asList(new String[] { "a", "b", "c" }));
 
-	public void testNext() throws Exception {
+	@org.junit.Test
+public void testNext() throws Exception {
 		assertEquals("a", provider.read());
 		assertEquals("b", provider.read());
 		assertEquals("c", provider.read());
 		assertEquals(null, provider.read());
 	}
 
-	public void testChangeList() throws Exception {
+	@org.junit.Test
+public void testChangeList() throws Exception {
 		List list = new ArrayList(Arrays.asList(new String[] { "a", "b", "c" }));
 		provider = new ListItemReader(list);
 		assertEquals("a", provider.read());

@@ -11,8 +11,8 @@ public class SimpleMessageApplicationEvent extends ApplicationEvent {
 	private String message;
 
 	/**
-	 * @param source
-	 * @param message
+	 * @param source source
+	 * @param message message
 	 */
 	public SimpleMessageApplicationEvent(Object source, String message) {
 		super(source);

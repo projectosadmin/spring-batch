@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.item.validator;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemReader;
@@ -25,7 +25,7 @@ import org.springframework.batch.item.support.AbstractItemReader;
  * @author Lucas Ward
  *
  */
-public class ValidatingItemReaderTests extends TestCase {
+public class ValidatingItemReaderTests {
 
 	ItemReader inputSource;
 	ValidatingItemReader itemProvider;
@@ -35,8 +35,9 @@ public class ValidatingItemReaderTests extends TestCase {
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 
 		inputSource = new MockItemReader(this);
 		validator = (Validator)validatorControl.getMock();
@@ -49,7 +50,8 @@ public class ValidatingItemReaderTests extends TestCase {
 	 * Super class' afterPropertieSet should be called to
 	 * ensure ItemReader is set.
 	 */
-	public void testItemReaderPropertiesSet(){
+	@org.junit.Test
+public void testItemReaderPropertiesSet(){
 		try{
 			itemProvider.setItemReader(null);
 			itemProvider.afterPropertiesSet();
@@ -59,7 +61,8 @@ public class ValidatingItemReaderTests extends TestCase {
 		}
 	}
 
-	public void testValidatorPropertesSet(){
+	@org.junit.Test
+public void testValidatorPropertesSet(){
 		try{
 			itemProvider.setValidator(null);
 			itemProvider.afterPropertiesSet();
@@ -69,7 +72,8 @@ public class ValidatingItemReaderTests extends TestCase {
 		}
 	}
 
-	public void testValidation() throws Exception{
+	@org.junit.Test
+public void testValidation() throws Exception{
 
 		validator.validate(this);
 		validatorControl.replay();
@@ -77,7 +81,8 @@ public class ValidatingItemReaderTests extends TestCase {
 		validatorControl.verify();
 	}
 
-	public void testValidationException() throws Exception{
+	@org.junit.Test
+public void testValidationException() throws Exception{
 
 		validator.validate(this);
 		validatorControl.setThrowable(new ValidationException(""));
@@ -90,7 +95,8 @@ public class ValidatingItemReaderTests extends TestCase {
 		}
 	}
 
-	public void testNullInput() throws Exception{
+	@org.junit.Test
+public void testNullInput() throws Exception{
 		validatorControl.replay();
 		itemProvider.setItemReader(new MockItemReader(null));
 		assertNull(itemProvider.read());

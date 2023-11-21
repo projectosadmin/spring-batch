@@ -2,12 +2,12 @@ package org.springframework.batch.item.util;
 
 import org.springframework.batch.item.util.ExecutionContextUserSupport;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link ExecutionContextUserSupport}.
  */
-public class ExecutionContextUserSupportTests extends TestCase {
+public class ExecutionContextUserSupportTests {
 
 	ExecutionContextUserSupport tested = new ExecutionContextUserSupport();
 
@@ -15,7 +15,8 @@ public class ExecutionContextUserSupportTests extends TestCase {
 	 * Regular usage scenario - prepends the name (supposed to be unique) to
 	 * argument.
 	 */
-	public void testGetKey() {
+	@org.junit.Test
+public void testGetKey() {
 		tested.setName("uniqueName");
 		assertEquals("uniqueName.key", tested.getKey("key"));
 	}
@@ -23,7 +24,8 @@ public class ExecutionContextUserSupportTests extends TestCase {
 	/**
 	 * Exception scenario - name must not be empty.
 	 */
-	public void testGetKeyWithNoNameSet() {
+	@org.junit.Test
+public void testGetKeyWithNoNameSet() {
 		tested.setName("");
 		try {
 			tested.getKey("arbitrary string");

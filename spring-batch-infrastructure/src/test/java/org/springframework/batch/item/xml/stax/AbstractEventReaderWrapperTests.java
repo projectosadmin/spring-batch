@@ -19,7 +19,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 
@@ -29,27 +29,30 @@ import com.bea.xml.stream.events.StartDocumentEvent;
  * @author Lucas Ward
  *
  */
-public class AbstractEventReaderWrapperTests extends TestCase {
+public class AbstractEventReaderWrapperTests {
 
 	AbstractEventReaderWrapper eventReaderWrapper;
 	MockControl mockEventReaderControl = MockControl.createControl(XMLEventReader.class);
 	XMLEventReader xmlEventReader;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 
 		xmlEventReader = (XMLEventReader)mockEventReaderControl.getMock();
 		eventReaderWrapper = new StubEventReader(xmlEventReader);
 	}
 
-	public void testClose() throws XMLStreamException {
+	@org.junit.Test
+public void testClose() throws XMLStreamException {
 		xmlEventReader.close();
 		mockEventReaderControl.replay();
 		eventReaderWrapper.close();
 		mockEventReaderControl.verify();
 	}
 
-	public void testGetElementText() throws XMLStreamException {
+	@org.junit.Test
+public void testGetElementText() throws XMLStreamException {
 
 		String text = "text";
 		xmlEventReader.getElementText();
@@ -59,7 +62,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testGetProperty() throws IllegalArgumentException {
+	@org.junit.Test
+public void testGetProperty() throws IllegalArgumentException {
 
 		String text = "text";
 		xmlEventReader.getProperty("name");
@@ -69,7 +73,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testHasNext() {
+	@org.junit.Test
+public void testHasNext() {
 
 		xmlEventReader.hasNext();
 		mockEventReaderControl.setReturnValue(true);
@@ -78,7 +83,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testNext() {
+	@org.junit.Test
+public void testNext() {
 
 		String text = "text";
 		xmlEventReader.next();
@@ -88,7 +94,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testNextEvent() throws XMLStreamException {
+	@org.junit.Test
+public void testNextEvent() throws XMLStreamException {
 
 		XMLEvent event = new StartDocumentEvent();
 		xmlEventReader.nextEvent();
@@ -98,7 +105,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testNextTag() throws XMLStreamException {
+	@org.junit.Test
+public void testNextTag() throws XMLStreamException {
 
 		XMLEvent event = new StartDocumentEvent();
 		xmlEventReader.nextTag();
@@ -108,7 +116,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testPeek() throws XMLStreamException {
+	@org.junit.Test
+public void testPeek() throws XMLStreamException {
 
 		XMLEvent event = new StartDocumentEvent();
 		xmlEventReader.peek();
@@ -118,7 +127,8 @@ public class AbstractEventReaderWrapperTests extends TestCase {
 		mockEventReaderControl.verify();
 	}
 
-	public void testRemove() {
+	@org.junit.Test
+public void testRemove() {
 
 		xmlEventReader.remove();
 		mockEventReaderControl.replay();

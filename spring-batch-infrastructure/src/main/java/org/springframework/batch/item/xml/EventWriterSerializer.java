@@ -15,7 +15,7 @@ public interface EventWriterSerializer {
 	/**
 	 * Serialize an Object.
 	 *
-	 * @param output
+	 * @param output output
 	 */
 	void serializeObject(XMLEventWriter writer, Object output);
 }

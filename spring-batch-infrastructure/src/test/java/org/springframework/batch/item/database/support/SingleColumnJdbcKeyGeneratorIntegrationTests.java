@@ -2,16 +2,21 @@ package org.springframework.batch.item.database.support;
 
 import java.util.List;
 
+import org.junit.Before;
+import org.springframework.batch.AbstractDaoTest;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-import org.springframework.util.ClassUtils;
+import static org.junit.Assert.*;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.ClassUtils;
+import static org.junit.Assert.*;
 /**
  * 
  * @author Lucas Ward
  *
  */
-public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("/org/springframework/batch/item/database/data-source-context.xml")
+public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractDaoTest {
 
 	SingleColumnJdbcKeyCollector keyStrategy;
 	
@@ -21,9 +26,9 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 		return new String[] { "org/springframework/batch/item/database/data-source-context.xml"};
 	}
 
-	
-	protected void onSetUpBeforeTransaction() throws Exception {
-		super.onSetUpBeforeTransaction();
+	@Before
+	public void onSetUpBeforeTransaction() throws Exception {
+		//super.onSetUpBeforeTransaction();
 		
 		keyStrategy = new SingleColumnJdbcKeyCollector(getJdbcTemplate(),
 		"SELECT ID from T_FOOS order by ID");
@@ -33,7 +38,8 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 		executionContext = new ExecutionContext();
 	}
 	
-	public void testRetrieveKeys(){
+	@org.junit.Test
+public void testRetrieveKeys(){
 		
 		List keys = keyStrategy.retrieveKeys(new ExecutionContext());
 		
@@ -47,7 +53,8 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 	
 	}
 	
-	public void testRestoreKeys(){
+	@org.junit.Test
+public void testRestoreKeys(){
 		
 		keyStrategy.updateContext(new Long(3), executionContext);
 		
@@ -62,7 +69,8 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 		}
 	}
 	
-	public void testGetKeyAsStreamContext(){
+	@org.junit.Test
+public void testGetKeyAsStreamContext(){
 		
 		keyStrategy.updateContext(new Long(3), executionContext);
 		
@@ -70,7 +78,8 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 		assertEquals(new Long(3), executionContext.get(ClassUtils.getShortName(SingleColumnJdbcKeyCollector.class) + ".key"));
 	}
 	
-	public void testGetNullKeyAsStreamContext(){
+	@org.junit.Test
+public void testGetNullKeyAsStreamContext(){
 		
 		try{
 			keyStrategy.updateContext(null, null);
@@ -80,7 +89,8 @@ public class SingleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransa
 		}
 	}
 	
-	public void testRestoreKeysFromNull(){
+	@org.junit.Test
+public void testRestoreKeysFromNull(){
 		
 		try{
 			keyStrategy.updateContext(null, null);

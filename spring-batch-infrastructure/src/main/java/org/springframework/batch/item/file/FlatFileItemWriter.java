@@ -145,7 +145,7 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 	/**
 	 * Setter for resource. Represents a file that can be written.
 	 * 
-	 * @param resource
+	 * @param resource resource
 	 */
 	public void setResource(Resource resource) {
 		this.resource = resource;
@@ -178,7 +178,7 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 	 * update. Setting this to false means that it will always start at the
 	 * beginning on a restart.
 	 * 
-	 * @param saveState
+	 * @param saveState saveState
 	 */
 	public void setSaveState(boolean saveState) {
 		this.saveState = saveState;
@@ -373,7 +373,7 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 		}
 
 		/**
-		 * @param executionContext
+		 * @param executionContext executionContext
 		 */
 		public void restoreFrom(ExecutionContext executionContext) {
 			lastMarkedByteOffsetPosition = executionContext.getLong(getKey(RESTART_DATA_NAME));
@@ -381,21 +381,21 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 		}
 
 		/**
-		 * @param shouldDeleteIfExists
+		 * @param shouldDeleteIfExists shouldDeleteIfExists
 		 */
 		public void setDeleteIfExists(boolean shouldDeleteIfExists) {
 			this.shouldDeleteIfExists = shouldDeleteIfExists;
 		}
 
 		/**
-		 * @param bufferSize
+		 * @param bufferSize bufferSize
 		 */
 		public void setBufferSize(int bufferSize) {
 			this.bufferSize = bufferSize;
 		}
 
 		/**
-		 * @param encoding
+		 * @param encoding encoding
 		 */
 		public void setEncoding(String encoding) {
 			this.encoding = encoding;
@@ -420,8 +420,8 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 		}
 
 		/**
-		 * @param line
-		 * @throws IOException
+		 * @param line line
+		 * @throws IOException IOException
 		 */
 		public void write(String line) throws IOException {
 			if (!initialized) {
@@ -436,7 +436,7 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 		/**
 		 * Truncate the output at the last known good point.
 		 * 
-		 * @throws IOException
+		 * @throws IOException IOException
 		 */
 		public void truncate() throws IOException {
 			fileChannel.truncate(lastMarkedByteOffsetPosition);
@@ -458,7 +458,7 @@ public class FlatFileItemWriter extends ExecutionContextUserSupport implements I
 		/**
 		 * Creates the buffered writer for the output file channel based on
 		 * configuration information.
-		 * @throws IOException
+		 * @throws IOException IOException
 		 */
 		private void initializeBufferedWriter() throws IOException {
 			

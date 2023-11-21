@@ -35,7 +35,7 @@ public class CompositeRepeatListener implements RepeatListener {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setListeners(RepeatListener[] listeners) {
 		this.listeners = Arrays.asList(listeners);
@@ -44,7 +44,7 @@ public class CompositeRepeatListener implements RepeatListener {
 	/**
 	 * Register additional listener.
 	 * 
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void register(RepeatListener listener) {
 		if (!listeners.contains(listener)) {

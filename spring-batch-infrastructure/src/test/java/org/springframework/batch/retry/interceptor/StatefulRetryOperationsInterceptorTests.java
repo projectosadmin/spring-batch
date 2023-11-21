@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -37,7 +37,7 @@ import org.springframework.batch.retry.policy.SimpleRetryPolicy;
  * @author Dave Syer
  * 
  */
-public class StatefulRetryOperationsInterceptorTests extends TestCase {
+public class StatefulRetryOperationsInterceptorTests {
 
 	private StatefulRetryOperationsInterceptor interceptor;
 
@@ -47,14 +47,16 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 
 	private static int count;
 
-	public void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		interceptor = new StatefulRetryOperationsInterceptor();
 		service = (Service) ProxyFactory.getProxy(Service.class, new SingletonTargetSource(new ServiceImpl()));
 		transformer = (Transformer) ProxyFactory.getProxy(Transformer.class, new SingletonTargetSource(new TransformerImpl()));
 		count = 0;
 	}
 
-	public void testDefaultInterceptorSunnyDay() throws Exception {
+	@org.junit.Test
+public void testDefaultInterceptorSunnyDay() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		try {
 			service.service("foo");
@@ -67,7 +69,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, count);
 	}
 
-	public void testDefaultTransformerInterceptorSunnyDay() throws Exception {
+	@org.junit.Test
+public void testDefaultTransformerInterceptorSunnyDay() throws Exception {
 		((Advised) transformer).addAdvice(interceptor);
 		try {
 			transformer.transform("foo");
@@ -80,7 +83,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, count);
 	}
 
-	public void testDefaultInterceptorAlwaysRetry() throws Exception {
+	@org.junit.Test
+public void testDefaultInterceptorAlwaysRetry() throws Exception {
 		interceptor.setRetryPolicy(new AlwaysRetryPolicy());
 		((Advised) service).addAdvice(interceptor);
 		try {
@@ -94,7 +98,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, count);
 	}
 
-	public void testInterceptorChainWithRetry() throws Exception {
+	@org.junit.Test
+public void testInterceptorChainWithRetry() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		final List list = new ArrayList();
 		((Advised) service).addAdvice(new MethodInterceptor() {
@@ -118,7 +123,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(2, list.size());
 	}
 
-	public void testTransformerWithSuccessfulRetry() throws Exception {
+	@org.junit.Test
+public void testTransformerWithSuccessfulRetry() throws Exception {
 		((Advised) transformer).addAdvice(interceptor);
 		interceptor.setRetryPolicy(new SimpleRetryPolicy(2));
 		try {
@@ -135,7 +141,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, result.size());
 	}
 
-	public void testRetryExceptionAfterTooManyAttemptsWithNoRecovery() throws Exception {
+	@org.junit.Test
+public void testRetryExceptionAfterTooManyAttemptsWithNoRecovery() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		interceptor.setRetryPolicy(new NeverRetryPolicy());
 		try {
@@ -158,7 +165,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(1, count);
 	}
 
-	public void testRecoveryAfterTooManyAttempts() throws Exception {
+	@org.junit.Test
+public void testRecoveryAfterTooManyAttempts() throws Exception {
 		((Advised) service).addAdvice(interceptor);
 		interceptor.setRetryPolicy(new NeverRetryPolicy());
 		try {
@@ -180,7 +188,8 @@ public class StatefulRetryOperationsInterceptorTests extends TestCase {
 		assertEquals(2, count);
 	}
 
-	public void testTransformerRecoveryAfterTooManyAttempts() throws Exception {
+	@org.junit.Test
+public void testTransformerRecoveryAfterTooManyAttempts() throws Exception {
 		((Advised) transformer).addAdvice(interceptor);
 		interceptor.setRetryPolicy(new NeverRetryPolicy());
 		try {

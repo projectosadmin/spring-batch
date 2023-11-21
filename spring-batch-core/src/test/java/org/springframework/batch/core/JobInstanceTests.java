@@ -17,13 +17,13 @@ package org.springframework.batch.core;
 
 import org.apache.commons.lang.SerializationUtils;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author dsyer
  * 
  */
-public class JobInstanceTests extends TestCase {
+public class JobInstanceTests {
 
 	private JobInstance instance = new JobInstance(new Long(11), new JobParameters(), "job");
 
@@ -31,16 +31,19 @@ public class JobInstanceTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.JobInstance#getJobName()}.
 	 */
-	public void testGetName() {
+	@org.junit.Test
+public void testGetName() {
 		instance = new JobInstance(new Long(1), new JobParameters(), "foo");
 		assertEquals("foo", instance.getJobName());
 	}
 
-	public void testGetJob() {
+	@org.junit.Test
+public void testGetJob() {
 		assertEquals("job", instance.getJobName());
 	}
 
-	public void testCreateWithNulls() {
+	@org.junit.Test
+public void testCreateWithNulls() {
 		try {
 			new JobInstance(null, null, null);
 			fail("job instance can't exist without job specified");
@@ -53,7 +56,8 @@ public class JobInstanceTests extends TestCase {
 		assertEquals(0, instance.getJobParameters().getParameters().size());
 	}
 
-	public void testSerialization() {
+	@org.junit.Test
+public void testSerialization() {
 		instance = new JobInstance(new Long(1), new JobParametersBuilder().addDouble("doubleKey", Double.valueOf(5.1))
 				.toJobParameters(), "jobName");
 		

@@ -21,16 +21,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.file.mapping.DefaultFieldSet;
 import org.springframework.batch.item.file.mapping.FieldSet;
 
-public class PrefixMatchingCompositeLineTokenizerTests extends TestCase {
+public class PrefixMatchingCompositeLineTokenizerTests {
 
 	PrefixMatchingCompositeLineTokenizer tokenizer = new PrefixMatchingCompositeLineTokenizer();
 	
-	public void testNoTokenizers() throws Exception {
+	@org.junit.Test
+public void testNoTokenizers() throws Exception {
 		try {
 			tokenizer.tokenize("a line");
 			fail("Expected IllegalStateException");
@@ -39,13 +40,15 @@ public class PrefixMatchingCompositeLineTokenizerTests extends TestCase {
 		}
 	}
 	
-	public void testNullLine() throws Exception {
+	@org.junit.Test
+public void testNullLine() throws Exception {
 		tokenizer.setTokenizers(Collections.singletonMap("foo", new DelimitedLineTokenizer())); 
 		FieldSet fields = tokenizer.tokenize(null);
 		assertEquals(0, fields.getFieldCount());
 	}
 	
-	public void testEmptyKeyMatchesAnyLine() throws Exception {
+	@org.junit.Test
+public void testEmptyKeyMatchesAnyLine() throws Exception {
 		Map map = new HashMap();
 		map.put("", new DelimitedLineTokenizer());
 		map.put("foo", new LineTokenizer() {
@@ -58,7 +61,8 @@ public class PrefixMatchingCompositeLineTokenizerTests extends TestCase {
 		assertEquals(1, fields.getFieldCount());
 	}
 
-	public void testEmptyKeyDoesNotMatchWhenAlternativeAvailable() throws Exception {
+	@org.junit.Test
+public void testEmptyKeyDoesNotMatchWhenAlternativeAvailable() throws Exception {
 		
 		Map map = new LinkedHashMap();
 		map.put("", new LineTokenizer() {
@@ -72,7 +76,8 @@ public class PrefixMatchingCompositeLineTokenizerTests extends TestCase {
 		assertEquals("bar", fields.readString(1));
 	}
 
-	public void testNoMatch() throws Exception {
+	@org.junit.Test
+public void testNoMatch() throws Exception {
 		tokenizer.setTokenizers(Collections.singletonMap("foo", new DelimitedLineTokenizer())); 
 		try {
 			tokenizer.tokenize("nomatch");
@@ -82,7 +87,8 @@ public class PrefixMatchingCompositeLineTokenizerTests extends TestCase {
 		}
 	}
 	
-	public void testMatchWithPrefix() throws Exception {
+	@org.junit.Test
+public void testMatchWithPrefix() throws Exception {
 		tokenizer.setTokenizers(Collections.singletonMap("foo", new LineTokenizer() {
 			public FieldSet tokenize(String line) {
 				return new DefaultFieldSet(new String[] {line});

@@ -20,29 +20,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class TransactionAwareProxyFactoryTests extends TestCase {
+public class TransactionAwareProxyFactoryTests {
 
-	public void testCreateList() throws Exception {
+	@org.junit.Test
+public void testCreateList() throws Exception {
 		List list = TransactionAwareProxyFactory.createTransactionalList();
 		list.add("foo");
 		assertEquals(1, list.size());
 	}
 
-	public void testCreateSet() throws Exception {
+	@org.junit.Test
+public void testCreateSet() throws Exception {
 		Set set = TransactionAwareProxyFactory.createTransactionalSet();
 		set.add("foo");
 		assertEquals(1, set.size());
 	}
 	
-	public void testCreateMap() throws Exception {
+	@org.junit.Test
+public void testCreateMap() throws Exception {
 		Map map = TransactionAwareProxyFactory.createTransactionalMap();
 		map.put("foo", "bar");
 		assertEquals(1, map.size());
 	}
 
-	public void testCreateUnsupported() throws Exception {
+	@org.junit.Test
+public void testCreateUnsupported() throws Exception {
 		try {
 			new TransactionAwareProxyFactory(new Object()).createInstance();
 			fail("Expected UnsupportedOperationException");

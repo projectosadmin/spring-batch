@@ -40,7 +40,7 @@ public class TimeoutRetryPolicy extends AbstractStatelessRetryPolicy {
 
 	/**
 	 * Setter for timeout. Default is {@link #DEFAULT_TIMEOUT}.
-	 * @param timeout
+	 * @param timeout timeout
 	 */
 	public void setTimeout(long timeout) {
 		this.timeout = timeout;

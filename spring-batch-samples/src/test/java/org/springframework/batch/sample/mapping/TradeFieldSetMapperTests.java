@@ -8,6 +8,7 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.support.AggregateItemReader;
 import org.springframework.batch.sample.domain.Trade;
 import org.springframework.batch.sample.mapping.TradeFieldSetMapper;
+import static org.junit.Assert.*;
 
 public class TradeFieldSetMapperTests extends AbstractFieldSetMapperTests{
 
@@ -39,11 +40,13 @@ public class TradeFieldSetMapperTests extends AbstractFieldSetMapperTests{
 		return new TradeFieldSetMapper();
 	}
 	
-	public void testBeginRecord() throws Exception {
+	@org.junit.Test
+public void testBeginRecord() throws Exception {
 		assertEquals(AggregateItemReader.BEGIN_RECORD, fieldSetMapper().mapLine(new DefaultFieldSet(new String[] {"BEGIN"})));
 	}
 
-	public void testEndRecord() throws Exception {
+	@org.junit.Test
+public void testEndRecord() throws Exception {
 		assertEquals(AggregateItemReader.END_RECORD, fieldSetMapper().mapLine(new DefaultFieldSet(new String[] {"END"})));
 	}
 

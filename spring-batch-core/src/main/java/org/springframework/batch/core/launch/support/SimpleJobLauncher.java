@@ -68,7 +68,7 @@ public class SimpleJobLauncher implements JobLauncher, InitializingBean {
 	 *         execution already running.
 	 * @throws JobRestartException if the execution would be a re-start, but a re-start is either
 	 *             not allowed or not needed.
-	 * @throws JobInstanceAlreadyCompleteException
+	 * @throws JobInstanceAlreadyCompleteException JobInstanceAlreadyCompleteException
 	 */
 	public JobExecution run(final Job job, final JobParameters jobParameters)
 	        throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
@@ -106,7 +106,7 @@ public class SimpleJobLauncher implements JobLauncher, InitializingBean {
 	/**
 	 * Set the JobRepsitory.
 	 * 
-	 * @param jobRepository
+	 * @param jobRepository jobRepository
 	 */
 	public void setJobRepository(JobRepository jobRepository) {
 		this.jobRepository = jobRepository;
@@ -115,7 +115,7 @@ public class SimpleJobLauncher implements JobLauncher, InitializingBean {
 	/**
 	 * Set the TaskExecutor. (Optional)
 	 * 
-	 * @param taskExecutor
+	 * @param taskExecutor taskExecutor
 	 */
 	public void setTaskExecutor(TaskExecutor taskExecutor) {
 		this.taskExecutor = taskExecutor;

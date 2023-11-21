@@ -44,7 +44,7 @@ public class StepSupport implements Step, BeanNameAware {
 	}
 
 	/**
-	 * @param string
+	 * @param string string
 	 */
 	public StepSupport(String string) {
 		super();

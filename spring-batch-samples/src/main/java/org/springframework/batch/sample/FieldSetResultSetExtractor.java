@@ -41,7 +41,7 @@ public final class FieldSetResultSetExtractor {
 	 * Processes single row in ResultSet and returns its FieldSet representation.
 	 * @param rs ResultSet ResultSet to extract data from.
 	 * @return FieldSet representation of current row in ResultSet
-	 * @throws SQLException
+	 * @throws SQLException SQLException
 	 */
 	public static FieldSet getFieldSet(ResultSet rs) throws SQLException {
         ResultSetMetaData metaData = rs.getMetaData();

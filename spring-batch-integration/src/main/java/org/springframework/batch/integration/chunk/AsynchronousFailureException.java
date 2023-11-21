@@ -15,9 +15,9 @@ public class AsynchronousFailureException extends ItemWriterException {
 	 * Create a new {@link AsynchronousFailureException} based on a message and
 	 * another exception.
 	 * 
-	 * @param message
+	 * @param message message
 	 *            the message for this exception
-	 * @param cause
+	 * @param cause cause
 	 *            the other exception
 	 */
 	public AsynchronousFailureException(String message, Throwable cause) {
@@ -27,7 +27,7 @@ public class AsynchronousFailureException extends ItemWriterException {
 	/**
 	 * Create a new {@link AsynchronousFailureException} based on a message.
 	 * 
-	 * @param message
+	 * @param message message
 	 *            the message for this exception
 	 */
 	public AsynchronousFailureException(String message) {

@@ -33,7 +33,7 @@ public class RetryCacheCapacityExceededException extends RetryException {
 	/**
 	 * Constructs a new instance with a message.
 	 * 
-	 * @param message
+	 * @param message message
 	 */
 	public RetryCacheCapacityExceededException(String message) {
 		super(message);

@@ -217,7 +217,7 @@ public class StaxEventItemWriter extends ExecutionContextUserSupport implements 
 	 * Set "overwrite" flag for the output file. Flag is ignored when output
 	 * file processing is restarted.
 	 * 
-	 * @param overwriteOutput
+	 * @param overwriteOutput overwriteOutput
 	 */
 	public void setOverwriteOutput(boolean overwriteOutput) {
 		this.overwriteOutput = overwriteOutput;
@@ -226,7 +226,7 @@ public class StaxEventItemWriter extends ExecutionContextUserSupport implements 
 	/**
 	 * Setter for the headers. This list will be marshalled and output before
 	 * any calls to {@link #write(Object)}.
-	 * @param headers
+	 * @param headers headers
 	 */
 	public void setHeaderItems(Object[] headers) {
 		this.headers = Arrays.asList(headers);
@@ -237,7 +237,7 @@ public class StaxEventItemWriter extends ExecutionContextUserSupport implements 
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws Exception Exception
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	public void afterPropertiesSet() throws Exception {
@@ -318,9 +318,9 @@ public class StaxEventItemWriter extends ExecutionContextUserSupport implements 
 	 * version and root tag name can be retrieved with corresponding getters.
 	 * 
 	 * @param writer XML event writer
-	 * @throws XMLStreamException
+	 * @throws XMLStreamException XMLStreamException
 	 */
-	private void startDocument(XMLEventWriter writer) throws XMLStreamException {
+	protected void startDocument(XMLEventWriter writer) throws XMLStreamException {
 
 		XMLEventFactory factory = XMLEventFactory.newInstance();
 
@@ -346,7 +346,7 @@ public class StaxEventItemWriter extends ExecutionContextUserSupport implements 
 	 * Writes the EndDocument tag manually.
 	 * 
 	 * @param writer XML event writer
-	 * @throws XMLStreamException
+	 * @throws XMLStreamException XMLStreamException
 	 */
 	protected void endDocument(XMLEventWriter writer) throws XMLStreamException {
 

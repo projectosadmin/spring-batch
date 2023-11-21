@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.springframework.batch.jms.ExternalRetryInBatchTests;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.util.ClassUtils;
 
 public class MessagingTests extends AbstractDependencyInjectionSpringContextTests {
@@ -37,7 +37,8 @@ public class MessagingTests extends AbstractDependencyInjectionSpringContextTest
 				"jms-context.xml") };
 	}
 
-	protected void onSetUp() throws Exception {
+	@org.junit.Before
+public void onSetUp() throws Exception {
 		super.onSetUp();
 		Thread.sleep(100L);
 		getMessages(); // drain queue
@@ -45,7 +46,8 @@ public class MessagingTests extends AbstractDependencyInjectionSpringContextTest
 		jmsTemplate.convertAndSend("queue", "bar");
 	}
 
-	public void testMessaging() throws Exception {
+	@org.junit.Test
+public void testMessaging() throws Exception {
 		List list = getMessages();
 		System.err.println(list);
 		assertEquals(2, list.size());

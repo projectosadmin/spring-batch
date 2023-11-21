@@ -21,15 +21,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.core.AttributeAccessorSupport;
 
-public class SynchronizedAttributeAccessorTests extends TestCase {
+public class SynchronizedAttributeAccessorTests {
 
 	SynchronizedAttributeAccessor accessor = new SynchronizedAttributeAccessor();
 
-	public void testHashCode() {
+	@org.junit.Test
+public void testHashCode() {
 		SynchronizedAttributeAccessor another = new SynchronizedAttributeAccessor();
 		accessor.setAttribute("foo", "bar");
 		another.setAttribute("foo", "bar");
@@ -37,17 +38,20 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertEquals("Object.hashCode() contract broken", accessor.hashCode(), another.hashCode());
 	}
 
-	public void testToStringWithNoAttributes() throws Exception {
+	@org.junit.Test
+public void testToStringWithNoAttributes() throws Exception {
 		assertNotNull(accessor.toString());
 	}
 
-	public void testToStringWithAttributes() throws Exception {
+	@org.junit.Test
+public void testToStringWithAttributes() throws Exception {
 		accessor.setAttribute("foo", "bar");
 		accessor.setAttribute("spam", "bucket");
 		assertNotNull(accessor.toString());
 	}
 
-	public void testAttributeNames() {
+	@org.junit.Test
+public void testAttributeNames() {
 		accessor.setAttribute("foo", "bar");
 		accessor.setAttribute("spam", "bucket");
 		List list = Arrays.asList(accessor.attributeNames());
@@ -55,19 +59,22 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertTrue(list.contains("foo"));
 	}
 
-	public void testEqualsSameType() {
+	@org.junit.Test
+public void testEqualsSameType() {
 		SynchronizedAttributeAccessor another = new SynchronizedAttributeAccessor();
 		accessor.setAttribute("foo", "bar");
 		another.setAttribute("foo", "bar");
 		assertEquals(accessor, another);
 	}
 
-	public void testEqualsSelf() {
+	@org.junit.Test
+public void testEqualsSelf() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals(accessor, accessor);
 	}
 
-	public void testEqualsWrongType() {
+	@org.junit.Test
+public void testEqualsWrongType() {
 		accessor.setAttribute("foo", "bar");
 		Map another = Collections.singletonMap("foo", "bar");
 		// Accessor and another are instances of unrelated classes, they should
@@ -75,7 +82,8 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertFalse(accessor.equals(another));
 	}
 
-	public void testEqualsSupport() {
+	@org.junit.Test
+public void testEqualsSupport() {
 		AttributeAccessorSupport another = new AttributeAccessorSupport() {
 		};
 		accessor.setAttribute("foo", "bar");
@@ -83,27 +91,32 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertEquals(accessor, another);
 	}
 
-	public void testGetAttribute() {
+	@org.junit.Test
+public void testGetAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.getAttribute("foo"));
 	}
 
-	public void testSetAttributeIfAbsentWhenAlreadyPresent() {
+	@org.junit.Test
+public void testSetAttributeIfAbsentWhenAlreadyPresent() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.setAttributeIfAbsent("foo", "spam"));
 	}
 
-	public void testSetAttributeIfAbsentWhenNotAlreadyPresent() {
+	@org.junit.Test
+public void testSetAttributeIfAbsentWhenNotAlreadyPresent() {
 		assertEquals(null, accessor.setAttributeIfAbsent("foo", "bar"));
 		assertEquals("bar", accessor.getAttribute("foo"));
 	}
 
-	public void testHasAttribute() {
+	@org.junit.Test
+public void testHasAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals(true, accessor.hasAttribute("foo"));
 	}
 
-	public void testRemoveAttribute() {
+	@org.junit.Test
+public void testRemoveAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.getAttribute("foo"));
 		accessor.removeAttribute("foo");

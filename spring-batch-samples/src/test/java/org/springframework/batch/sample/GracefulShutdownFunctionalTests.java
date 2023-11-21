@@ -20,38 +20,40 @@ import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 
+import static org.junit.Assert.*;
+
 /**
  * Functional test for graceful shutdown.  A batch container is started in a new thread,
- * then it's stopped using {@link JobExecution#stop()}.  
- * 
- * @author Lucas Ward
+ * then it's stopped using {@link JobExecution#stop()}.
  *
+ * @author Lucas Ward
  */
 public class GracefulShutdownFunctionalTests extends AbstractBatchLauncherTests {
 
-	public void testLaunchJob() throws Exception {
+    @org.junit.Test
+    public void testLaunchJob() throws Exception {
 
-		final JobParameters jobParameters = new JobParameters();
-		
-		JobExecution jobExecution = launcher.run(getJob(), jobParameters);
-		
-		Thread.sleep(1000);
+        final JobParameters jobParameters = new JobParameters();
 
-		assertEquals(BatchStatus.STARTED, jobExecution.getStatus());
-		assertTrue(jobExecution.isRunning());
+        JobExecution jobExecution = launcher.run(getJob(), jobParameters);
 
-		jobExecution.stop();
-		
-		int count = 0;
-		while(jobExecution.isRunning() && count <= 10){
-			logger.info("Checking for end time in JobExecution: count="+count);
-			Thread.sleep(100);
-			count++;
-		}
-		
-		assertFalse("Timed out waiting for job to end.", jobExecution.isRunning());
-		assertEquals(BatchStatus.STOPPED, jobExecution.getStatus());
+        Thread.sleep(1000);
 
-	}
-	
+        assertEquals(BatchStatus.STARTED, jobExecution.getStatus());
+        assertTrue(jobExecution.isRunning());
+
+        jobExecution.stop();
+
+        int count = 0;
+        while (jobExecution.isRunning() && count <= 10) {
+            //logger.info("Checking for end time in JobExecution: count=" + count);
+            Thread.sleep(100);
+            count++;
+        }
+
+        assertFalse("Timed out waiting for job to end.", jobExecution.isRunning());
+        assertEquals(BatchStatus.STOPPED, jobExecution.getStatus());
+
+    }
+
 }

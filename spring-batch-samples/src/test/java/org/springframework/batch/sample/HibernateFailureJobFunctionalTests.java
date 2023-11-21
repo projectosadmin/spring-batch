@@ -7,7 +7,8 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.sample.dao.HibernateCreditDao;
 import org.springframework.jdbc.UncategorizedSQLException;
-import org.springframework.orm.hibernate3.HibernateJdbcException;
+import org.springframework.orm.hibernate5.HibernateJdbcException;
+import static org.junit.Assert.*;
 
 /**
  * Test for HibernateJob - checks that customer credit has been updated to
@@ -23,7 +24,7 @@ public class HibernateFailureJobFunctionalTests extends
 	/**
 	 * Public setter for the {@link HibernateCreditDao} property.
 	 * 
-	 * @param writer
+	 * @param writer writer
 	 *            the writer to set
 	 */
 	public void setWriter(HibernateCreditDao writer) {
@@ -35,7 +36,9 @@ public class HibernateFailureJobFunctionalTests extends
 	 * 
 	 * @see org.springframework.test.AbstractSingleSpringContextTests#onTearDown()
 	 */
-	protected void onTearDown() throws Exception {
+	
+	@org.junit.After
+public void onTearDown() throws Exception {
 		super.onTearDown();
 		writer.setFailOnFlush(-1);
 	}
@@ -45,12 +48,13 @@ public class HibernateFailureJobFunctionalTests extends
 	 * 
 	 * @see org.springframework.batch.sample.AbstractValidatingBatchLauncherTests#testLaunchJob()
 	 */
-	public void testLaunchJob() throws Exception {
+	@org.junit.Test
+public void testLaunchJob() throws Exception {
 		JobParameters params = new JobParametersBuilder().addString("key", "failureJob").toJobParameters();
 		setJobParameters(params);
 		writer.setFailOnFlush(2);
 
-		int before = jdbcTemplate.queryForInt("SELECT COUNT(*) from CUSTOMER");
+		int before = jdbcTemplate.queryForObject("SELECT COUNT(*) from CUSTOMER", Integer.class);
 		assertTrue(before > 0);
 		try {
 			super.testLaunchJob();
@@ -64,7 +68,7 @@ public class HibernateFailureJobFunctionalTests extends
 			// assertEquals(1, writer.getErrors().size());
 			throw e;
 		}
-		int after = jdbcTemplate.queryForInt("SELECT COUNT(*) from CUSTOMER");
+		int after = jdbcTemplate.queryForObject("SELECT COUNT(*) from CUSTOMER", Integer.class);
 		assertEquals(before, after);
 	}
 

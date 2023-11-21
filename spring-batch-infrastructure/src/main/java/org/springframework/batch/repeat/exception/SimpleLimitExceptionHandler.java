@@ -113,7 +113,7 @@ public class SimpleLimitExceptionHandler implements ExceptionHandler {
 	 * The limit on the given exception type within a single context before it
 	 * is rethrown.
 	 * 
-	 * @param limit
+	 * @param limit limit
 	 */
 	public void setLimit(final int limit) {
 		delegate.setThresholds(new HashMap() {

@@ -18,7 +18,7 @@ package org.springframework.batch.sample;
 
 import org.springframework.batch.item.file.mapping.FieldSet;
 import org.springframework.batch.item.file.transform.LineAggregator;
-
+import static org.junit.Assert.*;
 
 /**
  * Stub implementation of {@link LineAggregator} interface for testing purposes.

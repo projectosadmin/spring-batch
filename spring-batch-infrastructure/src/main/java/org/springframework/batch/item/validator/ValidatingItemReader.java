@@ -51,7 +51,7 @@ public class ValidatingItemReader extends DelegatingItemReader {
 	/**
 	 * Set the validator used to validate each item.
 	 *
-	 * @param validator
+	 * @param validator validator
 	 */
 	public void setValidator(Validator validator) {
 		this.validator = validator;

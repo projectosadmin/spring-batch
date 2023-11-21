@@ -18,9 +18,10 @@ package org.springframework.batch.core.step.item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -65,7 +66,7 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
-public class ItemOrientedStepTests extends TestCase {
+public class ItemOrientedStepTests {
 
 	List processed = new ArrayList();
 
@@ -97,7 +98,8 @@ public class ItemOrientedStepTests extends TestCase {
 		return step;
 	}
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		MapJobInstanceDao.clear();
 		MapStepExecutionDao.clear();
 		MapJobExecutionDao.clear();
@@ -122,7 +124,8 @@ public class ItemOrientedStepTests extends TestCase {
 
 	}
 
-	public void testStepExecutor() throws Exception {
+	@org.junit.Test
+public void testStepExecutor() throws Exception {
 
 		JobExecution jobExecutionContext = new JobExecution(jobInstance);
 		StepExecution stepExecution = new StepExecution(itemOrientedStep.getName(), jobExecutionContext);
@@ -132,7 +135,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(1, stepExecution.getItemCount().intValue());
 	}
 
-	public void testChunkExecutor() throws Exception {
+	@org.junit.Test
+public void testChunkExecutor() throws Exception {
 
 		RepeatTemplate template = new RepeatTemplate();
 
@@ -151,7 +155,8 @@ public class ItemOrientedStepTests extends TestCase {
 
 	}
 
-	public void testRepository() throws Exception {
+	@org.junit.Test
+public void testRepository() throws Exception {
 
 		SimpleJobRepository repository = new SimpleJobRepository(new MapJobInstanceDao(), new MapJobExecutionDao(),
 				new MapStepExecutionDao());
@@ -164,7 +169,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(1, processed.size());
 	}
 
-	public void testIncrementRollbackCount() {
+	@org.junit.Test
+public void testIncrementRollbackCount() {
 
 		ItemReader itemReader = new AbstractItemReader() {
 
@@ -194,7 +200,8 @@ public class ItemOrientedStepTests extends TestCase {
 
 	}
 
-	public void testExitCodeDefaultClassification() throws Exception {
+	@org.junit.Test
+public void testExitCodeDefaultClassification() throws Exception {
 
 		ItemReader itemReader = new AbstractItemReader() {
 
@@ -224,7 +231,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testExitCodeCustomClassification() throws Exception {
+	@org.junit.Test
+public void testExitCodeCustomClassification() throws Exception {
 
 		ItemReader itemReader = new AbstractItemReader() {
 
@@ -265,7 +273,8 @@ public class ItemOrientedStepTests extends TestCase {
 	 * make sure a job that has never been executed before, but does have
 	 * saveExecutionAttributes = true, doesn't have restoreFrom called on it.
 	 */
-	public void testNonRestartedJob() throws Exception {
+	@org.junit.Test
+public void testNonRestartedJob() throws Exception {
 		MockRestartableItemReader tasklet = new MockRestartableItemReader();
 		itemOrientedStep.setItemHandler(new SimpleItemHandler(tasklet, itemWriter));
 		itemOrientedStep.registerStream(tasklet);
@@ -278,7 +287,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertTrue(tasklet.isGetExecutionAttributesCalled());
 	}
 
-	public void testSuccessfulExecutionWithExecutionContext() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithExecutionContext() throws Exception {
 		final JobExecution jobExecution = new JobExecution(jobInstance);
 		final StepExecution stepExecution = new StepExecution(itemOrientedStep.getName(), jobExecution);
 		itemOrientedStep.setJobRepository(new JobRepositorySupport() {
@@ -294,7 +304,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(3, list.size());
 	}
 
-	public void testSuccessfulExecutionWithFailureOnSaveOfExecutionContext() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithFailureOnSaveOfExecutionContext() throws Exception {
 		final JobExecution jobExecution = new JobExecution(jobInstance);
 		final StepExecution stepExecution = new StepExecution(itemOrientedStep.getName(), jobExecution);
 		itemOrientedStep.setJobRepository(new JobRepositorySupport() {
@@ -323,7 +334,8 @@ public class ItemOrientedStepTests extends TestCase {
 	 * set to false, doesn't have restore or getExecutionAttributes called on
 	 * it.
 	 */
-	public void testNoSaveExecutionAttributesRestartableJob() {
+	@org.junit.Test
+public void testNoSaveExecutionAttributesRestartableJob() {
 		MockRestartableItemReader tasklet = new MockRestartableItemReader();
 		itemOrientedStep.setItemHandler(new SimpleItemHandler(tasklet, itemWriter));
 		JobExecution jobExecutionContext = new JobExecution(jobInstance);
@@ -344,7 +356,8 @@ public class ItemOrientedStepTests extends TestCase {
 	 * nothing will be restored because the Tasklet does not implement
 	 * Restartable.
 	 */
-	public void testRestartJobOnNonRestartableTasklet() throws Exception {
+	@org.junit.Test
+public void testRestartJobOnNonRestartableTasklet() throws Exception {
 		itemOrientedStep.setItemHandler(new SimpleItemHandler(new AbstractItemReader() {
 			public Object read() throws Exception {
 				return "foo";
@@ -356,7 +369,8 @@ public class ItemOrientedStepTests extends TestCase {
 		itemOrientedStep.execute(stepExecution);
 	}
 
-	public void testStreamManager() throws Exception {
+	@org.junit.Test
+public void testStreamManager() throws Exception {
 		MockRestartableItemReader reader = new MockRestartableItemReader() {
 			public Object read() throws Exception {
 				return "foo";
@@ -380,7 +394,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals("bar", stepExecution.getExecutionContext().getString("foo"));
 	}
 
-	public void testDirectlyInjectedItemStream() throws Exception {
+	@org.junit.Test
+public void testDirectlyInjectedItemStream() throws Exception {
 		itemOrientedStep.setStreams(new ItemStream[] { new ItemStreamSupport() {
 			public void update(ExecutionContext executionContext) {
 				executionContext.putString("foo", "bar");
@@ -396,7 +411,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals("bar", stepExecution.getExecutionContext().getString("foo"));
 	}
 
-	public void testDirectlyInjectedListener() throws Exception {
+	@org.junit.Test
+public void testDirectlyInjectedListener() throws Exception {
 		itemOrientedStep.registerStepExecutionListener(new StepExecutionListenerSupport() {
 			public void beforeStep(StepExecution stepExecution) {
 				list.add("foo");
@@ -413,7 +429,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(2, list.size());
 	}
 
-	public void testListenerCalledBeforeStreamOpened() throws Exception {
+	@org.junit.Test
+public void testListenerCalledBeforeStreamOpened() throws Exception {
 		MockRestartableItemReader reader = new MockRestartableItemReader() {
 			public void beforeStep(StepExecution stepExecution) {
 				list.add("foo");
@@ -430,7 +447,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testAfterStep() throws Exception {
+	@org.junit.Test
+public void testAfterStep() throws Exception {
 
 		final ExitStatus customStatus = new ExitStatus(false, "custom code");
 
@@ -454,7 +472,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(customStatus.getExitDescription(), returnedStatus.getExitDescription());
 	}
 
-	public void testDirectlyInjectedListenerOnError() throws Exception {
+	@org.junit.Test
+public void testDirectlyInjectedListenerOnError() throws Exception {
 		itemOrientedStep.registerStepExecutionListener(new StepExecutionListenerSupport() {
 			public ExitStatus onErrorInStep(StepExecution stepExecution, Throwable e) {
 				list.add(e);
@@ -478,7 +497,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testDirectlyInjectedStreamWhichIsAlsoReader() throws Exception {
+	@org.junit.Test
+public void testDirectlyInjectedStreamWhichIsAlsoReader() throws Exception {
 		MockRestartableItemReader reader = new MockRestartableItemReader() {
 			public Object read() throws Exception {
 				return "foo";
@@ -502,7 +522,8 @@ public class ItemOrientedStepTests extends TestCase {
 		assertEquals("bar", stepExecution.getExecutionContext().getString("foo"));
 	}
 
-	public void testStatusForInterruptedException() {
+	@org.junit.Test
+public void testStatusForInterruptedException() {
 
 		StepInterruptionPolicy interruptionPolicy = new StepInterruptionPolicy() {
 
@@ -547,7 +568,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForNormalFailure() throws Exception {
+	@org.junit.Test
+public void testStatusForNormalFailure() throws Exception {
 
 		ItemReader itemReader = new AbstractItemReader() {
 			public Object read() throws Exception {
@@ -574,7 +596,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForErrorFailure() throws Exception {
+	@org.junit.Test
+public void testStatusForErrorFailure() throws Exception {
 
 		ItemReader itemReader = new AbstractItemReader() {
 			public Object read() throws Exception {
@@ -601,7 +624,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForResetFailedException() throws Exception {
+	@org.junit.Test
+public void testStatusForResetFailedException() throws Exception {
 
 		ItemReader itemReader = new AbstractItemReader() {
 			public Object read() throws Exception {
@@ -636,7 +660,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForCommitFailedException() throws Exception {
+	@org.junit.Test
+public void testStatusForCommitFailedException() throws Exception {
 
 		itemOrientedStep.setTransactionManager(new ResourcelessTransactionManager() {
 			protected void doCommit(DefaultTransactionStatus status) throws TransactionException {
@@ -666,7 +691,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForFinalUpdateFailedException() throws Exception {
+	@org.junit.Test
+public void testStatusForFinalUpdateFailedException() throws Exception {
 
 		itemOrientedStep.setJobRepository(new JobRepositorySupport());
 		itemOrientedStep.setStreams(new ItemStream[] { new ItemStreamSupport() {
@@ -694,7 +720,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStatusForCloseFailedException() throws Exception {
+	@org.junit.Test
+public void testStatusForCloseFailedException() throws Exception {
 
 		MockRestartableItemReader itemReader = new MockRestartableItemReader() {
 			public void close(ExecutionContext executionContext) throws ItemStreamException {
@@ -733,7 +760,8 @@ public class ItemOrientedStepTests extends TestCase {
 	 * commiting first chunk - otherwise ItemStreams won't recognize it is
 	 * restart scenario on next run.
 	 */
-	public void testRestartAfterFailureInFirstChunk() throws Exception {
+	@org.junit.Test
+public void testRestartAfterFailureInFirstChunk() throws Exception {
 		MockRestartableItemReader reader = new MockRestartableItemReader() {
 			public Object read() throws Exception {
 				// fail on the very first item
@@ -757,7 +785,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 
-	public void testStepToCompletion() throws Exception {
+	@org.junit.Test
+public void testStepToCompletion() throws Exception {
 
 		RepeatTemplate template = new RepeatTemplate();
 
@@ -776,9 +805,10 @@ public class ItemOrientedStepTests extends TestCase {
 	/**
 	 * Exception in {@link StepExecutionListener#afterStep(StepExecution)}
 	 * causes step to fail.
-	 * @throws JobInterruptedException
+	 * @throws JobInterruptedException JobInterruptedException
 	 */
-	public void testStepFailureInAfterStepCallback() throws JobInterruptedException {
+	@org.junit.Test
+public void testStepFailureInAfterStepCallback() throws JobInterruptedException {
 		StepExecutionListener listener = new StepExecutionListenerSupport() {
 			public ExitStatus afterStep(StepExecution stepExecution) {
 				throw new RuntimeException("exception thrown in afterStep to signal failure");
@@ -798,7 +828,8 @@ public class ItemOrientedStepTests extends TestCase {
 
 	}
 
-	public void testStepExecutionUpdates() throws Exception {
+	@org.junit.Test
+public void testStepExecutionUpdates() throws Exception {
 
 		JobExecution jobExecution = new JobExecution(jobInstance);
 		StepExecution stepExecution = new StepExecution(itemOrientedStep.getName(), jobExecution);
@@ -819,7 +850,8 @@ public class ItemOrientedStepTests extends TestCase {
 	/**
 	 * Failure to update StepExecution after chunk commit is fatal.
 	 */
-	public void testStepExecutionUpdateFailure() throws Exception {
+	@org.junit.Test
+public void testStepExecutionUpdateFailure() throws Exception {
 
 		JobExecution jobExecution = new JobExecution(jobInstance);
 		StepExecution stepExecution = new StepExecution(itemOrientedStep.getName(), jobExecution);
@@ -841,7 +873,8 @@ public class ItemOrientedStepTests extends TestCase {
 		
 	}
 	
-	public void testNoRollbackOnFlushException() throws Exception{
+	@org.junit.Test
+public void testNoRollbackOnFlushException() throws Exception{
 		
 		final RuntimeException exception = new RuntimeException();
 		ItemWriter itemWriter = new AbstractItemWriter() {
@@ -871,7 +904,8 @@ public class ItemOrientedStepTests extends TestCase {
 		}
 	}
 	
-	public void testNoRollbackOnUpdateException() throws Exception{
+	@org.junit.Test
+public void testNoRollbackOnUpdateException() throws Exception{
 		
 		final RuntimeException exception = new RuntimeException();
 
@@ -985,6 +1019,16 @@ public class ItemOrientedStepTests extends TestCase {
 	}
 	
 	private static class NeverRollbackTransactionAttribute implements TransactionAttribute{
+
+		@Override
+		public String getQualifier() {
+			return null;
+		}
+
+		//@Override
+		public Collection<String> getLabels() {
+			return null;
+		}
 
 		public boolean rollbackOn(Throwable ex) {
 			// TODO Auto-generated method stub

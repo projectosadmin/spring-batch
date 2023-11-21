@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.util.Assert;
@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
  *
  * @author Robert Kasanicky
  */
-public class FileUtilsTests extends TestCase {
+public class FileUtilsTests {
 
 	private File file = new File("FileUtilsTests.tmp");
 
@@ -23,7 +23,8 @@ public class FileUtilsTests extends TestCase {
 	 * No restart + file should not be overwritten => file is created if it does
 	 * not exist, exception is thrown if it already exists
 	 */
-	public void testNoRestart() throws Exception {
+	@org.junit.Test
+public void testNoRestart() throws Exception {
 		FileUtils.setUpOutputFile(file, false, false);
 		assertTrue(file.exists());
 
@@ -58,7 +59,8 @@ public class FileUtilsTests extends TestCase {
 	 * In case of restart, the file is supposed to exist and exception is thrown
 	 * if it does not.
 	 */
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 		try {
 			FileUtils.setUpOutputFile(file, true, false);
 			fail();
@@ -86,7 +88,8 @@ public class FileUtilsTests extends TestCase {
 	/**
 	 * If the directories on the file path do not exist, they should be created
 	 */
-	public void testCreateDirectoryStructure() {
+	@org.junit.Test
+public void testCreateDirectoryStructure() {
 		File file = new File("testDirectory/testDirectory2/testFile.tmp");
 		File dir1 = new File("testDirectory");
 		File dir2 = new File("testDirectory/testDirectory2");
@@ -104,7 +107,8 @@ public class FileUtilsTests extends TestCase {
 		}
 	}
 
-	public void testBadFile(){
+	@org.junit.Test
+public void testBadFile(){
 
 		File file = new File("new file"){
 			public boolean createNewFile() throws IOException {
@@ -121,7 +125,8 @@ public class FileUtilsTests extends TestCase {
 		}
 	}
 	
-	public void testCouldntCreateFile(){
+	@org.junit.Test
+public void testCouldntCreateFile(){
 
 		File file = new File("new file"){
 			public boolean exists() {
@@ -138,11 +143,13 @@ public class FileUtilsTests extends TestCase {
 		}
 	}
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		Assert.state(!file.exists());
 	}
 
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		file.delete();
 	}
 

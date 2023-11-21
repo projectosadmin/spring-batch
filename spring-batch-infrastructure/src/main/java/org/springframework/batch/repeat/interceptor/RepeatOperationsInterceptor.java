@@ -47,7 +47,7 @@ public class RepeatOperationsInterceptor implements MethodInterceptor {
 	/**
 	 * Setter for the {@link RepeatOperations}.
 	 * 
-	 * @param batchTempate
+	 * @param batchTempate batchTempate
 	 * @throws IllegalArgumentException if the argument is null.
 	 */
 	public void setRepeatOperations(RepeatOperations batchTempate) {
@@ -128,7 +128,7 @@ public class RepeatOperationsInterceptor implements MethodInterceptor {
 	}
 
 	/**
-	 * @param result
+	 * @param result result
 	 * @return
 	 */
 	private boolean isComplete(Object result) {
@@ -144,8 +144,8 @@ public class RepeatOperationsInterceptor implements MethodInterceptor {
 	 */
 	private static class RepeatOperationsInterceptorException extends RepeatException {
 		/**
-		 * @param message
-		 * @param e
+		 * @param message message
+		 * @param e e
 		 */
 		public RepeatOperationsInterceptorException(String message, Throwable e) {
 			super(message, e);
@@ -173,7 +173,7 @@ public class RepeatOperationsInterceptor implements MethodInterceptor {
 		}
 
 		/**
-		 * @param value
+		 * @param value value
 		 */
 		public void setFinalValue(Object value) {
 			if (ready) {

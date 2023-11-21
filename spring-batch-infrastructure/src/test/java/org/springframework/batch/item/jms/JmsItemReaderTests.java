@@ -22,17 +22,18 @@ import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.Queue;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.jms.JmsItemReader;
 import org.springframework.jms.core.JmsOperations;
 
-public class JmsItemReaderTests extends TestCase {
+public class JmsItemReaderTests {
 
 	JmsItemReader itemProvider = new JmsItemReader();
 
-	public void testNoItemTypeSunnyDay() {
+	@org.junit.Test
+public void testNoItemTypeSunnyDay() {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 		templateControl.expectAndReturn(jmsTemplate.receiveAndConvert(), "foo");
@@ -43,7 +44,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testSetItemTypeSunnyDay() {
+	@org.junit.Test
+public void testSetItemTypeSunnyDay() {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 		templateControl.expectAndReturn(jmsTemplate.receiveAndConvert(), "foo");
@@ -55,7 +57,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testSetItemSubclassTypeSunnyDay() {
+	@org.junit.Test
+public void testSetItemSubclassTypeSunnyDay() {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 
@@ -69,7 +72,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testSetItemTypeMismatch() {
+	@org.junit.Test
+public void testSetItemTypeMismatch() {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 		templateControl.expectAndReturn(jmsTemplate.receiveAndConvert(), "foo");
@@ -88,7 +92,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testNextMessageSunnyDay() {
+	@org.junit.Test
+public void testNextMessageSunnyDay() {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		MockControl messageControl = MockControl.createControl(Message.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
@@ -102,7 +107,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testRecoverWithNoDestination() throws Exception {
+	@org.junit.Test
+public void testRecoverWithNoDestination() throws Exception {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 		templateControl.replay();
@@ -114,7 +120,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testErrorQueueWithDestinationName() throws Exception {
+	@org.junit.Test
+public void testErrorQueueWithDestinationName() throws Exception {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		JmsOperations jmsTemplate = (JmsOperations) templateControl.getMock();
 		jmsTemplate.convertAndSend("queue", "foo");
@@ -128,7 +135,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testErrorQueueWithDestination() throws Exception {
+	@org.junit.Test
+public void testErrorQueueWithDestination() throws Exception {
 		MockControl templateControl = MockControl.createControl(JmsOperations.class);
 		MockControl queueControl = MockControl.createControl(Queue.class);
 
@@ -147,7 +155,8 @@ public class JmsItemReaderTests extends TestCase {
 		templateControl.verify();
 	}
 
-	public void testGetKeyFromMessage() throws Exception {
+	@org.junit.Test
+public void testGetKeyFromMessage() throws Exception {
 		MockControl messageControl = MockControl.createControl(Message.class);
 		Message message = (Message) messageControl.getMock();
 		messageControl.expectAndReturn(message.getJMSMessageID(), "foo");
@@ -159,12 +168,14 @@ public class JmsItemReaderTests extends TestCase {
 
 	}
 
-	public void testGetKeyFromNonMessage() throws Exception {
+	@org.junit.Test
+public void testGetKeyFromNonMessage() throws Exception {
 		itemProvider.setItemType(String.class);
 		assertEquals("foo", itemProvider.getKey("foo"));
 	}
 
-	public void testIsNewForMessage() throws Exception {
+	@org.junit.Test
+public void testIsNewForMessage() throws Exception {
 		MockControl messageControl = MockControl.createControl(Message.class);
 		Message message = (Message) messageControl.getMock();
 		messageControl.expectAndReturn(message.getJMSRedelivered(), true);
@@ -175,7 +186,8 @@ public class JmsItemReaderTests extends TestCase {
 		messageControl.verify();
 	}
 
-	public void testIsNewForNonMessage() throws Exception {
+	@org.junit.Test
+public void testIsNewForNonMessage() throws Exception {
 		itemProvider.setItemType(String.class);
 		assertEquals(false, itemProvider.isNew("foo"));
 	}

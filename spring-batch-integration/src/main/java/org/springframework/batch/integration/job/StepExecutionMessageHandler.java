@@ -51,7 +51,7 @@ public class StepExecutionMessageHandler {
 	 * state of the batch meta domain (jobs, steps, executions) during the life
 	 * of a job.
 	 * 
-	 * @param jobRepository
+	 * @param jobRepository jobRepository
 	 */
 	@Required
 	public void setJobRepository(JobRepository jobRepository) {
@@ -121,8 +121,8 @@ public class StepExecutionMessageHandler {
 	}
 
 	/**
-	 * @param jobInstance
-	 * @param lastStepExecution
+	 * @param jobInstance jobInstance
+	 * @param lastStepExecution lastStepExecution
 	 * @return
 	 */
 	private boolean isRestart(JobInstance jobInstance, StepExecution lastStepExecution) {
@@ -130,7 +130,7 @@ public class StepExecutionMessageHandler {
 	}
 
 	/**
-	 * @param request
+	 * @param request request
 	 * @return
 	 */
 	private boolean isComplete(JobExecutionRequest request) {
@@ -139,8 +139,8 @@ public class StepExecutionMessageHandler {
 	}
 
 	/**
-	 * @param request
-	 * @param e
+	 * @param request request
+	 * @param e e
 	 */
 	private void handleFailure(JobExecutionRequest request, Throwable e) {
 		request.registerThrowable(e);

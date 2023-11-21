@@ -18,7 +18,7 @@ package org.springframework.batch.core.step.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -37,7 +37,7 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
  * @author Dave Syer
  * 
  */
-public class RepeatOperationsStepFactoryBeanTests extends TestCase {
+public class RepeatOperationsStepFactoryBeanTests {
 
 	private RepeatOperationsStepFactoryBean factory = new RepeatOperationsStepFactoryBean();
 
@@ -45,7 +45,8 @@ public class RepeatOperationsStepFactoryBeanTests extends TestCase {
 
 	private JobExecution jobExecution = new JobExecution(new JobInstance(new Long(0L), new JobParameters(), "job"));
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		factory.setBeanName("RepeatOperationsStep");
 		factory.setItemReader(new ListItemReader(new ArrayList()));
 		factory.setItemWriter(new EmptyItemWriter());
@@ -53,15 +54,18 @@ public class RepeatOperationsStepFactoryBeanTests extends TestCase {
 		factory.setTransactionManager(new ResourcelessTransactionManager());
 	}
 
-	public void testType() throws Exception {
+	@org.junit.Test
+public void testType() throws Exception {
 		assertEquals(Step.class, factory.getObjectType());
 	}
 
-	public void testDefaultValue() throws Exception {
+	@org.junit.Test
+public void testDefaultValue() throws Exception {
 		assertTrue(factory.getObject() instanceof Step);
 	}
 
-	public void testStepOperationsWithoutChunkListener() throws Exception {
+	@org.junit.Test
+public void testStepOperationsWithoutChunkListener() throws Exception {
 
 		factory.setItemReader(new ListItemReader(new ArrayList()));
 		factory.setItemWriter(new EmptyItemWriter());

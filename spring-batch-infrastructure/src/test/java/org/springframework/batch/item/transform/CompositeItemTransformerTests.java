@@ -2,7 +2,7 @@ package org.springframework.batch.item.transform;
 
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 
@@ -11,7 +11,7 @@ import org.easymock.MockControl;
  * 
  * @author Robert Kasanicky
  */
-public class CompositeItemTransformerTests extends TestCase {
+public class CompositeItemTransformerTests {
 
 	private CompositeItemTransformer composite = new CompositeItemTransformer();
 	
@@ -21,7 +21,8 @@ public class CompositeItemTransformerTests extends TestCase {
 	private MockControl tControl1 = MockControl.createControl(ItemTransformer.class);
 	private MockControl tControl2 = MockControl.createControl(ItemTransformer.class);
 	
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		transformer1 = (ItemTransformer) tControl1.getMock();
 		transformer2 = (ItemTransformer) tControl2 .getMock();
 		
@@ -36,7 +37,8 @@ public class CompositeItemTransformerTests extends TestCase {
 	 * Regular usage scenario - item is passed through the processing chain,
 	 * return value of the of the last transformation is returned by the composite.
 	 */
-	public void testTransform() throws Exception {
+	@org.junit.Test
+public void testTransform() throws Exception {
 		Object item = new Object();
 		Object itemAfterFirstTransfromation = new Object();
 		Object itemAfterSecondTransformation = new Object();
@@ -60,7 +62,8 @@ public class CompositeItemTransformerTests extends TestCase {
 	 * The list of transformers must not be null or empty and 
 	 * can contain only instances of {@link ItemTransformer}.
 	 */
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		
 		// value not set
 		composite.setItemTransformers(null);

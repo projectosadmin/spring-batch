@@ -19,8 +19,9 @@ package org.springframework.batch.core.resource;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -40,7 +41,7 @@ import org.springframework.core.io.Resource;
  * @author Lucas Ward
  * @author Dave Syer
  */
-public class StepExecutionResourceProxyTests extends TestCase {
+public class StepExecutionResourceProxyTests {
 
 	/**
 	 * Object under test
@@ -59,7 +60,8 @@ public class StepExecutionResourceProxyTests extends TestCase {
 	 * mock step context
 	 */
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		jobInstance = new JobInstance(new Long(0), new JobParameters(), "testJob");
 		JobExecution jobExecution = new JobExecution(jobInstance);
@@ -72,11 +74,13 @@ public class StepExecutionResourceProxyTests extends TestCase {
 	/**
 	 * regular use with valid context and pattern provided
 	 */
-	public void testCreateFileName() throws Exception {
+	@org.junit.Test
+public void testCreateFileName() throws Exception {
 		doTestPathName("bar.txt", path);
 	}
 
-	public void testNullFilePattern() throws Exception {
+	@org.junit.Test
+public void testNullFilePattern() throws Exception {
 		resource.setFilePattern(null);
 		try {
 			resource.beforeStep(stepExecution);
@@ -87,13 +91,15 @@ public class StepExecutionResourceProxyTests extends TestCase {
 		}
 	}
 
-	public void testNonStandardFilePattern() throws Exception {
+	@org.junit.Test
+public void testNonStandardFilePattern() throws Exception {
 		resource.setFilePattern("foo/data/%JOB_NAME%/" + "%STEP_NAME%-job");
 		resource.beforeStep(stepExecution);
 		doTestPathName("bar-job", "foo" + pathsep + "data" + pathsep);
 	}
 
-	public void testNonStandardFilePatternWithJobParameters() throws Exception {
+	@org.junit.Test
+public void testNonStandardFilePatternWithJobParameters() throws Exception {
 		resource.setFilePattern("foo/data/%JOB_NAME%/%job.key%-foo");
 		jobInstance = new JobInstance(new Long(0), new JobParametersBuilder().addString("job.key", "spam")
 				.toJobParameters(), "testJob");
@@ -103,7 +109,8 @@ public class StepExecutionResourceProxyTests extends TestCase {
 		doTestPathName("spam-foo", "foo" + pathsep + "data" + pathsep);
 	}
 
-	public void testResoureLoaderAware() throws Exception {
+	@org.junit.Test
+public void testResoureLoaderAware() throws Exception {
 		resource = new StepExecutionResourceProxy();
 		resource.setResourceLoader(new DefaultResourceLoader() {
 			public Resource getResource(String location) {
@@ -117,7 +124,8 @@ public class StepExecutionResourceProxyTests extends TestCase {
 	/**
 	 * toString delegates to the proxied resource.
 	 */
-	public void testToString() {
+	@org.junit.Test
+public void testToString() {
 		resource = new StepExecutionResourceProxy();
 		resource.setResourceLoader(new DefaultResourceLoader() {
 			public Resource getResource(String location) {
@@ -135,14 +143,16 @@ public class StepExecutionResourceProxyTests extends TestCase {
 	/**
 	 * If delegate is not set toString returns the filePattern.
 	 */
-	public void testToStringWithNullDelegate() {
+	@org.junit.Test
+public void testToStringWithNullDelegate() {
 		resource = new StepExecutionResourceProxy();
 		String filePattern = "arbitrary pattern";
 		resource.setFilePattern("arbitrary pattern");
 		assertEquals(filePattern, resource.toString());
 	}
 	
-	public void testNonExistentJobParameter() throws Exception{
+	@org.junit.Test
+public void testNonExistentJobParameter() throws Exception{
 		
 		resource.setFilePattern("foo/data/%JOB_NAME%/%non.key%-foo");
 		jobInstance = new JobInstance(new Long(0), new JobParametersBuilder().addString("job.key", "spam")
@@ -158,7 +168,8 @@ public class StepExecutionResourceProxyTests extends TestCase {
 		}
 	}
 	
-	public void testLongJobParameter() throws Exception {
+	@org.junit.Test
+public void testLongJobParameter() throws Exception {
 		
 		resource.setFilePattern("foo/data/%JOB_NAME%/%job.key%-foo");
 		jobInstance = new JobInstance(new Long(0), new JobParametersBuilder().addLong("job.key", new Long(123))

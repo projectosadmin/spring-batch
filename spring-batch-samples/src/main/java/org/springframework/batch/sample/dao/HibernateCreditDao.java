@@ -22,7 +22,7 @@ import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatListener;
 import org.springframework.batch.sample.domain.CustomerCredit;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**
  * @author Lucas Ward
@@ -74,7 +74,7 @@ public class HibernateCreditDao extends HibernateDaoSupport implements
 	/**
 	 * Public setter for the failOnFlush property.
 	 * 
-	 * @param failOnFlush
+	 * @param failOnFlush failOnFlush
 	 *            the ID of the record you want to fail on flush (for testing)
 	 */
 	public void setFailOnFlush(int failOnFlush) {

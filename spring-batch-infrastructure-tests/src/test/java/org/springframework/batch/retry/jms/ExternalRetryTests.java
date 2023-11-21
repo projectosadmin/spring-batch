@@ -33,7 +33,7 @@ import org.springframework.batch.retry.policy.RecoveryCallbackRetryPolicy;
 import org.springframework.batch.retry.support.RetryTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -69,7 +69,8 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 				"jms-context.xml") };
 	}
 
-	protected void onSetUp() throws Exception {
+	@org.junit.Before
+public void onSetUp() throws Exception {
 		super.onSetUp();
 		getMessages(); // drain queue
 		jdbcTemplate.execute("delete from T_FOOS");
@@ -90,7 +91,7 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 	}
 
 	private void assertInitialState() {
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 	}
 
@@ -102,9 +103,10 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 	 * Message processing is successful on the second attempt but must receive
 	 * the message again.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testExternalRetrySuccessOnSecondAttempt() throws Exception {
+	@org.junit.Test
+public void testExternalRetrySuccessOnSecondAttempt() throws Exception {
 
 		assertInitialState();
 
@@ -171,7 +173,7 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 		List msgs = getMessages();
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(1, count);
 
 		// ... and so did the message session.
@@ -181,9 +183,10 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 	/**
 	 * Message processing fails on both attempts.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testExternalRetryWithRecovery() throws Exception {
+	@org.junit.Test
+public void testExternalRetryWithRecovery() throws Exception {
 
 		assertInitialState();
 
@@ -239,7 +242,7 @@ public class ExternalRetryTests extends AbstractDependencyInjectionSpringContext
 		assertEquals(1, recovered.size());
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		// ... and so did the message session.

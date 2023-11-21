@@ -16,7 +16,7 @@
 
 package org.springframework.batch.item.file.transform;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.file.mapping.DefaultFieldSet;
 
@@ -25,10 +25,11 @@ import org.springframework.batch.item.file.mapping.DefaultFieldSet;
  * 
  * @author robert.kasanicky
  */
-public class DelimitedLineAggregatorTests extends TestCase {
+public class DelimitedLineAggregatorTests {
 	private DelimitedLineAggregator aggregator;
 
-	public void testAggregate() {
+	@org.junit.Test
+public void testAggregate() {
 		aggregator = new DelimitedLineAggregator();
 		aggregator.setDelimiter(":");
 

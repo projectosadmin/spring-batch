@@ -50,7 +50,7 @@ public class BatchSqlCustomerCreditIncreaseWriter implements ItemWriter, Initial
 	}
 
 	/**
-	 * @throws ClearFailedException
+	 * @throws ClearFailedException ClearFailedException
 	 * @see org.springframework.batch.item.database.BatchSqlUpdateItemWriter#clear()
 	 */
 	public void clear() throws ClearFailedException {
@@ -58,7 +58,7 @@ public class BatchSqlCustomerCreditIncreaseWriter implements ItemWriter, Initial
 	}
 
 	/**
-	 * @throws FlushFailedException
+	 * @throws FlushFailedException FlushFailedException
 	 * @see org.springframework.batch.item.database.BatchSqlUpdateItemWriter#flush()
 	 */
 	public void flush() throws FlushFailedException {

@@ -52,7 +52,7 @@ public class RethrowOnThresholdExceptionHandler implements ExceptionHandler {
 	 * Flag to indicate the the exception counters should be shared between
 	 * sibling contexts in a nested batch. Default is false.
 	 * 
-	 * @param useParent
+	 * @param useParent useParent
 	 *            true if the parent context should be used to store the
 	 *            counters.
 	 */
@@ -75,7 +75,7 @@ public class RethrowOnThresholdExceptionHandler implements ExceptionHandler {
 	 * are usually String literals, depending on the {@link ExceptionClassifier}
 	 * implementation used.
 	 * 
-	 * @param thresholds
+	 * @param thresholds thresholds
 	 *            the threshold value map.
 	 */
 	public void setThresholds(Map thresholds) {
@@ -100,7 +100,7 @@ public class RethrowOnThresholdExceptionHandler implements ExceptionHandler {
 	 * {@link ExceptionClassifierSupport#DEFAULT}, which are then mapped to a
 	 * threshold of 0 by the {@link #setThresholds(Map)} map.
 	 * 
-	 * @param exceptionClassifier
+	 * @param exceptionClassifier exceptionClassifier
 	 */
 	public void setExceptionClassifier(ExceptionClassifier exceptionClassifier) {
 		this.exceptionClassifier = exceptionClassifier;
@@ -111,7 +111,7 @@ public class RethrowOnThresholdExceptionHandler implements ExceptionHandler {
 	 * result. The context is used to accumulate the number of exceptions of the
 	 * same type according to the classifier.
 	 * 
-	 * @throws Throwable
+	 * @throws Throwable Throwable
 	 * @see ExceptionHandler#handleException(RepeatContext, Throwable)
 	 */
 	public void handleException(RepeatContext context, Throwable throwable)

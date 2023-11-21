@@ -7,15 +7,17 @@ import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.core.CollectionFactory;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
+import static org.junit.Assert.*;
 /**
  * @author Lucas Ward
  */
-public class ColumnMapExecutionContextRowMapperTests extends TestCase {
+public class ColumnMapExecutionContextRowMapperTests {
 
 	private ColumnMapItemPreparedStatementSetter mapper;
 	
@@ -24,18 +26,20 @@ public class ColumnMapExecutionContextRowMapperTests extends TestCase {
 	private MockControl psControl = MockControl.createControl(PreparedStatement.class);
 	private PreparedStatement ps;
 		
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 	
 		ps = (PreparedStatement)psControl.getMock();
 		mapper = new ColumnMapItemPreparedStatementSetter();
 		
-		key = CollectionFactory.createLinkedCaseInsensitiveMapIfPossible(2);
+		key = new LinkedCaseInsensitiveMap(2);
 		key.put("1", new Integer(1));
 		key.put("2", new Integer(2));
 	}
 	
-	public void testSetValuesWithInvalidType() throws Exception {
+	@org.junit.Test
+public void testSetValuesWithInvalidType() throws Exception {
 		
 		try{
 			mapper.setValues(new Object(), ps);
@@ -45,7 +49,8 @@ public class ColumnMapExecutionContextRowMapperTests extends TestCase {
 		}
 	}
 	
-	public void testCreateExecutionContextWithNull() throws Exception{
+	@org.junit.Test
+public void testCreateExecutionContextWithNull() throws Exception{
 		
 		try{
 			mapper.setValues(ps, null);
@@ -55,14 +60,16 @@ public class ColumnMapExecutionContextRowMapperTests extends TestCase {
 		}
 	}
 	
-	public void testCreateExecutionContextFromEmptyKeys() throws Exception {
+	@org.junit.Test
+public void testCreateExecutionContextFromEmptyKeys() throws Exception {
 		
 		psControl.replay();
 		mapper.setValues(new HashMap(), ps);
 		psControl.verify();
 	}
 	
-	public void testCreateSetter() throws Exception {
+	@org.junit.Test
+public void testCreateSetter() throws Exception {
 		
 		ps.setObject(1, new Integer(1));
 		ps.setObject(2, new Integer(2));

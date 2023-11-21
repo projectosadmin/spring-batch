@@ -17,7 +17,7 @@
 package org.springframework.batch.item.file;
 
 import org.springframework.batch.support.AbstractExceptionTests;
-
+import static org.junit.Assert.*;
 
 public class FlatFileParseExceptionTests extends AbstractExceptionTests {
 
@@ -29,7 +29,8 @@ public class FlatFileParseExceptionTests extends AbstractExceptionTests {
 		return new FlatFileParseException(msg, t, "bar", 100);
 	}
 	
-	public void testMessageInputLineCount() throws Exception {
+	@org.junit.Test
+public void testMessageInputLineCount() throws Exception {
 		FlatFileParseException exception = new FlatFileParseException("foo", "bar", 100);
 		assertEquals("foo", exception.getMessage());
 		assertEquals("bar", exception.getInput());

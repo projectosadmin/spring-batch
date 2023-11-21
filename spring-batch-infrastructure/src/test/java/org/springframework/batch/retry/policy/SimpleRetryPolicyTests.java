@@ -16,13 +16,14 @@
 
 package org.springframework.batch.retry.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryContext;
 
-public class SimpleRetryPolicyTests extends TestCase {
+public class SimpleRetryPolicyTests {
 
-	public void testSetInvalidExceptionClass() throws Exception {
+	@org.junit.Test
+public void testSetInvalidExceptionClass() throws Exception {
 		try {
 			new SimpleRetryPolicy().setRetryableExceptionClasses(new Class[] { String.class });
 			fail("Should only be able to set Exception classes.");
@@ -32,13 +33,15 @@ public class SimpleRetryPolicyTests extends TestCase {
 		}
 	}
 
-	public void testCanRetryIfNoException() throws Exception {
+	@org.junit.Test
+public void testCanRetryIfNoException() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		assertTrue(policy.canRetry(context));
 	}
 
-	public void testEmptyExceptionsNeverRetry() throws Exception {
+	@org.junit.Test
+public void testEmptyExceptionsNeverRetry() throws Exception {
 
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
@@ -51,7 +54,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testRetryLimitInitialState() throws Exception {
+	@org.junit.Test
+public void testRetryLimitInitialState() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		assertTrue(policy.canRetry(context));
@@ -60,7 +64,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testRetryLimitSubsequentState() throws Exception {
+	@org.junit.Test
+public void testRetryLimitSubsequentState() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		policy.setMaxAttempts(2);
@@ -71,7 +76,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testRetryCount() throws Exception {
+	@org.junit.Test
+public void testRetryCount() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		assertNotNull(context);
@@ -82,7 +88,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertEquals("foo", context.getLastThrowable().getMessage());
 	}
 
-	public void testDefaultFatal() throws Exception {
+	@org.junit.Test
+public void testDefaultFatal() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		assertNotNull(context);
@@ -90,7 +97,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testFatalOverridesRetryable() throws Exception {
+	@org.junit.Test
+public void testFatalOverridesRetryable() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		policy.setFatalExceptionClasses(new Class[] {Exception.class});
 		policy.setRetryableExceptionClasses(new Class[] {RuntimeException.class});
@@ -100,7 +108,8 @@ public class SimpleRetryPolicyTests extends TestCase {
 		assertFalse(policy.canRetry(context));
 	}
 
-	public void testParent() throws Exception {
+	@org.junit.Test
+public void testParent() throws Exception {
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		RetryContext context = policy.open(null, null);
 		RetryContext child = policy.open(null, context);

@@ -49,7 +49,7 @@ public abstract class AbstractBufferedItemReaderItemStream implements ItemReader
 	/**
 	 * Read next item from input.
 	 * @return item
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
 	protected abstract Object doRead() throws Exception;
 	

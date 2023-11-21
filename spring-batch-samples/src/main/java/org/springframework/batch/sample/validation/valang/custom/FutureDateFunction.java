@@ -28,9 +28,9 @@ import org.springmodules.validation.valang.functions.Function;
  */
 public class FutureDateFunction extends AbstractFunction {
     /**
-     * @param arguments
-     * @param line
-     * @param column
+     * @param arguments arguments
+     * @param line line
+     * @param column column
      */
     public FutureDateFunction(Function[] arguments, int line, int column) {
         super(arguments, line, column);

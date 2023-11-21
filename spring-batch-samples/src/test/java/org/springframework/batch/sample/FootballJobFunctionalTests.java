@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import static org.junit.Assert.*;
 
 public class FootballJobFunctionalTests extends
 		AbstractValidatingBatchLauncherTests {
@@ -15,7 +16,7 @@ public class FootballJobFunctionalTests extends
 	}
 
 	protected void validatePostConditions() throws Exception {
-		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) from PLAYER_SUMMARY");
+		int count = jdbcTemplate.queryForObject("SELECT COUNT(*) from PLAYER_SUMMARY", Integer.class);
 		assertTrue(count>0);
 	}
 

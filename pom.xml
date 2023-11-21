@@ -8,16 +8,15 @@
 		<!--  Use CDATA to keep it on a single line in the manifest -->
 		<![CDATA[Spring Batch provides tools for enterprise batch or bulk processing. It can be used to wire up jobs, and track	their execution, or simply as an optimization for repetitive processing in a transactional environment. Spring Batch is part of the Spring Portfolio.]]>
 	</description>
-	<version>1.1.4.RELEASE</version>
+	<version>1.1.5</version>
 	<packaging>pom</packaging>
+
 	<modules>
 		<module>spring-batch-infrastructure</module>
-		<module>spring-batch-infrastructure-tests</module>
 		<module>spring-batch-core</module>
-		<module>spring-batch-samples</module>
-		<module>spring-batch-integration</module>
-		<module>docs</module>
-		<module>archetypes</module>
+		<!--<module>spring-batch-samples</module>-->
+		<!--<module>docs</module>
+		<module>archetypes</module>-->
 	</modules>
 	<url>http://www.springframework.org/spring-batch</url>
 	<organization>
@@ -58,7 +57,8 @@
 	</licenses>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<spring.framework.version>2.5.5</spring.framework.version>
+		<spring.framework.version>5.0.20.RELEASE</spring.framework.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<profiles>
 		<profile>
@@ -68,14 +68,29 @@
 			</activation>
 		</profile>
 		<profile>
-			<id>deployment</id>
+			<id>all</id>
+	<modules>
+		<module>spring-batch-infrastructure-tests</module>
+		<module>spring-batch-integration</module>
+	</modules>
+		</profile>
+		<profile>
+			<id>staging</id>
 			<distributionManagement>
-				<site>
-					<id>static.springframework.org</id>
-					<url>
-						scp://static.springframework.org:/var/www/domains/springframework.org/static/htdocs/spring-batch/1.1.x
-					</url>
-				</site>
+		<site>
+			<id>staging</id>
+			<url>file:///${user.dir}/target/staging</url>
+		</site>
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone Repository</name>
+			<url>file:///${user.dir}/target/staging</url>
+		</repository>
+		<snapshotRepository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshot Repository</name>
+			<url>file:///${user.dir}/target/staging</url>
+		</snapshotRepository>
 			</distributionManagement>
 		</profile>
 		<profile>
@@ -117,7 +132,7 @@
 						<!-- This seems to work better than the default (2008/03/19) because links on sub-module sites are not broken -->
 						<plugin>
 							<artifactId>maven-site-plugin</artifactId>
-							<version>2.0-beta-7-SNAPSHOT</version>
+							<version>2.0-beta-8-SNAPSHOT</version>
 						</plugin>
 					</plugins>
 				</pluginManagement>
@@ -153,7 +168,7 @@
 			</activation>
 			<build>
 				<plugins>
-					<plugin>
+					<!--<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
 						<inherited>false</inherited>
@@ -190,21 +205,23 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin>-->
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
 	<distributionManagement>
 		<downloadUrl>http://www.springframework.org/download</downloadUrl>
-		<site>
-			<id>staging</id>
-			<url>file:///${user.dir}/target/staging</url>
-		</site>
+				<site>
+					<id>static.springframework.org</id>
+					<url>
+						scp://static.springframework.org:/var/www/domains/springframework.org/static/htdocs/spring-batch/1.1.x
+					</url>
+				</site>
 		<repository>
-			<id>spring-release</id>
+			<id>spring-milestone</id>
 			<name>Spring Milestone Repository</name>
-			<url>s3://maven.springframework.org/release</url>
+			<url>s3://maven.springframework.org/milestone</url>
 		</repository>
 		<snapshotRepository>
 			<id>spring-snapshot</id>
@@ -213,15 +230,19 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<build>
-		<extensions>
+		<!--<extensions>
 			<extension>
 				<groupId>org.springframework.aws</groupId>
 				<artifactId>spring-aws-maven</artifactId>
 				<version>1.2.2</version>
 			</extension>
-		</extensions>
+		</extensions>-->
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
 				<plugin>
 					<groupId>com.atlassian.maven.plugins</groupId>
 					<artifactId>maven-clover-plugin</artifactId>
@@ -243,7 +264,7 @@
 					<artifactId>emma-maven-plugin</artifactId>
 					<version>1.0-20070912.011112-4</version>
 				</plugin>
-				<plugin>
+				<!--<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<executions>
@@ -277,7 +298,7 @@
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant</artifactId>
-							<version>1.7.0</version>
+							<version>1.10.14</version>
 						</dependency>
 						<dependency>
 							<groupId>ant</groupId>
@@ -287,12 +308,12 @@
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-trax</artifactId>
-							<version>1.7.0</version>
+							<version>1.8.0</version>
 						</dependency>
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-apache-regexp</artifactId>
-							<version>1.7.0</version>
+							<version>1.10.14</version>
 						</dependency>
 						<dependency>
 							<groupId>foundrylogic.vpp</groupId>
@@ -300,21 +321,23 @@
 							<version>2.2.1</version>
 						</dependency>
 					</dependencies>
-				</plugin>
+				</plugin>-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
 				<configuration>
-					<source>1.4</source>
-					<target>1.4</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -327,7 +350,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.4.2</version>
 				<configuration>
 					<includes>
 						<include>**/*Tests.java</include>
@@ -339,6 +362,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
 				<configuration>
 					<filesets>
 						<fileset>
@@ -370,22 +394,23 @@
 				<artifactId>aspectjweaver</artifactId>
 				<version>1.5.3</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>backport-util-concurrent</groupId>
 				<artifactId>backport-util-concurrent</artifactId>
 				<version>3.0</version>
 				<optional>true</optional>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.1</version>
+				<version>4.12</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate</artifactId>
-				<version>3.2.3.ga</version>
+				<artifactId>hibernate-core</artifactId>
+				<version>5.6.15.Final</version>
+				<optional>true</optional>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -416,7 +441,7 @@
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
-				<version>2.1_3</version>
+				<version>3.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
@@ -455,7 +480,7 @@
 			<dependency>
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
-				<version>1.8.0.7</version>
+				<version>1.8.0.10</version>
 			</dependency>
 			<dependency>
 				<groupId>easymock</groupId>
@@ -486,12 +511,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.ibatis</groupId>
-				<artifactId>ibatis-sqlmap</artifactId>
-				<version>2.3.0</version>
-				<optional>true</optional>
-			</dependency>
+
 			<!-- Spring Dependencies -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -574,7 +594,19 @@
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
 				<version>2.8.1</version>
-				<scope>optional</scope>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>3.5.14</version>
+				<optional>true</optional>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>3.0.3</version>
+				<optional>true</optional>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -584,6 +616,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.1.2</version>
 			</plugin>
 			<plugin>
 				<groupId>com.interface21.maven</groupId>
@@ -598,9 +631,11 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.4.1</version>
 				<reportSets>
 					<reportSet>
 						<id>html</id>
@@ -623,7 +658,7 @@
 								<link>http://static.springframework.org/spring-ws/site/apidocs/</link>
 							</links>
 							<aggregate>true</aggregate>
-							<excludePackageNames>*.batch.sample,*.batch.container</excludePackageNames>
+							<excludePackageNames>*.batch.sample,*.batch.container,example</excludePackageNames>
 						</configuration>
 						<reports>
 							<report>javadoc</report>

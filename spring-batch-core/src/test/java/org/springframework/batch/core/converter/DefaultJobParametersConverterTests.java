@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -32,13 +32,14 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * 
  */
-public class DefaultJobParametersConverterTests extends TestCase {
+public class DefaultJobParametersConverterTests {
 
 	DefaultJobParametersConverter factory = new DefaultJobParametersConverter();
 
 	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-	public void testGetParameters() throws Exception {
+	@org.junit.Test
+public void testGetParameters() throws Exception {
 
 		String jobKey = "job.key=myKey";
 		String scheduleDate = "schedule.date(date)=2008/01/23";
@@ -54,7 +55,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		assertEquals(date, props.getDate("schedule.date"));
 	}
 
-	public void testGetParametersWithDateFormat() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithDateFormat() throws Exception {
 
 		String[] args = new String[] { "schedule.date(date)=2008/23/01" };
 
@@ -65,7 +67,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		assertEquals(date, props.getDate("schedule.date"));
 	}
 
-	public void testGetParametersWithBogusDate() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithBogusDate() throws Exception {
 
 		String[] args = new String[] { "schedule.date(date)=20080123" };
 
@@ -78,7 +81,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		}
 	}
 
-	public void testGetParametersWithNumberFormat() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithNumberFormat() throws Exception {
 
 		String[] args = new String[] { "value(long)=1,000" };
 
@@ -88,7 +92,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		assertEquals(1000L, props.getLong("value").longValue());
 	}
 
-	public void testGetParametersWithBogusLong() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithBogusLong() throws Exception {
 
 		String[] args = new String[] { "value(long)=foo" };
 
@@ -101,7 +106,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		}
 	}
 
-	public void testGetParametersWithDoubleValueDeclaredAsLong() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithDoubleValueDeclaredAsLong() throws Exception {
 
 		String[] args = new String[] { "value(long)=1.03" };
 		factory.setNumberFormat(new DecimalFormat("#.#"));
@@ -115,7 +121,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		}
 	}
 	
-	public void testGetParametersWithBogusDouble() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithBogusDouble() throws Exception {
 
 		String[] args = new String[] { "value(double)=foo" };
 
@@ -128,7 +135,8 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		}
 	}
 
-	public void testGetParametersWithDouble() throws Exception {
+	@org.junit.Test
+public void testGetParametersWithDouble() throws Exception {
 
 		String[] args = new String[] { "value(double)=1.38" };
 
@@ -136,8 +144,20 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		assertNotNull(props);
 		assertEquals(1.38, props.getDouble("value").doubleValue(), Double.MIN_VALUE);
 	}
+	
+	
+	@org.junit.Test
+public void testGetParametersWithRoundDouble() throws Exception {
 
-	public void testGetProperties() throws Exception {
+		String[] args = new String[] { "value(double)=1.0" };
+
+		JobParameters props = factory.getJobParameters(StringUtils.splitArrayElementsIntoProperties(args, "="));
+		assertNotNull(props);
+		assertEquals((double) 1.0, props.getDouble("value").doubleValue(), Double.MIN_VALUE);
+	}
+
+	@org.junit.Test
+public void testGetProperties() throws Exception {
 
 		JobParameters parameters = new JobParametersBuilder().addDate("schedule.date", dateFormat.parse("01/23/2008"))
 		        .addString("job.key", "myKey").addLong("vendor.id", new Long(33243243)).toJobParameters();
@@ -149,13 +169,15 @@ public class DefaultJobParametersConverterTests extends TestCase {
 		assertEquals("2008/01/23", props.getProperty("schedule.date"));
 	}
 
-	public void testEmptyArgs() {
+	@org.junit.Test
+public void testEmptyArgs() {
 
 		JobParameters props = factory.getJobParameters(new Properties());
 		assertTrue(props.getParameters().isEmpty());
 	}
 
-	public void testNullArgs() {
+	@org.junit.Test
+public void testNullArgs() {
 		assertEquals(new JobParameters(), factory.getJobParameters(null));
 		assertEquals(new Properties(), factory.getProperties(null));
 	}

@@ -58,8 +58,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	private ThreadLocalChannel receiver = new ThreadLocalChannel();
 	private JobRepositorySupport jobRepository;
 
-	@Before
-	public void setUp() {
+	@org.junit.Before
+public void setUp() {
 		jobRepository = new JobRepositorySupport();
 		factory.setJobRepository(jobRepository);
 		factory.setTransactionManager(new ResourcelessTransactionManager());
@@ -71,8 +71,8 @@ public class FileToMessagesJobFactoryBeanTests {
 		channel.subscribe(this.receiver);
 	}
 	
-	@After
-	public void tearDown() {
+	@org.junit.After
+    public void tearDown() {
 		while(receiver.receive(10L)!=null) {}
 	}
 
@@ -81,8 +81,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#setBeanName(java.lang.String)}.
 	 * @throws Exception 
 	 */
-	@Test
-	public void testSetBeanName() throws Exception {
+	@org.junit.Test
+public void testSetBeanName() throws Exception {
 		assertNotNull(((Job) factory.getObject()).getName());
 	}
 
@@ -90,8 +90,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#setItemReader(org.springframework.batch.item.ItemReader)}.
 	 */
-	@Test
-	public void testSetItemReader() {
+	@org.junit.Test
+public void testSetItemReader() {
 		Method method = ReflectionUtils.findMethod(FileToMessagesJobFactoryBean.class, "setItemReader",
 				new Class<?>[] { ItemReader.class });
 		assertNotNull(method);
@@ -104,8 +104,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#setChannel(org.springframework.integration.channel.MessageChannel)}.
 	 */
-	@Test
-	public void testSetChannel() {
+	@org.junit.Test
+public void testSetChannel() {
 		Method method = ReflectionUtils.findMethod(FileToMessagesJobFactoryBean.class, "setChannel",
 				new Class<?>[] { MessageChannel.class });
 		assertNotNull(method);
@@ -118,8 +118,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#setJobRepository(org.springframework.batch.core.repository.JobRepository)}.
 	 */
-	@Test
-	public void testSetJobRepository() {
+	@org.junit.Test
+public void testSetJobRepository() {
 		Method method = ReflectionUtils.findMethod(FileToMessagesJobFactoryBean.class, "setJobRepository",
 				new Class<?>[] { JobRepository.class });
 		assertNotNull(method);
@@ -132,8 +132,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#setTransactionManager(org.springframework.transaction.PlatformTransactionManager)}.
 	 */
-	@Test
-	public void testSetTransactionManager() {
+	@org.junit.Test
+public void testSetTransactionManager() {
 		Method method = ReflectionUtils.findMethod(FileToMessagesJobFactoryBean.class, "setTransactionManager",
 				new Class<?>[] { PlatformTransactionManager.class });
 		assertNotNull(method);
@@ -147,8 +147,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#getObject()}.
 	 * @throws Exception 
 	 */
-	@Test
-	public void testGetObjectNotBroken() throws Exception {
+	@org.junit.Test
+public void testGetObjectNotBroken() throws Exception {
 		assertNotNull(factory.getObject());
 	}
 
@@ -156,8 +156,8 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#getObjectType()}.
 	 */
-	@Test
-	public void testGetObjectType() {
+	@org.junit.Test
+public void testGetObjectType() {
 		FileToMessagesJobFactoryBean factory = new FileToMessagesJobFactoryBean();
 		assertEquals(Job.class, factory.getObjectType());
 	}
@@ -166,15 +166,15 @@ public class FileToMessagesJobFactoryBeanTests {
 	 * Test method for
 	 * {@link org.springframework.batch.integration.file.FileToMessagesJobFactoryBean#isSingleton()}.
 	 */
-	@Test
-	public void testIsSingleton() {
+	@org.junit.Test
+public void testIsSingleton() {
 		FileToMessagesJobFactoryBean factory = new FileToMessagesJobFactoryBean();
 		assertEquals(true, factory.isSingleton());
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testVanillaJobExecution() throws Exception {
+	@org.junit.Test
+public void testVanillaJobExecution() throws Exception {
 
 		Job job = (Job) factory.getObject();
 		JobParameters jobParameters = new JobParametersBuilder().addString(FILE_INPUT_PATH, "classpath:/log4j.properties").toJobParameters();

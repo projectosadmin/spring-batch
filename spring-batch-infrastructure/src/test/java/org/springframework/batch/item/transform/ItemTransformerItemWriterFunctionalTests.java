@@ -22,7 +22,7 @@ import org.springframework.batch.item.ClearFailedException;
 import org.springframework.batch.item.FlushFailedException;
 import org.springframework.batch.item.ItemWriter;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * These functional tests were created for the Reference Documentation and show how various
@@ -31,9 +31,10 @@ import junit.framework.TestCase;
  * @author Lucas Ward
  *
  */
-public class ItemTransformerItemWriterFunctionalTests extends TestCase {
+public class ItemTransformerItemWriterFunctionalTests {
 	
-	public void testTransform() throws Exception{
+	@org.junit.Test
+public void testTransform() throws Exception{
 		
 		ItemTransformerItemWriter itemTransformerItemWriter = new ItemTransformerItemWriter();
 		itemTransformerItemWriter.setItemTransformer(new FooTransformer());
@@ -41,7 +42,8 @@ public class ItemTransformerItemWriterFunctionalTests extends TestCase {
 		itemTransformerItemWriter.write(new Foo());
 	}
 	
-	public void testComposite() throws Exception{
+	@org.junit.Test
+public void testComposite() throws Exception{
 		
 		CompositeItemTransformer compositeTransformer = new CompositeItemTransformer();
 		List itemTransformers = new ArrayList();

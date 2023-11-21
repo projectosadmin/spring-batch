@@ -1,0 +1,8 @@
+.idea/
+.settings/
+.classpath
+.project
+.springBeans
+target/
+/spring-batch-infrastructure/does not exist
+/archetypes/src/site/site.xml

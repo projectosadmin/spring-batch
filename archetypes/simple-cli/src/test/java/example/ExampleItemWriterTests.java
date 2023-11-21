@@ -1,12 +1,13 @@
 package example;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class ExampleItemWriterTests extends TestCase {
+public class ExampleItemWriterTests {
 
 	private ExampleItemWriter writer = new ExampleItemWriter();
 	
-	public void testWrite() throws Exception {
+	@org.junit.Test
+public void testWrite() throws Exception {
 		writer.write(null); // nothing bad happens
 	}
 

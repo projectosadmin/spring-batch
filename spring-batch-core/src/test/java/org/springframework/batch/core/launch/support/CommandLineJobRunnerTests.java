@@ -17,7 +17,7 @@ package org.springframework.batch.core.launch.support;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -33,7 +33,7 @@ import org.springframework.util.ClassUtils;
  * @author Lucas Ward
  * 
  */
-public class CommandLineJobRunnerTests extends TestCase {
+public class CommandLineJobRunnerTests {
 
 	private static final String JOB = ClassUtils.addResourcePathToPackagePath(CommandLineJobRunnerTests.class,
 			"job.xml");
@@ -56,48 +56,55 @@ public class CommandLineJobRunnerTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		JobExecution jobExecution = new JobExecution(null, new Long(1));
 		ExitStatus exitStatus = ExitStatus.FINISHED;
 		jobExecution.setExitStatus(exitStatus);
 		StubJobLauncher.jobExecution = jobExecution;
 	}
 
-	public void testMain() {
+	@org.junit.Test
+public void testMain() {
 		CommandLineJobRunner.main(args);
 		assertTrue("injected JobParametersConverter used instead of default", StubJobParametersConverter.called);
 		assertEquals(0, StubSystemExiter.getStatus());
 	}
 
-	public void testJobAlreadyRunning() throws Throwable {
+	@org.junit.Test
+public void testJobAlreadyRunning() throws Throwable {
 		StubJobLauncher.throwExecutionRunningException = true;
 		CommandLineJobRunner.main(args);
 		assertEquals(1, StubSystemExiter.status);
 	}
 
 	// can't test because it will cause the system to exit.
-	// public void testInvalidArgs(){
+	// @org.junit.Test
+//public void testInvalidArgs(){
 	//		
 	// String[] args = new String[]{jobPath, jobName};
 	// CommandLineJobRunner.main(args);
 	// }
 
-	public void testWithNoParameters() throws Throwable {
+	@org.junit.Test
+public void testWithNoParameters() throws Throwable {
 		String[] args = new String[] { jobPath, jobName };
 		CommandLineJobRunner.main(args);
 		assertEquals(0, StubSystemExiter.status);
 		assertEquals(new JobParameters(), StubJobLauncher.jobParameters);
 	}
 
-	public void testDestroyCallback() throws Throwable {
+	@org.junit.Test
+public void testDestroyCallback() throws Throwable {
 		String[] args = new String[] { jobPath, jobName };
 		CommandLineJobRunner.main(args);
 		assertTrue(StubJobLauncher.destroyed);
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@org.junit.After
+    public void tearDown() throws Exception {
+		
 
 		StubJobLauncher.tearDown();
 	}

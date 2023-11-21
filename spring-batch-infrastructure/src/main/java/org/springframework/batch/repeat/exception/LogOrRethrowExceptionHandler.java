@@ -66,7 +66,7 @@ public class LogOrRethrowExceptionHandler implements ExceptionHandler {
 	 * Setter for the {@link ExceptionClassifier} used by this handler. The default is to map all throwable instances to
 	 * {@link #RETHROW}.
 	 * 
-	 * @param exceptionClassifier
+	 * @param exceptionClassifier exceptionClassifier
 	 */
 	public void setExceptionClassifier(ExceptionClassifier exceptionClassifier) {
 		this.exceptionClassifier = exceptionClassifier;
@@ -75,7 +75,7 @@ public class LogOrRethrowExceptionHandler implements ExceptionHandler {
 	/**
 	 * Classify the throwables and decide whether to rethrow based on the result. The context is not used.
 	 * 
-	 * @throws Throwable
+	 * @throws Throwable Throwable
 	 * 
 	 * @see ExceptionHandler#handleException(RepeatContext, Throwable)
 	 */

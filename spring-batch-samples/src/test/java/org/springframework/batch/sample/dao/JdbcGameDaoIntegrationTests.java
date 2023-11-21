@@ -18,82 +18,87 @@ package org.springframework.batch.sample.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.batch.sample.AbstractDaoTest;
 import org.springframework.batch.sample.domain.Game;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Lucas Ward
- * 
  */
-public class JdbcGameDaoIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("data-source-context.xml")
+public class JdbcGameDaoIntegrationTests extends AbstractDaoTest {
 
-	private JdbcGameDao gameDao;
+    private JdbcGameDao gameDao;
 
-	private Game game = new Game();
+    private Game game = new Game();
 
-	protected String[] getConfigLocations() {
-		return new String[] { "data-source-context.xml" };
-	}
+    protected String[] getConfigLocations() {
+        return new String[]{"data-source-context.xml"};
+    }
 
-	protected void onSetUpBeforeTransaction() throws Exception {
-		super.onSetUpBeforeTransaction();
+    @org.junit.Before
+    public void onSetUpBeforeTransaction() throws Exception {
+        super.onSetUpBeforeTransaction();
 
-		gameDao = new JdbcGameDao();
-		gameDao.setJdbcTemplate(getJdbcTemplate());
+        gameDao = new JdbcGameDao();
+        gameDao.setJdbcTemplate(getJdbcTemplate());
 
-		game.setId("XXXXX00");
-		game.setYear(1996);
-		game.setTeam("mia");
-		game.setWeek(10);
-		game.setOpponent("nwe");
-		game.setAttempts(0);
-		game.setCompletes(0);
-		game.setPassingYards(0);
-		game.setPassingTd(0);
-		game.setInterceptions(0);
-		game.setRushes(29);
-		game.setRushYards(109);
-		game.setReceptions(1);
-		game.setReceptionYards(16);
-		game.setTotalTd(2);
-	}
+        game.setId("XXXXX00");
+        game.setYear(1996);
+        game.setTeam("mia");
+        game.setWeek(10);
+        game.setOpponent("nwe");
+        game.setAttempts(0);
+        game.setCompletes(0);
+        game.setPassingYards(0);
+        game.setPassingTd(0);
+        game.setInterceptions(0);
+        game.setRushes(29);
+        game.setRushYards(109);
+        game.setReceptions(1);
+        game.setReceptionYards(16);
+        game.setTotalTd(2);
+    }
 
-	public void testWrite() {
+    @org.junit.Test
+    public void testWrite() {
 
-		gameDao.write(game);
+        gameDao.write(game);
 
-		Game tempGame = (Game) getJdbcTemplate().queryForObject("SELECT * FROM GAMES where PLAYER_ID=? AND YEAR_NO=?",
-				new Object[] { "XXXXX00 ", new Integer(game.getYear()) }, new GameRowMapper());
-		assertEquals(tempGame, game);
-	}
+        Game tempGame = (Game) getJdbcTemplate().queryForObject("SELECT * FROM GAMES where PLAYER_ID=? AND YEAR_NO=?",
+                new Object[]{"XXXXX00 ", new Integer(game.getYear())}, new GameRowMapper());
+        assertEquals(tempGame, game);
+    }
 
-	public static class GameRowMapper implements RowMapper {
+    public static class GameRowMapper implements RowMapper {
 
-		public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+        public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 
-			if (rs == null) {
-				return null;
-			}
+            if (rs == null) {
+                return null;
+            }
 
-			Game game = new Game();
-			game.setId(rs.getString("PLAYER_ID").trim());
-			game.setYear(rs.getInt("year_no"));
-			game.setTeam(rs.getString("team"));
-			game.setWeek(rs.getInt("week"));
-			game.setOpponent(rs.getString("opponent"));
-			game.setCompletes(rs.getInt("completes"));
-			game.setAttempts(rs.getInt("attempts"));
-			game.setPassingYards(rs.getInt("passing_Yards"));
-			game.setPassingTd(rs.getInt("passing_Td"));
-			game.setInterceptions(rs.getInt("interceptions"));
-			game.setRushes(rs.getInt("rushes"));
-			game.setRushYards(rs.getInt("rush_Yards"));
-			game.setReceptions(rs.getInt("receptions"));
-			game.setReceptionYards(rs.getInt("receptions_Yards"));
-			game.setTotalTd(rs.getInt("total_Td"));
+            Game game = new Game();
+            game.setId(rs.getString("PLAYER_ID").trim());
+            game.setYear(rs.getInt("year_no"));
+            game.setTeam(rs.getString("team"));
+            game.setWeek(rs.getInt("week"));
+            game.setOpponent(rs.getString("opponent"));
+            game.setCompletes(rs.getInt("completes"));
+            game.setAttempts(rs.getInt("attempts"));
+            game.setPassingYards(rs.getInt("passing_Yards"));
+            game.setPassingTd(rs.getInt("passing_Td"));
+            game.setInterceptions(rs.getInt("interceptions"));
+            game.setRushes(rs.getInt("rushes"));
+            game.setRushYards(rs.getInt("rush_Yards"));
+            game.setReceptions(rs.getInt("receptions"));
+            game.setReceptionYards(rs.getInt("receptions_Yards"));
+            game.setTotalTd(rs.getInt("total_Td"));
 
-			return game;
-		}
-	}
+            return game;
+        }
+    }
 }

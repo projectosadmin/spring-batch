@@ -258,7 +258,7 @@ public class MultiResourceItemReader extends ExecutionContextUserSupport impleme
 	 * provided {@link ExecutionContext} during the {@link ItemStream} call to
 	 * update.
 	 * 
-	 * @param saveState
+	 * @param saveState saveState
 	 */
 	public void setSaveState(boolean saveState) {
 		this.saveState = saveState;

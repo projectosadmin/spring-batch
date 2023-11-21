@@ -15,6 +15,7 @@ import org.springframework.batch.item.xml.EventReaderDeserializer;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import static org.junit.Assert.*;
 
 public class MultiResourceItemReaderXmlTests extends CommonItemStreamItemReaderTests {
 

@@ -19,7 +19,7 @@ package org.springframework.batch.item.file;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.batch.item.file.separator.ResourceLineReader;
@@ -27,13 +27,14 @@ import org.springframework.batch.item.file.separator.SuffixRecordSeparatorPolicy
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-
+import static org.junit.Assert.*;
 /**
  * @author Rob Harrop
  */
-public class ResourceLineReaderTests extends TestCase {
+public class ResourceLineReaderTests {
 
-	public void testBadResource() throws Exception {
+	@org.junit.Test
+public void testBadResource() throws Exception {
 		ResourceLineReader reader = new ResourceLineReader(new InputStreamResource(new InputStream() {
 			public int read() throws IOException {
 				throw new IOException("Foo");
@@ -49,7 +50,8 @@ public class ResourceLineReaderTests extends TestCase {
 		}
 	}
 
-	public void testRead() throws Exception {
+	@org.junit.Test
+public void testRead() throws Exception {
 		Resource resource = new ByteArrayResource("a,b,c\n1,2,3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		int count = 0;
@@ -62,7 +64,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals(2, count);
 	}
 	
-	public void testCloseTwice() throws Exception {
+	@org.junit.Test
+public void testCloseTwice() throws Exception {
 		Resource resource = new ByteArrayResource("a,b,c\n1,2,3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.open();
@@ -75,7 +78,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals("a,b,c", reader.read());
 	}
 	
-	public void testEncoding() throws Exception {
+	@org.junit.Test
+public void testEncoding() throws Exception {
 		Resource resource = new ByteArrayResource("a,b,c\n1,2,3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource, "UTF-8");
 		int count = 0;
@@ -88,14 +92,16 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals(2, count);		
 	}
 	
-	public void testLineCount() throws Exception {
+	@org.junit.Test
+public void testLineCount() throws Exception {
 		Resource resource = new ByteArrayResource("1,2,\"3\n4\"\n5,6,7".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();	
 		assertEquals(2, reader.getPosition());
 	}
 
-  public void testLineContent() throws Exception {
+  @org.junit.Test
+public void testLineContent() throws Exception {
     Resource resource = new ByteArrayResource("1,2,3\n4\n5,6,7".getBytes());
     ResourceLineReader reader = new ResourceLineReader(resource);
     assertEquals("1,2,3", reader.read());
@@ -103,14 +109,16 @@ public class ResourceLineReaderTests extends TestCase {
     assertEquals("5,6,7", reader.read());
   }
 
-  public void testLineContentWhenLineContainsQuotedNewline() throws Exception {
+  @org.junit.Test
+public void testLineContentWhenLineContainsQuotedNewline() throws Exception {
 	    Resource resource = new ByteArrayResource("1,2,\"3\n4\"\n5,6,7".getBytes());
 	    ResourceLineReader reader = new ResourceLineReader(resource);
 	    assertEquals("1,2,\"3\n4\"", reader.read());
 	    assertEquals("5,6,7", reader.read());
 	  }
 
-  public void testLineEndings() throws Exception {
+  @org.junit.Test
+public void testLineEndings() throws Exception {
 		Resource resource = new ByteArrayResource("1\n2\r\n3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();
@@ -122,7 +130,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals(3, reader.getPosition());
 	}
 
-	public void testDefaultComments() throws Exception {
+	@org.junit.Test
+public void testDefaultComments() throws Exception {
 		Resource resource = new ByteArrayResource("1\n# 2\n3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();
@@ -130,7 +139,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals("3", line);		
 	}
 
-	public void testComments() throws Exception {
+	@org.junit.Test
+public void testComments() throws Exception {
 		Resource resource = new ByteArrayResource("1\n-- 2\n3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.setComments(new String[] {"//", "--"});
@@ -139,7 +149,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals("3", line);		
 	}
 
-    public void testCommentOnTheLastLine() throws Exception {
+    @org.junit.Test
+public void testCommentOnTheLastLine() throws Exception {
         Resource resource = new ByteArrayResource("1\n#last line".getBytes());
         ResourceLineReader reader = new ResourceLineReader(resource);
         reader.read();
@@ -147,14 +158,16 @@ public class ResourceLineReaderTests extends TestCase {
         assertNull(line);        
     }
 	
-	public void testResetNewReader() throws Exception {
+	@org.junit.Test
+public void testResetNewReader() throws Exception {
 		Resource resource = new ByteArrayResource("1\n4\n5".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.reset();
 		assertEquals(0, reader.getPosition());
 	}
 	
-	public void testMarkReset() throws Exception {
+	@org.junit.Test
+public void testMarkReset() throws Exception {
 		Resource resource = new ByteArrayResource("1\n4\n5".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();	
@@ -167,7 +180,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals(2, reader.getPosition());
 	}
 
-	public void testMarkOnFirstRead() throws Exception {
+	@org.junit.Test
+public void testMarkOnFirstRead() throws Exception {
 		Resource resource = new ByteArrayResource("1\n# 2\n3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();
@@ -177,7 +191,8 @@ public class ResourceLineReaderTests extends TestCase {
 		assertEquals("1", line);		
 	}
 
-	public void testMarkAfterClose() throws Exception {
+	@org.junit.Test
+public void testMarkAfterClose() throws Exception {
 		Resource resource = new ByteArrayResource("1\n# 2\n3".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.read();
@@ -185,7 +200,8 @@ public class ResourceLineReaderTests extends TestCase {
 		reader.mark();		
 	}
 
-	public void testNonDefaultRecordSeparatorPolicy() throws Exception {
+	@org.junit.Test
+public void testNonDefaultRecordSeparatorPolicy() throws Exception {
 		Resource resource = new ByteArrayResource("1\n\"4\n5\"; \n6".getBytes());
 		ResourceLineReader reader = new ResourceLineReader(resource);
 		reader.setRecordSeparatorPolicy(new SuffixRecordSeparatorPolicy());

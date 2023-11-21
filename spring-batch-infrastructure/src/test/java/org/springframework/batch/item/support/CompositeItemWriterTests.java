@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemWriter;
@@ -15,7 +15,7 @@ import org.springframework.batch.item.support.CompositeItemWriter;
  * 
  * @author Robert Kasanicky
  */
-public class CompositeItemWriterTests extends TestCase {
+public class CompositeItemWriterTests {
 
 	// object under test
 	private CompositeItemWriter itemProcessor = new CompositeItemWriter();
@@ -24,7 +24,8 @@ public class CompositeItemWriterTests extends TestCase {
 	 * Regular usage scenario.
 	 * All injected processors should be called.
 	 */
-	public void testProcess() throws Exception {
+	@org.junit.Test
+public void testProcess() throws Exception {
 		
 		final int NUMBER_OF_PROCESSORS = 10;
 		Object data = new Object();

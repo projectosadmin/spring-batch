@@ -18,20 +18,21 @@ package org.springframework.batch.repeat.exception;
 
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextCounter;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.support.ExceptionClassifierSupport;
 
-public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
+public class RethrowOnThresholdExceptionHandlerTests {
 
 	private RethrowOnThresholdExceptionHandler handler = new RethrowOnThresholdExceptionHandler();
 	private RepeatContext parent = new RepeatContextSupport(null);
 	private RepeatContext context = new RepeatContextSupport(parent);
 	
-	public void testRuntimeException() throws Throwable {
+	@org.junit.Test
+public void testRuntimeException() throws Throwable {
 		try {
 			handler.handleException(context, new RuntimeException("Foo"));
 			fail("Expected RuntimeException");
@@ -40,7 +41,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testError() throws Throwable {
+	@org.junit.Test
+public void testError() throws Throwable {
 		try {
 			handler.handleException(context, new Error("Foo"));
 			fail("Expected Error");
@@ -49,7 +51,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 	
-	public void testNotRethrownWithThreshold() throws Throwable {
+	@org.junit.Test
+public void testNotRethrownWithThreshold() throws Throwable {
 		handler.setExceptionClassifier(new ExceptionClassifierSupport() {
 			public Object classify(Throwable throwable) {
 				return "RuntimeException";
@@ -63,7 +66,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		assertEquals(1, counter.getCount());
 	}
 	
-	public void testRethrowOnThreshold() throws Throwable {
+	@org.junit.Test
+public void testRethrowOnThreshold() throws Throwable {
 		handler.setExceptionClassifier(new ExceptionClassifierSupport() {
 			public Object classify(Throwable throwable) {
 				return "RuntimeException";
@@ -82,7 +86,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testNonIntegerAsThreshold() throws Exception {
+	@org.junit.Test
+public void testNonIntegerAsThreshold() throws Exception {
 		try {
 			handler.setThresholds(Collections.singletonMap("RuntimeException", new Long(1)));
 			fail("Expected IllegalStateException");
@@ -92,7 +97,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 	
-	public void testNotUseParent() throws Throwable {
+	@org.junit.Test
+public void testNotUseParent() throws Throwable {
 		handler.setExceptionClassifier(new ExceptionClassifierSupport() {
 			public Object classify(Throwable throwable) {
 				return "RuntimeException";
@@ -111,7 +117,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testUseParent() throws Throwable {
+	@org.junit.Test
+public void testUseParent() throws Throwable {
 		handler.setExceptionClassifier(new ExceptionClassifierSupport() {
 			public Object classify(Throwable throwable) {
 				return "RuntimeException";
@@ -131,7 +138,8 @@ public class RethrowOnThresholdExceptionHandlerTests extends TestCase {
 		}
 	}
 	
-	public void testNotStringAsKey() throws Exception {
+	@org.junit.Test
+public void testNotStringAsKey() throws Exception {
 		try {
 			handler.setThresholds(Collections.singletonMap(RuntimeException.class, new Integer(1)));
 			// It's not an error, but not advised...

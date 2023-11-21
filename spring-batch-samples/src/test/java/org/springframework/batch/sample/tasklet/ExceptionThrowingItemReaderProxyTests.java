@@ -2,7 +2,7 @@ package org.springframework.batch.sample.tasklet;
 
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.UnexpectedJobExecutionException;
 import org.springframework.batch.item.support.ListItemReader;
@@ -10,16 +10,18 @@ import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.repeat.support.RepeatSynchronizationManager;
 import org.springframework.batch.sample.item.reader.ExceptionThrowingItemReaderProxy;
 
-public class ExceptionThrowingItemReaderProxyTests extends TestCase {
+public class ExceptionThrowingItemReaderProxyTests {
 
 	//expected call count before exception is thrown (exception should be thrown in next iteration)
 	private static final int ITER_COUNT = 5;
 	
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		RepeatSynchronizationManager.clear();
 	}
 	
-	public void testProcess() throws Exception {
+	@org.junit.Test
+public void testProcess() throws Exception {
 				
 		//create module and set item processor and iteration count
 		ExceptionThrowingItemReaderProxy itemReader = new ExceptionThrowingItemReaderProxy();

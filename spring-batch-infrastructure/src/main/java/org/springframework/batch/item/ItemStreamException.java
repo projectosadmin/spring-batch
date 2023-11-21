@@ -24,7 +24,7 @@ package org.springframework.batch.item;
 public class ItemStreamException extends RuntimeException {
 
 	/**
-	 * @param message
+	 * @param message message
 	 */
 	public ItemStreamException(String message) {
 		super(message);

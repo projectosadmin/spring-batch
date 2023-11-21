@@ -61,8 +61,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	private static long jobCounter;
 
-	@Before
-	public void setUp() {
+	@org.junit.Before
+public void setUp() {
 
 		factory = new SimpleStepFactoryBean();
 		jobRepository = new SimpleJobRepository(new MapJobInstanceDao(),
@@ -92,19 +92,19 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	}
 
-	@After
-	public void tearDown() {
+	@org.junit.After
+    public void tearDown() {
 		while(requests.receive(10L)!=null) {}
 		while(replies.receive(10L)!=null) {}
 	}
 
-	@Test
-	public void testOpenWithNoState() throws Exception {
+	@org.junit.Test
+public void testOpenWithNoState() throws Exception {
 		writer.open(new ExecutionContext());
 	}
 
-	@Test
-	public void testUpdateAndOpenWithState() throws Exception {
+	@org.junit.Test
+public void testUpdateAndOpenWithState() throws Exception {
 		ExecutionContext executionContext = new ExecutionContext();
 		writer.update(executionContext);
 		writer.open(executionContext);
@@ -114,8 +114,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 				.getLong(ChunkMessageChannelItemWriter.ACTUAL));
 	}
 
-	@Test
-	public void testVanillaIteration() throws Exception {
+	@org.junit.Test
+public void testVanillaIteration() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("1,2,3,4,5,6"))));
@@ -132,8 +132,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	}
 
-	@Test
-	public void testSimulatedRestart() throws Exception {
+	@org.junit.Test
+public void testSimulatedRestart() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("1,2,3,4,5,6"))));
@@ -159,8 +159,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	}
 
-	@Test
-	public void testSimulatedRestartWithBadMessagesFromAnotherJob() throws Exception {
+	@org.junit.Test
+public void testSimulatedRestartWithBadMessagesFromAnotherJob() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("1,2,3,4,5,6"))));
@@ -204,8 +204,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 		return message;
 	}
 
-	@Test
-	public void testEarlyCompletionSignalledInHandler() throws Exception {
+	@org.junit.Test
+public void testEarlyCompletionSignalledInHandler() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("1,bad,3,4,5,6"))));
@@ -232,8 +232,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	}
 
-	@Test
-	public void testSimulatedRestartWithNoBacklog() throws Exception {
+	@org.junit.Test
+public void testSimulatedRestartWithNoBacklog() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("1,2,3,4,5,6"))));
@@ -270,10 +270,10 @@ public class ChunkMessageItemWriterIntegrationTests {
 	 * This one is flakey - we try to force it to wait until after the step to
 	 * finish processing just by waiting for long enough.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	@Test
-	public void testFailureInStepListener() throws Exception {
+	@org.junit.Test
+public void testFailureInStepListener() throws Exception {
 
 		factory.setItemReader(new ListItemReader(Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray("wait,bad,3,4,5,6"))));
@@ -306,8 +306,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 	// TODO : test non-dispatch of empty chunk
 
 	/**
-	 * @param expected
-	 * @param maxWait
+	 * @param expected expected
+	 * @param maxWait maxWait
 	 * @throws InterruptedException 
 	 */
 	private void waitForResults(int expected, int maxWait) throws InterruptedException {

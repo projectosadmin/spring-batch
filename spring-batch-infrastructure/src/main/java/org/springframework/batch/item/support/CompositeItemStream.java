@@ -37,7 +37,7 @@ public class CompositeItemStream implements ItemStream {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setStreams(ItemStream[] listeners) {
 		this.streams = Arrays.asList(listeners);
@@ -81,7 +81,7 @@ public class CompositeItemStream implements ItemStream {
 
 	/**
 	 * Broadcast the call to close.
-	 * @throws ItemStreamException
+	 * @throws ItemStreamException ItemStreamException
 	 */
 	public void close(ExecutionContext executionContext) throws ItemStreamException {
 		synchronized (streams) {
@@ -94,7 +94,7 @@ public class CompositeItemStream implements ItemStream {
 
 	/**
 	 * Broadcast the call to open.
-	 * @throws ItemStreamException
+	 * @throws ItemStreamException ItemStreamException
 	 */
 	public void open(ExecutionContext executionContext) throws ItemStreamException {
 		synchronized (streams) {

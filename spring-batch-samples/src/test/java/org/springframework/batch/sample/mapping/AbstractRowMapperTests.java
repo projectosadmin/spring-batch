@@ -3,7 +3,7 @@ package org.springframework.batch.sample.mapping;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
  * 
  * @author Robert Kasanicky
  */
-public abstract class AbstractRowMapperTests extends TestCase {
+public abstract class AbstractRowMapperTests {
 
 	//row number should be irrelevant
 	private static final int IGNORED_ROW_NUMBER = 0;
@@ -42,7 +42,8 @@ public abstract class AbstractRowMapperTests extends TestCase {
 	/**
 	 * Regular usage scenario.
 	 */
-	public void testRegularUse() throws SQLException {
+	@org.junit.Test
+public void testRegularUse() throws SQLException {
 		setUpResultSetMock(rs, rsControl);
 		rsControl.replay();
 		

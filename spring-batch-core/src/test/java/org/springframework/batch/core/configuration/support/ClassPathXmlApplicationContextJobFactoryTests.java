@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.configuration.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.util.ClassUtils;
 
@@ -23,21 +23,23 @@ import org.springframework.util.ClassUtils;
  * @author Dave Syer
  *
  */
-public class ClassPathXmlApplicationContextJobFactoryTests extends TestCase {
+public class ClassPathXmlApplicationContextJobFactoryTests {
 	
 	private ClassPathXmlApplicationContextJobFactory factory = new ClassPathXmlApplicationContextJobFactory("test-job", ClassUtils.addResourcePathToPackagePath(getClass(), "trivial-context.xml"), null);
 
 	/**
 	 * Test method for {@link org.springframework.batch.core.configuration.support.ClassPathXmlApplicationContextJobFactory#createJob()}.
 	 */
-	public void testCreateJob() {
+	@org.junit.Test
+public void testCreateJob() {
 		assertNotNull(factory.createJob());
 	}
 
 	/**
 	 * Test method for {@link org.springframework.batch.core.configuration.support.ClassPathXmlApplicationContextJobFactory#getJobName()}.
 	 */
-	public void testGetJobName() {
+	@org.junit.Test
+public void testGetJobName() {
 		assertEquals("test-job", factory.getJobName());
 	}
 

@@ -16,11 +16,6 @@
 
 package org.springframework.batch.sample;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.transform.LineTokenizer;
@@ -31,75 +26,84 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 public class FixedLengthImportJobFunctionalTests extends AbstractValidatingBatchLauncherTests {
 
-	//expected line length in input file (sum of pattern lengths + 2, because the counter is appended twice)
-	private static final int LINE_LENGTH = 29;
+    //expected line length in input file (sum of pattern lengths + 2, because the counter is appended twice)
+    private static final int LINE_LENGTH = 29;
 
-	//auto-injected attributes
-	private JdbcOperations jdbcTemplate;
-	private Resource fileLocator;
-	private FlatFileItemReader inputSource;
-	private LineTokenizer lineTokenizer;
+    //auto-injected attributes
+    private JdbcOperations jdbcTemplate;
+    private Resource fileLocator;
+    private FlatFileItemReader inputSource;
+    private LineTokenizer lineTokenizer;
 
-	protected void onSetUp() throws Exception {
-		super.onSetUp();
-		jdbcTemplate.update("delete from TRADE");
-		fileLocator = new ClassPathResource("data/fixedLengthImportJob/input/20070122.teststream.ImportTradeDataStep.txt");
-		inputSource = new FlatFileItemReader();
-		inputSource.setFieldSetMapper(new TradeFieldSetMapper());
-		inputSource.setLineTokenizer(lineTokenizer);
-		inputSource.setResource(fileLocator);
-	}
+    @org.junit.Before
+    public void onSetUp() throws Exception {
+        super.onSetUp();
+        jdbcTemplate.update("delete from TRADE");
+        fileLocator = new ClassPathResource("data/fixedLengthImportJob/input/20070122.teststream.ImportTradeDataStep.txt");
+        inputSource = new FlatFileItemReader();
+        inputSource.setFieldSetMapper(new TradeFieldSetMapper());
+        inputSource.setLineTokenizer(lineTokenizer);
+        inputSource.setResource(fileLocator);
+    }
 
-	/**
-	 * Check that records have been correctly written to database
-	 * @throws Exception 
-	 */
-	protected void validatePostConditions() throws Exception {
-		
-		inputSource.open(new ExecutionContext());
+    /**
+     * Check that records have been correctly written to database
+     *
+     * @throws Exception Exception
+     */
+    protected void validatePostConditions() throws Exception {
 
-		jdbcTemplate.query("SELECT ID, ISIN, QUANTITY, PRICE, CUSTOMER FROM trade ORDER BY id", new RowCallbackHandler() {
+        inputSource.open(new ExecutionContext());
 
-			public void processRow(ResultSet rs) throws SQLException {
-				Trade trade;
-				try {
-					trade = (Trade)inputSource.read();
-				}
-				catch (Exception e) {
-					throw new IllegalStateException(e.getMessage());
-				}
-				assertEquals(trade.getIsin(), rs.getString(2));
-				assertEquals(trade.getQuantity(),rs.getLong(3));
-				assertEquals(trade.getPrice(), rs.getBigDecimal(4));
-				assertEquals(trade.getCustomer(), rs.getString(5));
-			}
+        jdbcTemplate.query("SELECT ID, ISIN, QUANTITY, PRICE, CUSTOMER FROM trade ORDER BY id", new RowCallbackHandler() {
 
-		});
+            public void processRow(ResultSet rs) throws SQLException {
+                Trade trade;
+                try {
+                    trade = (Trade) inputSource.read();
+                } catch (Exception e) {
+                    throw new IllegalStateException(e.getMessage());
+                }
+                assertEquals(trade.getIsin(), rs.getString(2));
+                assertEquals(trade.getQuantity(), rs.getLong(3));
+                assertEquals(trade.getPrice(), rs.getBigDecimal(4));
+                assertEquals(trade.getCustomer(), rs.getString(5));
+            }
 
-		assertNull(inputSource.read());
-	}
+        });
 
-	/*
-	 * fixed-length file is expected on input
-	 */
-	protected void validatePreConditions() throws Exception{
-		BufferedReader reader = null;
+        assertNull(inputSource.read());
+    }
 
-		reader = new BufferedReader(new FileReader(fileLocator.getFile()));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			assertEquals (LINE_LENGTH, line.length());
-		}
-	}
+    /*
+     * fixed-length file is expected on input
+     */
+    protected void validatePreConditions() throws Exception {
+        BufferedReader reader = null;
 
-	public void setJdbcTemplate(JdbcOperations jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-	
-	public void setLineTokenizer(LineTokenizer lineTokenizer) {
-		this.lineTokenizer = lineTokenizer;
-	}
+        reader = new BufferedReader(new FileReader(fileLocator.getFile()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            assertEquals(LINE_LENGTH, line.length());
+        }
+    }
+
+    public void setJdbcTemplate(JdbcOperations jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void setLineTokenizer(LineTokenizer lineTokenizer) {
+        this.lineTokenizer = lineTokenizer;
+    }
 
 }

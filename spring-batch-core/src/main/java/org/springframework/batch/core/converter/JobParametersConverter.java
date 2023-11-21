@@ -47,7 +47,7 @@ public interface JobParametersConverter {
 	 * The inverse operation: get a {@link Properties} instance. If given null
 	 * or empty JobParameters, an empty Properties should be returned.
 	 * 
-	 * @param params
+	 * @param params params
 	 * @return a representation of the parameters as properties
 	 */
 	public Properties getProperties(JobParameters params);

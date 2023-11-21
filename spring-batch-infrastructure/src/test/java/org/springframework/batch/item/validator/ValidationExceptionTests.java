@@ -28,7 +28,8 @@ public class ValidationExceptionTests extends AbstractExceptionTests {
 		return new ValidationException(msg, t);
 	}
 
-	public void testNothing() throws Exception {
+	@org.junit.Test
+public void testNothing() throws Exception {
 		// fool coverage tools...
 	}
 }

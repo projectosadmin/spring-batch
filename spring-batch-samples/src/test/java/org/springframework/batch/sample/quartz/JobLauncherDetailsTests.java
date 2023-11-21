@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.quartz.Job;
@@ -39,124 +39,128 @@ import org.springframework.batch.sample.tasklet.JobSupport;
 
 /**
  * @author Dave Syer
- * 
  */
-public class JobLauncherDetailsTests extends TestCase {
+public class JobLauncherDetailsTests {
 
-	private JobLauncherDetails details = new JobLauncherDetails();
-	
-	private TriggerFiredBundle firedBundle;
-	
-	private List list = new ArrayList();
-	
-	protected void setUp() throws Exception {
-		details.setJobLauncher(new JobLauncher() {
-			public JobExecution run(org.springframework.batch.core.Job job, JobParameters jobParameters)
-					throws JobExecutionAlreadyRunningException, JobRestartException {
-				list.add(jobParameters);
-				return null;
-			}
-		});
-		details.setJobLocator(new JobLocator() {
-			public org.springframework.batch.core.Job getJob(String name) throws NoSuchJobException {
-				list.add(name);
-				return new JobSupport("foo");
-			}
-		});
-	}
+    private JobLauncherDetails details = new JobLauncherDetails();
 
-	/**
-	 * @return 
-	 * 
-	 */
-	private JobExecutionContext createContext(JobDetail jobDetail) {
-		firedBundle = new TriggerFiredBundle(jobDetail, new SimpleTrigger(), null, false, new Date(), new Date(), new Date(), new Date());
-		return new StubJobExecutionContext();
-	}
+    private TriggerFiredBundle firedBundle;
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
-	 */
-	public void testExecuteWithNoJobParameters() {
-		JobDetail jobDetail = new JobDetail();
-		JobExecutionContext context = createContext(jobDetail);
-		details.executeInternal(context);
-		assertEquals(2, list.size());
-		JobParameters parameters = (JobParameters) list.get(1);
-		assertEquals(0, parameters.getParameters().size());
-	}
+    private List list = new ArrayList();
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
-	 */
-	public void testExecuteWithJobName() {
-		JobDetail jobDetail = new JobDetail();
-		jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
-		JobExecutionContext context = createContext(jobDetail);
-		details.executeInternal(context);
-		assertEquals(2, list.size());
-		assertEquals("FOO", list.get(0));
-	}
+    @org.junit.Before
+    public void setUp() throws Exception {
+        details.setJobLauncher(new JobLauncher() {
+            public JobExecution run(org.springframework.batch.core.Job job, JobParameters jobParameters)
+                    throws JobExecutionAlreadyRunningException, JobRestartException {
+                list.add(jobParameters);
+                return null;
+            }
+        });
+        details.setJobLocator(new JobLocator() {
+            public org.springframework.batch.core.Job getJob(String name) throws NoSuchJobException {
+                list.add(name);
+                return new JobSupport("foo");
+            }
+        });
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
-	 */
-	public void testExecuteWithSomeJobParameters() {
-		JobDetail jobDetail = new JobDetail();
-		jobDetail.getJobDataMap().put("foo", "bar");
-		JobExecutionContext context = createContext(jobDetail);
-		details.executeInternal(context);
-		assertEquals(2, list.size());
-		JobParameters parameters = (JobParameters) list.get(1);
-		assertEquals(1, parameters.getParameters().size());
-	}
+    /**
+     * @return
+     */
+    private JobExecutionContext createContext(JobDetail jobDetail) {
+        firedBundle = new TriggerFiredBundle(jobDetail, new SimpleTrigger(), null, false, new Date(), new Date(), new Date(), new Date());
+        return new StubJobExecutionContext();
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
-	 */
-	public void testExecuteWithJobNameAndParameters() {
-		JobDetail jobDetail = new JobDetail();
-		jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
-		jobDetail.getJobDataMap().put("foo", "bar");
-		JobExecutionContext context = createContext(jobDetail);
-		details.executeInternal(context);
-		assertEquals(2, list.size());
-		assertEquals("FOO", list.get(0));
-		JobParameters parameters = (JobParameters) list.get(1);
-		assertEquals(1, parameters.getParameters().size());
-	}
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
+     */
+    @org.junit.Test
+    public void testExecuteWithNoJobParameters() {
+        JobDetail jobDetail = new JobDetail();
+        JobExecutionContext context = createContext(jobDetail);
+        details.executeInternal(context);
+        assertEquals(2, list.size());
+        JobParameters parameters = (JobParameters) list.get(1);
+        assertEquals(0, parameters.getParameters().size());
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
-	 */
-	public void testExecuteWithJobNameAndComplexParameters() {
-		JobDetail jobDetail = new JobDetail();
-		jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
-		jobDetail.getJobDataMap().put("foo", this);
-		JobExecutionContext context = createContext(jobDetail);
-		details.executeInternal(context);
-		assertEquals(2, list.size());
-		assertEquals("FOO", list.get(0));
-		JobParameters parameters = (JobParameters) list.get(1);
-		// Silently ignore parameters that are not simple types
-		assertEquals(0, parameters.getParameters().size());
-	}
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
+     */
+    @org.junit.Test
+    public void testExecuteWithJobName() {
+        JobDetail jobDetail = new JobDetail();
+        jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
+        JobExecutionContext context = createContext(jobDetail);
+        details.executeInternal(context);
+        assertEquals(2, list.size());
+        assertEquals("FOO", list.get(0));
+    }
 
-	private final class StubJobExecutionContext extends JobExecutionContext {
-		/**
-		 * @param scheduler
-		 * @param firedBundle
-		 * @param job
-		 */
-		private StubJobExecutionContext() {
-			super((Scheduler) MockControl.createNiceControl(Scheduler.class).getMock(), firedBundle, (Job) MockControl.createNiceControl(Job.class)
-					.getMock());
-		}
-	}
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
+     */
+    @org.junit.Test
+    public void testExecuteWithSomeJobParameters() {
+        JobDetail jobDetail = new JobDetail();
+        jobDetail.getJobDataMap().put("foo", "bar");
+        JobExecutionContext context = createContext(jobDetail);
+        details.executeInternal(context);
+        assertEquals(2, list.size());
+        JobParameters parameters = (JobParameters) list.get(1);
+        assertEquals(1, parameters.getParameters().size());
+    }
+
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
+     */
+    @org.junit.Test
+    public void testExecuteWithJobNameAndParameters() {
+        JobDetail jobDetail = new JobDetail();
+        jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
+        jobDetail.getJobDataMap().put("foo", "bar");
+        JobExecutionContext context = createContext(jobDetail);
+        details.executeInternal(context);
+        assertEquals(2, list.size());
+        assertEquals("FOO", list.get(0));
+        JobParameters parameters = (JobParameters) list.get(1);
+        assertEquals(1, parameters.getParameters().size());
+    }
+
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.quartz.JobLauncherDetails#executeInternal(org.quartz.JobExecutionContext)}.
+     */
+    @org.junit.Test
+    public void testExecuteWithJobNameAndComplexParameters() {
+        JobDetail jobDetail = new JobDetail();
+        jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, "FOO");
+        jobDetail.getJobDataMap().put("foo", this);
+        JobExecutionContext context = createContext(jobDetail);
+        details.executeInternal(context);
+        assertEquals(2, list.size());
+        assertEquals("FOO", list.get(0));
+        JobParameters parameters = (JobParameters) list.get(1);
+        // Silently ignore parameters that are not simple types
+        assertEquals(0, parameters.getParameters().size());
+    }
+
+    private final class StubJobExecutionContext extends JobExecutionContext {
+        /**
+         * @param scheduler scheduler
+         * @param firedBundle firedBundle
+         * @param job job
+         */
+        private StubJobExecutionContext() {
+            super((Scheduler) MockControl.createNiceControl(Scheduler.class).getMock(), firedBundle, (Job) MockControl.createNiceControl(Job.class)
+                    .getMock());
+        }
+    }
 
 }

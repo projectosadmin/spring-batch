@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.sample.tasklet.ConfigurableSystemProcessExitCodeMapper;
@@ -13,14 +13,15 @@ import org.springframework.batch.sample.tasklet.ConfigurableSystemProcessExitCod
 /**
  * Tests for {@link ConfigurableSystemProcessExitCodeMapper}
  */
-public class ConfigurableSystemProcessExitCodeMapperTests extends TestCase {
+public class ConfigurableSystemProcessExitCodeMapperTests {
 
 	private ConfigurableSystemProcessExitCodeMapper mapper = new ConfigurableSystemProcessExitCodeMapper();
 	
 	/**
 	 * Regular usage scenario - mapping adheres to injected values
 	 */
-	public void testMapping() {
+	@org.junit.Test
+public void testMapping() {
 		Map mappings = new HashMap() {{
 			put(new Integer(0), ExitStatus.FINISHED);
 			put(new Integer(1), ExitStatus.FAILED);
@@ -49,7 +50,8 @@ public class ConfigurableSystemProcessExitCodeMapperTests extends TestCase {
 	/**
 	 * Else clause is required in the injected map - setter checks its presence.
 	 */
-	public void testSetMappingsMissingElseClause() {
+	@org.junit.Test
+public void testSetMappingsMissingElseClause() {
 		Map missingElse = Collections.EMPTY_MAP;
 		try {
 			mapper.setMappings(missingElse);

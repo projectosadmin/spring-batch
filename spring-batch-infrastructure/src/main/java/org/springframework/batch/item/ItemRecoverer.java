@@ -29,9 +29,9 @@ public interface ItemRecoverer {
 	 * to decide whether to try more corrective action or perhaps throw an
 	 * exception.
 	 * 
-	 * @param data
+	 * @param data data
 	 *            the item that failed.
-	 * @param cause
+	 * @param cause cause
 	 *            the cause of the failure that led to this recovery.
 	 * @return true if recovery was successful.
 	 */

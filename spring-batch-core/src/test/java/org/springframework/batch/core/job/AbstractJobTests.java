@@ -17,7 +17,7 @@ package org.springframework.batch.core.job;
 
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionException;
@@ -27,7 +27,7 @@ import org.springframework.batch.core.step.StepSupport;
  * @author Dave Syer
  * 
  */
-public class AbstractJobTests extends TestCase {
+public class AbstractJobTests {
 
 	AbstractJob job = new AbstractJob("job") {
 		public void execute(JobExecution execution) throws JobExecutionException {
@@ -38,7 +38,8 @@ public class AbstractJobTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.AbstractJob#getName()}.
 	 */
-	public void testGetName() {
+	@org.junit.Test
+public void testGetName() {
 		job = new AbstractJob(){
 			public void execute(JobExecution execution) throws JobExecutionException {
 				// No-op
@@ -50,7 +51,8 @@ public class AbstractJobTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.AbstractJob#setBeanName(java.lang.String)}.
 	 */
-	public void testSetBeanName() {
+	@org.junit.Test
+public void testSetBeanName() {
 		job.setBeanName("foo");
 		assertEquals("job", job.getName());
 	}
@@ -58,7 +60,8 @@ public class AbstractJobTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.AbstractJob#setBeanName(java.lang.String)}.
 	 */
-	public void testSetBeanNameWithNullName() {
+	@org.junit.Test
+public void testSetBeanNameWithNullName() {
 		job = new AbstractJob(null) {
 			public void execute(JobExecution execution) throws JobExecutionException {
 				// NO-OP
@@ -72,7 +75,8 @@ public class AbstractJobTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.AbstractJob#setSteps(java.util.List)}.
 	 */
-	public void testSetSteps() {
+	@org.junit.Test
+public void testSetSteps() {
 		job.setSteps(Collections.singletonList(new StepSupport("step")));
 		assertEquals(1, job.getSteps().size());
 	}
@@ -81,7 +85,8 @@ public class AbstractJobTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.job.AbstractJob#addStep(org.springframework.batch.core.Step)}.
 	 */
-	public void testAddStep() {
+	@org.junit.Test
+public void testAddStep() {
 		job.addStep(new StepSupport("step"));
 		assertEquals(1, job.getSteps().size());
 	}
@@ -89,18 +94,21 @@ public class AbstractJobTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.AbstractJob#setRestartable(boolean)}.
 	 */
-	public void testSetRestartable() {
+	@org.junit.Test
+public void testSetRestartable() {
 		assertFalse(job.isRestartable());
 		job.setRestartable(true);
 		assertTrue(job.isRestartable());
 	}
 
-	public void testToString() throws Exception {
+	@org.junit.Test
+public void testToString() throws Exception {
 		String value = job.toString();
-		assertTrue("Should contain name: " + value, value.indexOf("name=") >= 0);
+		assertTrue("Should contain name: " + value, value.contains("name="));
 	}
 	
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		AbstractJob job = new AbstractJob() {
 			public void execute(JobExecution execution) throws JobExecutionException {
 			}

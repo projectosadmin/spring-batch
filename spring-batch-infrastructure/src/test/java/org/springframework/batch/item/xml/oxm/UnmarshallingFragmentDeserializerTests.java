@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.core.io.ByteArrayResource;
@@ -18,7 +18,7 @@ import org.springframework.oxm.Unmarshaller;
  * 
  * @author Robert Kasanicky
  */
-public class UnmarshallingFragmentDeserializerTests extends TestCase {
+public class UnmarshallingFragmentDeserializerTests {
 
 	// object under test
 	private UnmarshallingEventReaderDeserializer deserializer;
@@ -31,7 +31,8 @@ public class UnmarshallingFragmentDeserializerTests extends TestCase {
 	
 	
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		Resource input = new ByteArrayResource(xml.getBytes());
 		eventReader = XMLInputFactory.newInstance().createXMLEventReader(input.getInputStream());
 		unmarshaller = (Unmarshaller) unmarshallerControl.getMock();
@@ -42,7 +43,8 @@ public class UnmarshallingFragmentDeserializerTests extends TestCase {
 	/**
 	 * Regular scenario when deserializer returns the object provided by Unmarshaller
 	 */
-	public void testSuccessfulDeserialization() throws Exception {
+	@org.junit.Test
+public void testSuccessfulDeserialization() throws Exception {
 		Object expectedResult = new Object();
 		unmarshaller.unmarshal(null);
 		unmarshallerControl.setReturnValue(expectedResult);
@@ -58,7 +60,8 @@ public class UnmarshallingFragmentDeserializerTests extends TestCase {
 	/**
 	 * Appropriate exception rethrown in case of failure.
 	 */
-	public void testFailedDeserialization() throws Exception {
+	@org.junit.Test
+public void testFailedDeserialization() throws Exception {
 		unmarshaller.unmarshal(null);
 		unmarshallerControl.setThrowable(new IOException());
 		unmarshallerControl.replay();
@@ -78,7 +81,8 @@ public class UnmarshallingFragmentDeserializerTests extends TestCase {
 	 * It makes no sense to create UnmarshallingFragmentDeserializer with null Unmarshaller,
 	 * therefore it should cause exception.
 	 */
-	public void testExceptionOnNullUnmarshaller() {
+	@org.junit.Test
+public void testExceptionOnNullUnmarshaller() {
 		try {
 			deserializer = new UnmarshallingEventReaderDeserializer(null);
 			fail("Exception expected");

@@ -1,6 +1,6 @@
 package org.springframework.batch.sample.tasklet;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.sample.tasklet.SimpleSystemProcessExitCodeMapper;
@@ -8,7 +8,7 @@ import org.springframework.batch.sample.tasklet.SimpleSystemProcessExitCodeMappe
 /**
  * Tests for {@link SimpleSystemProcessExitCodeMapper}.
  */
-public class SimpleSystemProcessExitCodeMapperTests extends TestCase {
+public class SimpleSystemProcessExitCodeMapperTests {
 
 	private SimpleSystemProcessExitCodeMapper mapper = new SimpleSystemProcessExitCodeMapper();
 	
@@ -16,7 +16,8 @@ public class SimpleSystemProcessExitCodeMapperTests extends TestCase {
 	 * 0 	-> ExitStatus.FINISHED
 	 * else	-> ExitStatus.FAILED
 	 */
-	public void testMapping() {
+	@org.junit.Test
+public void testMapping() {
 		assertEquals(ExitStatus.FINISHED, mapper.getExitStatus(0));
 		assertEquals(ExitStatus.FAILED, mapper.getExitStatus(1));
 		assertEquals(ExitStatus.FAILED, mapper.getExitStatus(-1));

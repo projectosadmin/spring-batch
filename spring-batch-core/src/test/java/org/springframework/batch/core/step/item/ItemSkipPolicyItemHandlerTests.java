@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -47,7 +47,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Dave Syer
  * 
  */
-public class ItemSkipPolicyItemHandlerTests extends TestCase {
+public class ItemSkipPolicyItemHandlerTests {
 
 	private final SkipWriterStub writer = new SkipWriterStub();
 
@@ -56,12 +56,14 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 	private StepContribution contribution = new StepContribution(new JobExecution(new JobInstance(new Long(11),
 			new JobParameters(), "jobName")).createStepExecution(new StepSupport("foo")));
 
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		// remove the resource if it exists
 		handler.mark();
 	}
 
-	public void testReadWithNoSkip() throws Exception {
+	@org.junit.Test
+public void testReadWithNoSkip() throws Exception {
 		assertEquals(new Holder("1"), handler.read(contribution));
 		try {
 			handler.read(contribution);
@@ -74,7 +76,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(new Holder("3"), handler.read(contribution));
 	}
 
-	public void testReadWithSkip() throws Exception {
+	@org.junit.Test
+public void testReadWithSkip() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		assertEquals(new Holder("1"), handler.read(contribution));
 		assertEquals(new Holder("3"), handler.read(contribution));
@@ -83,7 +86,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(new Holder("4"), handler.read(contribution));
 	}
 
-	public void testWriteWithNoSkip() throws Exception {
+	@org.junit.Test
+public void testWriteWithNoSkip() throws Exception {
 		handler.write(new Holder("3"), contribution);
 		try {
 			handler.write(new Holder("4"), contribution);
@@ -95,7 +99,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(0, contribution.getSkipCount());
 	}
 
-	public void testHandleWithSkip() throws Exception {
+	@org.junit.Test
+public void testHandleWithSkip() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		handler.handle(contribution);
 		handler.handle(contribution);
@@ -116,7 +121,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(new Holder("5"), handler.read(contribution));
 	}
 
-	public void testWriteWithSkipAfterMark() throws Exception {
+	@org.junit.Test
+public void testWriteWithSkipAfterMark() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		try {
 			handler.write(new Holder("4"), contribution);
@@ -145,7 +151,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(0, TransactionSynchronizationManager.getResourceMap().size());
 	}
 
-	public void testWriteWithSkipAndItemKeyGenerator() throws Exception {
+	@org.junit.Test
+public void testWriteWithSkipAndItemKeyGenerator() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		handler.setItemKeyGenerator(new ItemKeyGenerator() {
 			public Object getKey(Object item) {
@@ -169,7 +176,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(new Holder("5"), handler.read(contribution));
 	}
 
-	public void testWriteWithSkipWhenMutating() throws Exception {
+	@org.junit.Test
+public void testWriteWithSkipWhenMutating() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		writer.mutate = true;
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
@@ -192,7 +200,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 		assertEquals(new Holder("5"), handler.read(contribution));
 	}
 
-	public void testWriteWithSkipCapacityBreached() throws Exception {
+	@org.junit.Test
+public void testWriteWithSkipCapacityBreached() throws Exception {
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		handler.setSkipCacheCapacity(0);
 		handler.handle(contribution);
@@ -219,7 +228,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 	 * Skippable write exceptions are not re-thrown when included in the
 	 * {@link ItemSkipPolicyItemHandler#setDoNotRethrowExceptionClasses(Class[])}
 	 */
-	public void testWriteWithSkipAndDoNotRethrow() throws Exception {
+	@org.junit.Test
+public void testWriteWithSkipAndDoNotRethrow() throws Exception {
 
 		handler.setItemSkipPolicy(new AlwaysSkipItemSkipPolicy());
 		handler.setDoNotRethrowExceptionClasses(new Class[] { SkippableException.class });
@@ -244,7 +254,8 @@ public class ItemSkipPolicyItemHandlerTests extends TestCase {
 	 * {@link SkipListener#onSkipInWrite(Object, Throwable)} should be called
 	 * also if the exception is not re-thrown (does not cause rollback).
 	 */
-	public void testHandleWithSkipAndListeners() throws Exception {
+	@org.junit.Test
+public void testHandleWithSkipAndListeners() throws Exception {
 
 		class SkipOnWriteListener extends SkipListenerSupport {
 

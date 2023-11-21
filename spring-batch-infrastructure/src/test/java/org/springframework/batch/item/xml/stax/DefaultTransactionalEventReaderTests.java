@@ -3,7 +3,7 @@ package org.springframework.batch.item.xml.stax;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.xml.EventHelper;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
  * 
  * @author Robert Kasanicky
  */
-public class DefaultTransactionalEventReaderTests extends TestCase {
+public class DefaultTransactionalEventReaderTests {
 
 	// object under test
 	private TransactionalEventReader reader;
@@ -25,7 +25,8 @@ public class DefaultTransactionalEventReaderTests extends TestCase {
 	private String xml = "<root> <fragment> <misc1/> </fragment> <misc2/> <fragment> </fragment> </root>";
 
 	
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		Resource resource = new ByteArrayResource(xml.getBytes());
 		XMLEventReader wrappedReader = XMLInputFactory.newInstance().createXMLEventReader(resource.getInputStream());
 		reader = new DefaultTransactionalEventReader(wrappedReader);
@@ -34,7 +35,8 @@ public class DefaultTransactionalEventReaderTests extends TestCase {
 	/**
 	 * Rollback scenario.
 	 */
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		assertTrue(reader.hasNext());
 		reader.nextEvent(); //start document
 		reader.nextEvent(); //start root element
@@ -57,7 +59,8 @@ public class DefaultTransactionalEventReaderTests extends TestCase {
 	/**
 	 * Remove operation is not supported
 	 */
-	public void testRemove() {
+	@org.junit.Test
+public void testRemove() {
 		try {
 			reader.remove();
 			fail("UnsupportedOperationException expected on calling remove()");

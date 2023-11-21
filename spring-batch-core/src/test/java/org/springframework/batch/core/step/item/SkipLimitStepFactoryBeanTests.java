@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +40,7 @@ import org.springframework.util.StringUtils;
 /**
  * Tests for {@link SkipLimitStepFactoryBean}.
  */
-public class SkipLimitStepFactoryBeanTests extends TestCase {
+public class SkipLimitStepFactoryBeanTests {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -60,7 +60,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 
 	protected int count;
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		factory.setBeanName("stepName");
 		factory.setJobRepository(new JobRepositorySupport());
 		factory.setTransactionManager(new ResourcelessTransactionManager());
@@ -77,7 +78,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Check items causing errors are skipped as expected.
 	 */
-	public void testSkip() throws Exception {
+	@org.junit.Test
+public void testSkip() throws Exception {
 		AbstractStep step = (AbstractStep) factory.getObject();
 
 		StepExecution stepExecution = new StepExecution(step.getName(), jobExecution);
@@ -104,7 +106,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Exception that is not fatal nor skippable should cause failure.
 	 */
-	public void testNonSkippableException() throws Exception {
+	@org.junit.Test
+public void testNonSkippableException() throws Exception {
 		factory.setItemWriter(new AbstractItemWriter() {
 
 			public void write(Object item) throws Exception {
@@ -130,9 +133,10 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 
 	/**
 	 * Non-skippable (and non-fatal) exception causes failure immediately.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testNonSkippableExceptionOnRead() throws Exception {
+	@org.junit.Test
+public void testNonSkippableExceptionOnRead() throws Exception {
 		factory.setCommitInterval(1);
 		// nothing is skippable
 		factory.setSkippableExceptionClasses(new Class[] {});
@@ -164,7 +168,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	 * Check skippable write exception does not cause rollback when included on
 	 * transaction attributes as "no rollback for".
 	 */
-	public void testSkipWithoutRethrow() throws Exception {
+	@org.junit.Test
+public void testSkipWithoutRethrow() throws Exception {
 		factory.setTransactionAttribute(new DefaultTransactionAttribute() {
 			public boolean rollbackOn(Throwable ex) {
 				return !(ex instanceof SkippableRuntimeException);
@@ -190,7 +195,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	 * Fatal exception should cause immediate termination regardless of other
 	 * skip settings (note the fatal exception is also classified as skippable).
 	 */
-	public void testFatalException() throws Exception {
+	@org.junit.Test
+public void testFatalException() throws Exception {
 		factory.setFatalExceptionClasses(new Class[] { FatalRuntimeException.class });
 		factory.setItemWriter(new SkipWriterStub() {
 			public void write(Object item) {
@@ -213,7 +219,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Check items causing errors are skipped as expected.
 	 */
-	public void testSkipOverLimit() throws Exception {
+	@org.junit.Test
+public void testSkipOverLimit() throws Exception {
 
 		factory.setSkipLimit(1);
 
@@ -243,7 +250,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Check items causing errors are skipped as expected.
 	 */
-	public void testSkipOverLimitOnRead() throws Exception {
+	@org.junit.Test
+public void testSkipOverLimitOnRead() throws Exception {
 
 		reader = new SkipReaderStub(StringUtils.commaDelimitedListToStringArray("1,2,3,4,5,6"), StringUtils
 				.commaDelimitedListToSet("2,3,5"));
@@ -284,7 +292,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Check items causing errors are skipped as expected.
 	 */
-	public void testSkipOnReadNotDoubleCounted() throws Exception {
+	@org.junit.Test
+public void testSkipOnReadNotDoubleCounted() throws Exception {
 
 		reader = new SkipReaderStub(StringUtils.commaDelimitedListToStringArray("1,2,3,4,5,6"), StringUtils
 				.commaDelimitedListToSet("2,3,5"));
@@ -310,7 +319,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	/**
 	 * Check items causing errors are skipped as expected.
 	 */
-	public void testSkipOnWriteNotDoubleCounted() throws Exception {
+	@org.junit.Test
+public void testSkipOnWriteNotDoubleCounted() throws Exception {
 
 		reader = new SkipReaderStub(StringUtils.commaDelimitedListToStringArray("1,2,3,4,5,6,7"), StringUtils
 				.commaDelimitedListToSet("2,3"));
@@ -338,7 +348,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 
 	}
 
-	public void testDefaultSkipPolicy() throws Exception {
+	@org.junit.Test
+public void testDefaultSkipPolicy() throws Exception {
 		factory.setSkippableExceptionClasses(new Class[] { Exception.class });
 		factory.setSkipLimit(1);
 		List items = TransactionAwareProxyFactory.createTransactionalList();
@@ -368,7 +379,8 @@ public class SkipLimitStepFactoryBeanTests extends TestCase {
 	 * Both checked and unchecked exceptions should cause rollback by default
 	 * i.e. EJB-style {@link DefaultTransactionAttribute} is inappropriate.
 	 */
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 
 		factory.setSkippableExceptionClasses(new Class[] { Exception.class });
 		factory.setSkipLimit(2);

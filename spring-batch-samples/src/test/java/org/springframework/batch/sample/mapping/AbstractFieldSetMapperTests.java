@@ -1,6 +1,6 @@
 package org.springframework.batch.sample.mapping;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.file.mapping.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -10,7 +10,7 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
  * 
  * @author Robert Kasanicky
  */
-public abstract class AbstractFieldSetMapperTests extends TestCase {
+public abstract class AbstractFieldSetMapperTests {
 
 	/**
 	 * @return <code>FieldSet</code> used for mapping
@@ -34,7 +34,8 @@ public abstract class AbstractFieldSetMapperTests extends TestCase {
 	 * Regular usage scenario.
 	 * Assumes the domain object implements sensible <code>equals(Object other)</code>
 	 */
-	public void testRegularUse() {
+	@org.junit.Test
+public void testRegularUse() {
 		assertEquals(expectedDomainObject(), fieldSetMapper().mapLine(fieldSet()));
 	}
 	

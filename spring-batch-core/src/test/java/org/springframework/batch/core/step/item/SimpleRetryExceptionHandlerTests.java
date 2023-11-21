@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.step.item;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.step.item.SimpleRetryExceptionHandler;
 import org.springframework.batch.repeat.RepeatContext;
@@ -29,113 +29,115 @@ import org.springframework.batch.retry.policy.NeverRetryPolicy;
 
 /**
  * @author Dave Syer
- * 
  */
-public class SimpleRetryExceptionHandlerTests extends TestCase {
+public class SimpleRetryExceptionHandlerTests {
 
-	private RepeatContext context = new RepeatContextSupport(new RepeatContextSupport(null));
+    private RepeatContext context = new RepeatContextSupport(new RepeatContextSupport(null));
 
-	/*
-	 * (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		RepeatSynchronizationManager.register(context);
-	}
+    /*
+     * (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+        @org.junit.Before
+public void setUp() throws Exception {
+        RepeatSynchronizationManager.register(context);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		RepeatSynchronizationManager.clear();
-	}
+    /*
+     * (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @org.junit.After
+    public void tearDown() throws Exception {
+        RepeatSynchronizationManager.clear();
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
-	 */
-	public void testRethrowWhenRetryExhausted() throws Throwable {
+    /**
+     * Test method for
+     * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
+     */
+    @org.junit.Test
+    public void testRethrowWhenRetryExhausted() throws Throwable {
 
-		RetryPolicy retryPolicy = new NeverRetryPolicy();
-		RuntimeException ex = new RuntimeException("foo");
+        RetryPolicy retryPolicy = new NeverRetryPolicy();
+        RuntimeException ex = new RuntimeException("foo");
 
-		SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[] { Error.class });
+        SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[]{Error.class});
 
-		// Then pretend to handle the exception in the parent context...
-		try {
-			handler.handleException(context.getParent(), ex);
-			fail("Expected RuntimeException");
-		}
-		catch (RuntimeException e) {
-			assertEquals(ex, e);
-		}
+        // Then pretend to handle the exception in the parent context...
+        try {
+            handler.handleException(context.getParent(), ex);
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertEquals(ex, e);
+        }
 
-		assertEquals(0, context.attributeNames().length);
-		// One for the retry exhausted flag and one for the counter in the
-		// delegate exception handler
-		assertEquals(2, context.getParent().attributeNames().length);
-	}
+        assertEquals(0, context.attributeNames().length);
+        // One for the retry exhausted flag and one for the counter in the
+        // delegate exception handler
+        assertEquals(2, context.getParent().attributeNames().length);
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
-	 */
-	public void testNoRethrowWhenRetryNotExhausted() throws Throwable {
+    /**
+     * Test method for
+     * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
+     */
+    @org.junit.Test
+    public void testNoRethrowWhenRetryNotExhausted() throws Throwable {
 
-		RetryPolicy retryPolicy = new AlwaysRetryPolicy();
-		RuntimeException ex = new RuntimeException("foo");
+        RetryPolicy retryPolicy = new AlwaysRetryPolicy();
+        RuntimeException ex = new RuntimeException("foo");
 
-		SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[] { Error.class });
+        SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[]{Error.class});
 
-		// Then pretend to handle the exception in the parent context...
-		handler.handleException(context.getParent(), ex);
+        // Then pretend to handle the exception in the parent context...
+        handler.handleException(context.getParent(), ex);
 
-		assertEquals(0, context.attributeNames().length);
-		assertEquals(0, context.getParent().attributeNames().length);
-	}
+        assertEquals(0, context.attributeNames().length);
+        assertEquals(0, context.getParent().attributeNames().length);
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
-	 */
-	public void testRethrowWhenFatal() throws Throwable {
+    /**
+     * Test method for
+     * {@link org.springframework.batch.core.step.item.SimpleRetryExceptionHandler#handleException(org.springframework.batch.repeat.RepeatContext, java.lang.Throwable)}.
+     */
+    @org.junit.Test
+    public void testRethrowWhenFatal() throws Throwable {
 
-		RetryPolicy retryPolicy = new AlwaysRetryPolicy();
-		RuntimeException ex = new RuntimeException("foo");
+        RetryPolicy retryPolicy = new AlwaysRetryPolicy();
+        RuntimeException ex = new RuntimeException("foo");
 
-		SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[] { RuntimeException.class });
+        SimpleRetryExceptionHandler handler = getHandlerAfterRetry(retryPolicy, ex, new Class[]{RuntimeException.class});
 
-		// Then pretend to handle the exception in the parent context...
-		try {
-			handler.handleException(context.getParent(), ex);
-			fail("Expected RuntimeException");
-		}
-		catch (RuntimeException e) {
-			assertEquals(ex, e);
-		}
+        // Then pretend to handle the exception in the parent context...
+        try {
+            handler.handleException(context.getParent(), ex);
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertEquals(ex, e);
+        }
 
-		assertEquals(0, context.attributeNames().length);
-		// One for the counter in the delegate exception handler
-		assertEquals(1, context.getParent().attributeNames().length);
-	}
+        assertEquals(0, context.attributeNames().length);
+        // One for the counter in the delegate exception handler
+        assertEquals(1, context.getParent().attributeNames().length);
+    }
 
-	/**
-	 * @param retryPolicy
-	 * @param ex
-	 * @return
-	 */
-	private SimpleRetryExceptionHandler getHandlerAfterRetry(RetryPolicy retryPolicy, RuntimeException ex, Class[] fatalExceptions) {
+    /**
+     * @param retryPolicy retryPolicy
+     * @param ex ex
+     * @return
+     */
+    private SimpleRetryExceptionHandler getHandlerAfterRetry(RetryPolicy retryPolicy, RuntimeException ex, Class[] fatalExceptions) {
 
-		// Always rethrow if the retry is exhausted
-		SimpleRetryExceptionHandler handler = new SimpleRetryExceptionHandler(retryPolicy,
-				new SimpleLimitExceptionHandler(0), fatalExceptions);
+        // Always rethrow if the retry is exhausted
+        SimpleRetryExceptionHandler handler = new SimpleRetryExceptionHandler(retryPolicy,
+                new SimpleLimitExceptionHandler(0), fatalExceptions);
 
-		// Simulate a failed retry...
-		RetryContext retryContext = retryPolicy.open(null, null);
-		retryPolicy.registerThrowable(retryContext, ex);
-		handler.close(retryContext, null, ex);
-		return handler;
-	}
+        // Simulate a failed retry...
+        RetryContext retryContext = retryPolicy.open(null, null);
+        retryPolicy.registerThrowable(retryContext, ex);
+        handler.close(retryContext, null, ex);
+        return handler;
+    }
 
 }

@@ -31,7 +31,7 @@ import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.jms.connection.SessionProxy;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.SessionCallback;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import static org.junit.Assert.*;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.ClassUtils;
@@ -55,7 +55,8 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 				"jms-context.xml") };
 	}
 
-	protected void onSetUpBeforeTransaction() throws Exception {
+	@org.junit.Before
+public void onSetUpBeforeTransaction() throws Exception {
 		super.onSetUpBeforeTransaction();
 		String foo = "";
 		int count = 0;
@@ -73,13 +74,14 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	}
 
 	private void assertInitialState() {
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 	}
 
 	List list = new ArrayList();
 
-	public void testCommit() throws Exception {
+	@org.junit.Test
+public void testCommit() throws Exception {
 
 		assertInitialState();
 
@@ -101,7 +103,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		System.err.println(jdbcTemplate.queryForList("select * from T_FOOS"));
 
 		// Database committed so this record should be there...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(2, count);
 
 		// ... the commit should also have cleared the queue, so this should now
@@ -111,7 +113,8 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 
 	}
 
-	public void testFullRollback() throws Exception {
+	@org.junit.Test
+public void testFullRollback() throws Exception {
 
 		assertInitialState();
 		repeatTemplate.iterate(new RepeatCallback() {
@@ -136,7 +139,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		}
 
 		// The database portion rolled back...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		// ... and so did the message session. The rollback should have restored
@@ -144,7 +147,8 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		assertTrue("Foo not on queue", msgs.contains("foo"));
 	}
 
-	public void testPartialRollback() throws Exception {
+	@org.junit.Test
+public void testPartialRollback() throws Exception {
 
 		// The JmsTemplate is used elsewhere outside a transaction, so
 		// we need to use one here that is transaction aware.
@@ -199,7 +203,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		}
 
 		// The database portion committed...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(2, count);
 
 		// ...but the JMS session rolled back, so the message is still there

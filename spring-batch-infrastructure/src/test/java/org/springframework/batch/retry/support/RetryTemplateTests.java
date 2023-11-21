@@ -16,7 +16,7 @@
 
 package org.springframework.batch.retry.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.ExhaustedRetryException;
 import org.springframework.batch.retry.RetryCallback;
@@ -35,13 +35,14 @@ import org.springframework.batch.retry.policy.SimpleRetryPolicy;
  * @author Rob Harrop
  * @since 2.1
  */
-public class RetryTemplateTests extends TestCase {
+public class RetryTemplateTests {
 
 	RetryContext context;
 
 	int count = 0;
 
-	public void testSuccessfulRetry() throws Exception {
+	@org.junit.Test
+public void testSuccessfulRetry() throws Exception {
 		for (int x = 1; x <= 10; x++) {
 			MockRetryCallback callback = new MockRetryCallback();
 			callback.setAttemptsBeforeSuccess(x);
@@ -52,7 +53,8 @@ public class RetryTemplateTests extends TestCase {
 		}
 	}
 
-	public void testAlwaysTryAtLeastOnce() throws Exception {
+	@org.junit.Test
+public void testAlwaysTryAtLeastOnce() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		RetryTemplate retryTemplate = new RetryTemplate();
 		retryTemplate.setRetryPolicy(new NeverRetryPolicy());
@@ -60,7 +62,8 @@ public class RetryTemplateTests extends TestCase {
 		assertEquals(1, callback.attempts);
 	}
 
-	public void testNoSuccessRetry() throws Exception {
+	@org.junit.Test
+public void testNoSuccessRetry() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		// Somthing that won't be thrwon by JUnit...
 		callback.setExceptionToThrow(new IllegalArgumentException());
@@ -80,7 +83,8 @@ public class RetryTemplateTests extends TestCase {
 		fail("Expected IllegalArgumentException");
 	}
 
-	public void testDefaultConfigWithExceptionSubclass() throws Exception {
+	@org.junit.Test
+public void testDefaultConfigWithExceptionSubclass() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		int attempts = 3;
 		callback.setAttemptsBeforeSuccess(attempts);
@@ -92,7 +96,8 @@ public class RetryTemplateTests extends TestCase {
 		assertEquals(attempts, callback.attempts);
 	}
 
-	public void testSetExceptions() throws Exception {
+	@org.junit.Test
+public void testSetExceptions() throws Exception {
 		RetryTemplate template = new RetryTemplate();
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();
 		template.setRetryPolicy(policy);
@@ -116,7 +121,8 @@ public class RetryTemplateTests extends TestCase {
 		assertEquals(attempts, callback.attempts);
 	}
 
-	public void testBackOffInvoked() throws Exception {
+	@org.junit.Test
+public void testBackOffInvoked() throws Exception {
 		for (int x = 1; x <= 10; x++) {
 			MockRetryCallback callback = new MockRetryCallback();
 			MockBackOffStrategy backOff = new MockBackOffStrategy();
@@ -131,7 +137,8 @@ public class RetryTemplateTests extends TestCase {
 		}
 	}
 
-	public void testEarlyTermination() throws Exception {
+	@org.junit.Test
+public void testEarlyTermination() throws Exception {
 		try {
 			RetryTemplate retryTemplate = new RetryTemplate();
 			retryTemplate.execute(new RetryCallback() {
@@ -149,7 +156,8 @@ public class RetryTemplateTests extends TestCase {
 		}
 	}
 
-	public void testNestedContexts() throws Exception {
+	@org.junit.Test
+public void testNestedContexts() throws Exception {
 		RetryTemplate outer = new RetryTemplate();
 		final RetryTemplate inner = new RetryTemplate();
 		outer.execute(new RetryCallback() {
@@ -173,7 +181,8 @@ public class RetryTemplateTests extends TestCase {
 		assertEquals(2, count);
 	}
 
-	public void testRethrowError() throws Exception {
+	@org.junit.Test
+public void testRethrowError() throws Exception {
 		RetryTemplate retryTemplate = new RetryTemplate();
 		retryTemplate.setRetryPolicy(new NeverRetryPolicy());
 		try {
@@ -189,7 +198,8 @@ public class RetryTemplateTests extends TestCase {
 		}
 	}
 
-	public void testBackOffInterrupted() throws Exception {
+	@org.junit.Test
+public void testBackOffInterrupted() throws Exception {
 		RetryTemplate retryTemplate = new RetryTemplate();
 		retryTemplate.setBackOffPolicy(new StatelessBackOffPolicy() {
 			protected void doBackOff() throws BackOffInterruptedException {
@@ -209,7 +219,8 @@ public class RetryTemplateTests extends TestCase {
 		}
 	}
 
-	public void testFallThroughToEndUnsuccessfully() throws Exception {
+	@org.junit.Test
+public void testFallThroughToEndUnsuccessfully() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		int attempts = 3;
 		callback.setAttemptsBeforeSuccess(attempts);
@@ -237,7 +248,8 @@ public class RetryTemplateTests extends TestCase {
 	 * Throwables that aren't Exception nor Error are wrapped into
 	 * RetryException.
 	 */
-	public void testThrowableWrapping() throws Exception {
+	@org.junit.Test
+public void testThrowableWrapping() throws Exception {
 		RetryCallback callback = new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {
 				throw new Throwable("throwable in callback");
@@ -259,7 +271,8 @@ public class RetryTemplateTests extends TestCase {
 	 * If nested template wraps unclassified Throwable into RetryException the
 	 * Throwable is unwrapped before passed to collaborators.
 	 */
-	public void testThrowableUnwrapping() throws Exception {
+	@org.junit.Test
+public void testThrowableUnwrapping() throws Exception {
 
 		final RetryCallback throwingCallback = new RetryCallback() {
 			public Object doWithRetry(RetryContext context) throws Throwable {

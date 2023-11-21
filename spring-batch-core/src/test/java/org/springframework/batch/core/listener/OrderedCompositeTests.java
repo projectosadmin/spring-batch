@@ -19,20 +19,21 @@ import java.util.Iterator;
 
 import org.springframework.core.Ordered;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  *
  */
-public class OrderedCompositeTests extends TestCase {
+public class OrderedCompositeTests {
 	
 	private OrderedComposite list = new OrderedComposite();
 
 	/**
 	 * Test method for {@link org.springframework.batch.core.listener.OrderedComposite#setItems(java.lang.Object[])}.
 	 */
-	public void testSetItems() {
+	@org.junit.Test
+public void testSetItems() {
 		list.setItems(new String[] {"1", "2"});
 		Iterator iterator = list.iterator();
 		assertEquals("1", iterator.next());
@@ -42,7 +43,8 @@ public class OrderedCompositeTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.listener.OrderedComposite#add(java.lang.Object)}.
 	 */
-	public void testAdd() {
+	@org.junit.Test
+public void testAdd() {
 		list.setItems(new String[] {"1"});
 		list.add("3");
 		Iterator iterator = list.iterator();
@@ -53,7 +55,8 @@ public class OrderedCompositeTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.listener.OrderedComposite#add(java.lang.Object)}.
 	 */
-	public void testAddOrdered() {
+	@org.junit.Test
+public void testAddOrdered() {
 		list.setItems(new String[] {"1"});
 		list.add(new Ordered() {
 			public int getOrder() {
@@ -68,7 +71,8 @@ public class OrderedCompositeTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.listener.OrderedComposite#add(java.lang.Object)}.
 	 */
-	public void testAddMultipleOrdered() {
+	@org.junit.Test
+public void testAddMultipleOrdered() {
 		list.setItems(new String[] {"1"});
 		list.add(new Ordered() {
 			public int getOrder() {

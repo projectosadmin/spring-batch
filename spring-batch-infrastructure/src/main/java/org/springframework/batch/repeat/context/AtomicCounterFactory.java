@@ -16,37 +16,39 @@
 
 package org.springframework.batch.repeat.context;
 
-import org.springframework.core.JdkVersion;
-import org.springframework.util.ClassUtils;
 
 /**
  * A factory that properly determines which version of the {@link AtomicCounter}
  * to return based on the availability of Java 5 or Backport Concurrent.
- * 
+ *
  * @author Dave Syer
  */
 class AtomicCounterFactory {
 
-	/** Whether the backport-concurrent library is present on the classpath */
+    /**
+     * Whether the backport-concurrent library is present on the classpath
+     */
+/*
 	private static final boolean backportConcurrentAvailable = ClassUtils.isPresent(
 			"edu.emory.mathcs.backport.java.util.concurrent.Semaphore", AtomicCounterFactory.class.getClassLoader());
+*/
 
-	private final AtomicCounter counter;
+    private final AtomicCounter counter;
 
-	public AtomicCounterFactory() {
-		if (JdkVersion.isAtLeastJava15()) {
-			counter = new JdkConcurrentAtomicCounter();
-		}
+    public AtomicCounterFactory() {
+        /*if (JdkVersion.isAtLeastJava15()) {*/
+        counter = new JdkConcurrentAtomicCounter();
+		/*}
 		else if (backportConcurrentAvailable) {
 			counter = new BackportConcurrentAtomicCounter();
 		}
 		else {
 			throw new IllegalStateException("Cannot create AtomicCounter - "
 					+ "neither JDK 1.5 nor backport-concurrent available on the classpath");
-		}
-	}
+		}*/
+    }
 
-	public AtomicCounter getAtomicCounter() {
-		return counter;
-	}
+    public AtomicCounter getAtomicCounter() {
+        return counter;
+    }
 }

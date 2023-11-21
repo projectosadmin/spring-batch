@@ -16,7 +16,7 @@
 
 package org.springframework.batch.item.validator;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -24,13 +24,14 @@ import org.springframework.validation.Validator;
 /**
  * Tests for {@link SpringValidator}.
  */
-public class SpringValidatorTests extends TestCase {
+public class SpringValidatorTests {
 
 	SpringValidator validator = new SpringValidator();
 
 	Validator mockValidator;
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		mockValidator = new MockSpringValidator();
 		validator.setValidator(mockValidator);
 	}
@@ -38,7 +39,8 @@ public class SpringValidatorTests extends TestCase {
 	/**
 	 * Validator property is not set
 	 */
-	public void testNullValidator() throws Exception {
+	@org.junit.Test
+public void testNullValidator() throws Exception {
 
 		validator.setValidator(null);
 
@@ -54,7 +56,8 @@ public class SpringValidatorTests extends TestCase {
 	/**
 	 * Validator does not know how to validate object of the given class
 	 */
-	public void testValidateUnsupportedType() {
+	@org.junit.Test
+public void testValidateUnsupportedType() {
 		try {
 			validator.validate(new Integer(1)); // only strings are supported
 			fail("must not validate unsupported classes");
@@ -67,7 +70,8 @@ public class SpringValidatorTests extends TestCase {
 	/**
 	 * Typical successful validation - no exception is thrown.
 	 */
-	public void testValidateSuccessfully() {
+	@org.junit.Test
+public void testValidateSuccessfully() {
 		validator.validate(MockSpringValidator.ACCEPT_VALUE);
 		assertTrue(true);
 	}
@@ -75,7 +79,8 @@ public class SpringValidatorTests extends TestCase {
 	/**
 	 * Typical failed validation - {@link ValidationException} is thrown
 	 */
-	public void testValidateFailure() {
+	@org.junit.Test
+public void testValidateFailure() {
 		try {
 			validator.validate(MockSpringValidator.REJECT_VALUE);
 			fail("exception should have been thrown on invalid value");
@@ -89,7 +94,8 @@ public class SpringValidatorTests extends TestCase {
 	 * Typical failed validation - message contains the item and names of
 	 * invalid fields.
 	 */
-	public void testValidateFailureWithFields() {
+	@org.junit.Test
+public void testValidateFailureWithFields() {
 		try {
 			validator.validate(MockSpringValidator.REJECT_MULTI_VALUE);
 			fail("exception should have been thrown on invalid value");

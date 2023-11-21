@@ -7,15 +7,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
+import org.springframework.batch.AbstractDaoTest;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-import org.springframework.util.ClassUtils;
+import static org.junit.Assert.*;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.ClassUtils;
+import static org.junit.Assert.*;
 /**
  * @author Lucas Ward
  *
  */
-public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("/org/springframework/batch/item/database/data-source-context.xml")
+public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractDaoTest {
 	
 	MultipleColumnJdbcKeyCollector keyStrategy;
 	
@@ -25,8 +30,9 @@ public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTran
 		return new String[] { "org/springframework/batch/item/database/data-source-context.xml"};
 	}
 
-	protected void onSetUpBeforeTransaction() throws Exception {
-		super.onSetUpBeforeTransaction();
+	@Before
+	public void onSetUpBeforeTransaction() throws Exception {
+
 		
 		keyStrategy = new MultipleColumnJdbcKeyCollector(getJdbcTemplate(),
 		"SELECT ID, VALUE from T_FOOS order by ID");
@@ -36,7 +42,8 @@ public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTran
 		executionContext = new ExecutionContext();
 	}
 	
-	public void testRetrieveKeys(){
+	@org.junit.Test
+public void testRetrieveKeys(){
 		
 		List keys = keyStrategy.retrieveKeys(executionContext);
 		
@@ -47,7 +54,8 @@ public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTran
 		}
 	}
 	
-	public void testRestoreKeys(){
+	@org.junit.Test
+public void testRestoreKeys(){
 		
 		Map keyMap = new LinkedHashMap();
 		keyMap.put("ID", "3");
@@ -65,7 +73,8 @@ public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTran
 		assertEquals(new Integer(5), key.get("VALUE"));
 	}
 	
-//	public void testGetKeyAsExecutionContext(){
+//	@org.junit.Test
+//public void testGetKeyAsExecutionContext(){
 //		
 //		Map key = CollectionFactory.createLinkedCaseInsensitiveMapIfPossible(1);
 //		key.put("ID", new Long(3));
@@ -96,7 +105,8 @@ public class MultipleColumnJdbcKeyGeneratorIntegrationTests extends AbstractTran
 //		assertEquals("4", props.get("VALUE"));
 //	}
 	
-	public void testGetNullKeyAsStreamContext(){
+	@org.junit.Test
+public void testGetNullKeyAsStreamContext(){
 		
 		try{
 			keyStrategy.updateContext(null, null);

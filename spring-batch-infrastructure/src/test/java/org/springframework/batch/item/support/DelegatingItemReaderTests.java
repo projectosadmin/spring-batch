@@ -16,7 +16,7 @@
 
 package org.springframework.batch.item.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
@@ -27,7 +27,7 @@ import org.springframework.batch.item.ItemStream;
  * 
  * @author Robert Kasanicky
  */
-public class DelegatingItemReaderTests extends TestCase {
+public class DelegatingItemReaderTests {
 
 	// object under test
 	private DelegatingItemReader itemProvider = new DelegatingItemReader();
@@ -37,18 +37,21 @@ public class DelegatingItemReaderTests extends TestCase {
 	private ExecutionContext executionContext;
 
 	// create input template and inject it to data provider
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		executionContext = new ExecutionContext();
 		source = new MockItemReader(this, executionContext);
 		itemProvider.setItemReader(source);
 	}
 
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		// shouldn't throw an exception since the input source is set
 		itemProvider.afterPropertiesSet();
 	}
 
-	public void testNullItemReader() {
+	@org.junit.Test
+public void testNullItemReader() {
 		try {
 			itemProvider.setItemReader(null);
 			itemProvider.afterPropertiesSet();
@@ -61,9 +64,10 @@ public class DelegatingItemReaderTests extends TestCase {
 
 	/**
 	 * Uses input template to provide the domain object.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testNext() throws Exception {
+	@org.junit.Test
+public void testNext() throws Exception {
 		Object result = itemProvider.read();
 		assertSame("domain object is provided by the input template", this, result);
 	}

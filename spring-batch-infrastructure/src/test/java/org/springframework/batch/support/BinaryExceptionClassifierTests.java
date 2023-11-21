@@ -17,22 +17,25 @@
 package org.springframework.batch.support;
 
 import org.springframework.batch.support.BinaryExceptionClassifier;
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
-
-public class BinaryExceptionClassifierTests extends TestCase {
+public class BinaryExceptionClassifierTests  {
 
 	BinaryExceptionClassifier classifier = new BinaryExceptionClassifier();
 
-	public void testClassifyNullIsDefault() {
+	@org.junit.Test
+public void testClassifyNullIsDefault() {
 		assertTrue(classifier.isDefault(null));
 	}
 
-	public void testClassifyRandomException() {
+	@org.junit.Test
+public void testClassifyRandomException() {
 		assertTrue(classifier.isDefault(new IllegalStateException("foo")));
 	}
 
-	public void testClassifyExactMatch() {
+	@org.junit.Test
+public void testClassifyExactMatch() {
 		classifier.setExceptionClasses(new Class[] {IllegalStateException.class});
 		assertEquals(false, classifier.isDefault(new IllegalStateException("Foo")));
 	}

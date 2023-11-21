@@ -99,8 +99,8 @@ public class SimpleExportedJobLauncher implements ExportedJobLauncher, Initializ
 	}
 
 	/**
-	 * @param result
-	 * @param execution
+	 * @param result result
+	 * @param execution execution
 	 */
 	private void addStatistics(Properties result, JobExecution execution, String prefix) {
 		int i = 0;

@@ -3,7 +3,7 @@ package org.springframework.batch.core.step.tasklet;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -17,18 +17,20 @@ import org.springframework.batch.core.listener.StepExecutionListenerSupport;
 import org.springframework.batch.core.step.JobRepositorySupport;
 import org.springframework.batch.repeat.ExitStatus;
 
-public class TaskletStepTests extends TestCase {
+public class TaskletStepTests {
 
 	private StepExecution stepExecution;
 
 	private List list = new ArrayList();
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		stepExecution = new StepExecution("stepName", new JobExecution(new JobInstance(new Long(0L),
 				new JobParameters(), "testJob"), new Long(12)));
 	}
 
-	public void testTaskletMandatory() throws Exception {
+	@org.junit.Test
+public void testTaskletMandatory() throws Exception {
 		TaskletStep step = new TaskletStep();
 		step.setJobRepository(new JobRepositorySupport());
 		try {
@@ -40,7 +42,8 @@ public class TaskletStepTests extends TestCase {
 		}
 	}
 
-	public void testRepositoryMandatory() throws Exception {
+	@org.junit.Test
+public void testRepositoryMandatory() throws Exception {
 		TaskletStep step = new TaskletStep();
 		try {
 			step.afterPropertiesSet();
@@ -52,7 +55,8 @@ public class TaskletStepTests extends TestCase {
 		}
 	}
 
-	public void testSuccessfulExecution() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecution() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, false), new JobRepositorySupport());
 		step.execute(stepExecution);
 		assertNotNull(stepExecution.getStartTime());
@@ -60,7 +64,8 @@ public class TaskletStepTests extends TestCase {
 		assertNotNull(stepExecution.getEndTime());
 	}
 
-	public void testSuccessfulExecutionWithStepContext() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithStepContext() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, false, true), new JobRepositorySupport());
 		step.afterPropertiesSet();
 		step.execute(stepExecution);
@@ -69,7 +74,8 @@ public class TaskletStepTests extends TestCase {
 		assertNotNull(stepExecution.getEndTime());
 	}
 
-	public void testSuccessfulExecutionWithExecutionContext() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithExecutionContext() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, false), new JobRepositorySupport() {
 			public void saveOrUpdateExecutionContext(StepExecution stepExecution) {
 				list.add(stepExecution);
@@ -79,7 +85,8 @@ public class TaskletStepTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testSuccessfulExecutionWithFailureOnSaveOfExecutionContext() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithFailureOnSaveOfExecutionContext() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, false, true), new JobRepositorySupport() {
 			public void saveOrUpdateExecutionContext(StepExecution stepExecution) {
 				throw new RuntimeException("foo");
@@ -96,7 +103,8 @@ public class TaskletStepTests extends TestCase {
 		assertEquals(BatchStatus.UNKNOWN, stepExecution.getStatus());
 	}
 
-	public void testFailureExecution() throws Exception {
+	@org.junit.Test
+public void testFailureExecution() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(true, false), new JobRepositorySupport());
 		step.execute(stepExecution);
 		assertNotNull(stepExecution.getStartTime());
@@ -104,7 +112,8 @@ public class TaskletStepTests extends TestCase {
 		assertNotNull(stepExecution.getEndTime());
 	}
 
-	public void testSuccessfulExecutionWithListener() throws Exception {
+	@org.junit.Test
+public void testSuccessfulExecutionWithListener() throws Exception {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, false), new JobRepositorySupport());
 		step.setStepExecutionListeners(new StepExecutionListener[] { new StepExecutionListenerSupport() {
 			public void beforeStep(StepExecution context) {
@@ -120,7 +129,8 @@ public class TaskletStepTests extends TestCase {
 		assertEquals(2, list.size());
 	}
 
-	public void testExceptionExecution() throws JobInterruptedException, UnexpectedJobExecutionException {
+	@org.junit.Test
+public void testExceptionExecution() throws JobInterruptedException, UnexpectedJobExecutionException {
 		TaskletStep step = new TaskletStep(new StubTasklet(false, true), new JobRepositorySupport());
 		try {
 			step.execute(stepExecution);
@@ -133,7 +143,8 @@ public class TaskletStepTests extends TestCase {
 		}
 	}
 
-	public void testExceptionError() throws JobInterruptedException, UnexpectedJobExecutionException {
+	@org.junit.Test
+public void testExceptionError() throws JobInterruptedException, UnexpectedJobExecutionException {
 		TaskletStep step = new TaskletStep(new StubTasklet(new Error("Foo!")), new JobRepositorySupport());
 		try {
 			step.execute(stepExecution);
@@ -150,7 +161,8 @@ public class TaskletStepTests extends TestCase {
 	 * When job is interrupted the {@link JobInterruptedException} should be
 	 * propagated up.
 	 */
-	public void testJobInterrupted() throws Exception {
+	@org.junit.Test
+public void testJobInterrupted() throws Exception {
 		TaskletStep step = new TaskletStep(new Tasklet() {
 			public ExitStatus execute() throws Exception {
 				throw new JobInterruptedException("Job interrupted while executing tasklet");
@@ -169,9 +181,10 @@ public class TaskletStepTests extends TestCase {
 	/**
 	 * Exception in {@link StepExecutionListener#afterStep(StepExecution)}
 	 * causes step to fail.
-	 * @throws JobInterruptedException
+	 * @throws JobInterruptedException JobInterruptedException
 	 */
-	public void testStepFailureInAfterStepCallback() throws JobInterruptedException {
+	@org.junit.Test
+public void testStepFailureInAfterStepCallback() throws JobInterruptedException {
 		TaskletStep step = new TaskletStep(new Tasklet() {
 			public ExitStatus execute() throws Exception {
 				return ExitStatus.FINISHED;
@@ -219,7 +232,7 @@ public class TaskletStepTests extends TestCase {
 		}
 
 		/**
-		 * @param error
+		 * @param error error
 		 */
 		public StubTasklet(Throwable error) {
 			this(false, false, false);

@@ -63,7 +63,7 @@ public class SimpleRetryPolicy extends AbstractStatelessRetryPolicy {
 	 * Create a {@link SimpleRetryPolicy} with the specified number of retry
 	 * attempts, and default exceptions to retry.
 	 * 
-	 * @param maxAttempts
+	 * @param maxAttempts maxAttempts
 	 */
 	public SimpleRetryPolicy(int maxAttempts) {
 		super();
@@ -155,7 +155,7 @@ public class SimpleRetryPolicy extends AbstractStatelessRetryPolicy {
 	/**
 	 * Delegates to an exception classifier.
 	 * 
-	 * @param ex
+	 * @param ex ex
 	 * @return true if this exception or its ancestors have been registered as
 	 * retryable.
 	 */

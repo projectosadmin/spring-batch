@@ -26,7 +26,7 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.aopalliance.aop.Advice;
 import org.easymock.MockControl;
@@ -35,13 +35,14 @@ import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.util.ReflectionUtils;
 
-public class BatchMessageListenerContainerTests extends TestCase {
+public class BatchMessageListenerContainerTests {
 
 	BatchMessageListenerContainer container;
 
 	int count = 0;
 
-	public void testReceiveAndExecuteWithCallback() throws Exception {
+	@org.junit.Test
+public void testReceiveAndExecuteWithCallback() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 		container = getContainer(template);
@@ -71,7 +72,8 @@ public class BatchMessageListenerContainerTests extends TestCase {
 
 	}
 
-	public void testReceiveAndExecuteWithCallbackReturningNull() throws Exception {
+	@org.junit.Test
+public void testReceiveAndExecuteWithCallbackReturningNull() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 		container = getContainer(template);
@@ -98,7 +100,8 @@ public class BatchMessageListenerContainerTests extends TestCase {
 
 	}
 
-	public void testTransactionalReceiveAndExecuteWithCallbackThrowingException() throws Exception {
+	@org.junit.Test
+public void testTransactionalReceiveAndExecuteWithCallbackThrowingException() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 		container = getContainer(template);
@@ -112,7 +115,8 @@ public class BatchMessageListenerContainerTests extends TestCase {
 		}
 	}
 
-	public void testNonTransactionalReceiveAndExecuteWithCallbackThrowingException() throws Exception {
+	@org.junit.Test
+public void testNonTransactionalReceiveAndExecuteWithCallbackThrowingException() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 		container = getContainer(template);
@@ -121,7 +125,8 @@ public class BatchMessageListenerContainerTests extends TestCase {
 		assertTrue("Message not received but listener not transactional so this should be true", received);
 	}
 
-	public void testNonTransactionalReceiveAndExecuteWithCallbackThrowingError() throws Exception {
+	@org.junit.Test
+public void testNonTransactionalReceiveAndExecuteWithCallbackThrowingError() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 		container = getContainer(template);

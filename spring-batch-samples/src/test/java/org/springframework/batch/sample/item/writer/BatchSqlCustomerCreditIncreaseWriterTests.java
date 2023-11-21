@@ -17,7 +17,7 @@ package org.springframework.batch.sample.item.writer;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemWriter;
@@ -25,77 +25,82 @@ import org.springframework.batch.sample.domain.CustomerCredit;
 
 /**
  * @author Dave Syer
- * 
  */
-public class BatchSqlCustomerCreditIncreaseWriterTests extends TestCase {
+public class BatchSqlCustomerCreditIncreaseWriterTests {
 
-	private BatchSqlCustomerCreditIncreaseWriter writer = new BatchSqlCustomerCreditIncreaseWriter();
+    private BatchSqlCustomerCreditIncreaseWriter writer = new BatchSqlCustomerCreditIncreaseWriter();
 
-	private ItemWriter delegate;
+    private ItemWriter delegate;
 
-	private MockControl control = MockControl.createControl(ItemWriter.class);
+    private MockControl control = MockControl.createControl(ItemWriter.class);
 
-	private CustomerCredit customerCredit;
+    private CustomerCredit customerCredit;
 
-	/*
-	 * (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		delegate = (ItemWriter) control.getMock();
-		writer.setDelegate(delegate);
-		customerCredit = new CustomerCredit();
-		customerCredit.setId(13);
-		customerCredit.setCredit(new BigDecimal(1000));
-		customerCredit.setName("foo");
-	}
-	
-	public void testAfterPropertiesSet() throws Exception {
-		try {
-			writer.afterPropertiesSet();
-			fail("Expected IllegalStateException");
-		} catch (IllegalStateException e) {
-			// expected: wrong class
-			String message = e.getMessage();
-			assertTrue("Message does not contain 'instance'"+message, message.indexOf("instance")>=0);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @org.junit.Before
+    public void setUp() throws Exception {
+        delegate = (ItemWriter) control.getMock();
+        writer.setDelegate(delegate);
+        customerCredit = new CustomerCredit();
+        customerCredit.setId(13);
+        customerCredit.setCredit(new BigDecimal(1000));
+        customerCredit.setName("foo");
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#write(java.lang.Object)}.
-	 * @throws Exception
-	 */
-	public void testWrite() throws Exception {
-		delegate.write(customerCredit);
-		control.setVoidCallable();
-		control.replay();
-		writer.write(customerCredit);
-		control.verify();
-	}
+    @org.junit.Test
+    public void testAfterPropertiesSet() throws Exception {
+        try {
+            writer.afterPropertiesSet();
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException e) {
+            // expected: wrong class
+            String message = e.getMessage();
+            assertTrue("Message does not contain 'instance'" + message, message.indexOf("instance") >= 0);
+        }
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#clear()}.
-	 */
-	public void testClear() {
-		delegate.clear();
-		control.setVoidCallable();
-		control.replay();
-		writer.clear();
-		control.verify();
-	}
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#write(java.lang.Object)}.
+     *
+     * @throws Exception Exception
+     */
+    @org.junit.Test
+    public void testWrite() throws Exception {
+        delegate.write(customerCredit);
+        control.setVoidCallable();
+        control.replay();
+        writer.write(customerCredit);
+        control.verify();
+    }
 
-	/**
-	 * Test method for
-	 * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#flush()}.
-	 */
-	public void testFlush() {
-		delegate.flush();
-		control.setVoidCallable();
-		control.replay();
-		writer.flush();
-		control.verify();
-	}
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#clear()}.
+     */
+    @org.junit.Test
+    public void testClear() {
+        delegate.clear();
+        control.setVoidCallable();
+        control.replay();
+        writer.clear();
+        control.verify();
+    }
+
+    /**
+     * Test method for
+     * {@link org.springframework.batch.sample.item.writer.BatchSqlCustomerCreditIncreaseWriter#flush()}.
+     */
+    @org.junit.Test
+    public void testFlush() {
+        delegate.flush();
+        control.setVoidCallable();
+        control.replay();
+        writer.flush();
+        control.verify();
+    }
 
 }

@@ -6,15 +6,19 @@ package org.springframework.batch.sample.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.batch.sample.AbstractDaoTest;
 import org.springframework.batch.sample.domain.Player;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Lucas Ward
  *
  */
-public class JdbcPlayerDaoIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("data-source-context.xml")
+public class JdbcPlayerDaoIntegrationTests extends AbstractDaoTest {
 	
 	private JdbcPlayerDao playerDao;
 	private Player player;
@@ -24,7 +28,8 @@ public class JdbcPlayerDaoIntegrationTests extends AbstractTransactionalDataSour
 		return new String[] {"data-source-context.xml"};
 	}
 
-	protected void onSetUpBeforeTransaction() throws Exception {
+	@org.junit.Before
+public void onSetUpBeforeTransaction() throws Exception {
 		super.onSetUpBeforeTransaction();
 		
 		playerDao = new JdbcPlayerDao();
@@ -47,7 +52,8 @@ public class JdbcPlayerDaoIntegrationTests extends AbstractTransactionalDataSour
 
 	}
 
-	public void testSavePlayer(){
+	@org.junit.Test
+public void testSavePlayer(){
 		
 		playerDao.savePlayer(player);
 		

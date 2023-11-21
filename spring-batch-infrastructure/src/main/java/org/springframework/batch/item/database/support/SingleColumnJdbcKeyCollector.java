@@ -67,8 +67,8 @@ public class SingleColumnJdbcKeyCollector extends ExecutionContextUserSupport im
 	 * Constructs a new instance using the provided jdbcTemplate and string representing the sql statement that should
 	 * be used to retrieve keys.
 	 * 
-	 * @param jdbcTemplate
-	 * @param sql
+	 * @param jdbcTemplate jdbcTemplate
+	 * @param sql sql
 	 * @throws IllegalArgumentException if jdbcTemplate is null.
 	 * @throws IllegalArgumentException if sql string is empty or null.
 	 */
@@ -122,7 +122,7 @@ public class SingleColumnJdbcKeyCollector extends ExecutionContextUserSupport im
 	/**
 	 * Set the {@link RowMapper} to be used to map each key to an object.
 	 * 
-	 * @param keyMapper
+	 * @param keyMapper keyMapper
 	 */
 	public void setKeyMapper(RowMapper keyMapper) {
 		this.keyMapper = keyMapper;
@@ -131,7 +131,7 @@ public class SingleColumnJdbcKeyCollector extends ExecutionContextUserSupport im
 	/**
 	 * Set the SQL query to be used to return the remaining keys to be processed.
 	 * 
-	 * @param restartSql
+	 * @param restartSql restartSql
 	 */
 	public void setRestartSql(String restartSql) {
 		this.restartSql = restartSql;
@@ -140,7 +140,7 @@ public class SingleColumnJdbcKeyCollector extends ExecutionContextUserSupport im
 	/**
 	 * Set the SQL statement to be used to return the keys to be processed.
 	 * 
-	 * @param sql
+	 * @param sql sql
 	 */
 	public void setSql(String sql) {
 		this.sql = sql;
@@ -149,7 +149,7 @@ public class SingleColumnJdbcKeyCollector extends ExecutionContextUserSupport im
 	/**
 	 * Set the {@link JdbcTemplate} to be used.
 	 * 
-	 * @param jdbcTemplate
+	 * @param jdbcTemplate jdbcTemplate
 	 */
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;

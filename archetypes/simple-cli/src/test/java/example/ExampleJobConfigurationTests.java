@@ -16,7 +16,7 @@
 package example;
 
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 
 /**
  * @author Dave Syer
@@ -41,7 +41,8 @@ public class ExampleJobConfigurationTests extends AbstractDependencyInjectionSpr
 		return new String[] {"example/simpleJob.xml"};
 	}
 	
-	public void testSimpleProperties() throws Exception {
+	@org.junit.Test
+public void testSimpleProperties() throws Exception {
 		assertNotNull(jobLauncher);
 	}
 }

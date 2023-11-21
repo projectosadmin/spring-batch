@@ -7,33 +7,36 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Lucas Ward
  *
  */
-public class AbstractBufferedItemReaderItemStreamTests extends TestCase {
+public class AbstractBufferedItemReaderItemStreamTests {
 	
 	StringReader reader;
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		
 		reader = new StringReader(Arrays.asList(new String[]{"a", "b", "c", "d", "e"}));
 	}
 	
-	public void testNormalUsage() throws Exception{
+	@org.junit.Test
+public void testNormalUsage() throws Exception{
 		
 		assertEquals("a", reader.read());
 		assertEquals("b", reader.read());
 		assertEquals("c", reader.read());
 	}
 	
-	public void testMarkAndReset() throws Exception{
+	@org.junit.Test
+public void testMarkAndReset() throws Exception{
 		
 		reader.mark();
 		assertEquals("a", reader.read());
@@ -42,7 +45,8 @@ public class AbstractBufferedItemReaderItemStreamTests extends TestCase {
 		assertEquals("a", reader.read());
 	}
 	
-	public void testReaderExceptionWithoutRollback() throws Exception{
+	@org.junit.Test
+public void testReaderExceptionWithoutRollback() throws Exception{
 		
 		reader.mark();
 		assertEquals("a", reader.read());
@@ -62,7 +66,8 @@ public class AbstractBufferedItemReaderItemStreamTests extends TestCase {
 		assertEquals("d", reader.read());
 	}
 	
-	public void testResetWithoutException() throws Exception{
+	@org.junit.Test
+public void testResetWithoutException() throws Exception{
 		
 		reader.mark();
 		assertEquals("a", reader.read());
@@ -71,7 +76,8 @@ public class AbstractBufferedItemReaderItemStreamTests extends TestCase {
 		assertEquals("a", reader.read());
 	}
 	
-	public void testResetWithException() throws Exception{
+	@org.junit.Test
+public void testResetWithException() throws Exception{
 		
 		reader.mark();
 		assertEquals("a", reader.read());

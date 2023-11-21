@@ -16,7 +16,7 @@
 
 package org.springframework.batch.retry.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryCallback;
 import org.springframework.batch.retry.RetryContext;
@@ -27,18 +27,20 @@ import org.springframework.batch.retry.support.RetryTemplate;
 /**
  * @author Dave Syer
  */
-public class RetrySynchronizationManagerTests extends TestCase {
+public class RetrySynchronizationManagerTests {
 
 	RetryTemplate template = new RetryTemplate();
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		RetrySynchronizationManagerTests.clearAll();
 		RetryContext status = RetrySynchronizationManager.getContext();
 		assertNull(status);
 	}
 
-	public void testStatusIsStoredByTemplate() throws Exception {
+	@org.junit.Test
+public void testStatusIsStoredByTemplate() throws Exception {
 
 		RetryContext status = RetrySynchronizationManager.getContext();
 		assertNull(status);
@@ -56,7 +58,8 @@ public class RetrySynchronizationManagerTests extends TestCase {
 		assertNull(status);
 	}
 
-	public void testStatusRegistration() throws Exception {
+	@org.junit.Test
+public void testStatusRegistration() throws Exception {
 		RetryContext status = new RetryContextSupport(null);
 		RetryContext value = RetrySynchronizationManager.register(status);
 		assertNull(value);
@@ -64,7 +67,8 @@ public class RetrySynchronizationManagerTests extends TestCase {
 		assertEquals(status, value);
 	}
 
-	public void testClear() throws Exception {
+	@org.junit.Test
+public void testClear() throws Exception {
 		RetryContext status = new RetryContextSupport(null);
 		RetryContext value = RetrySynchronizationManager.register(status);
 		assertNull(value);
@@ -73,7 +77,8 @@ public class RetrySynchronizationManagerTests extends TestCase {
 		assertNull(value);
 	}
 
-	public void testParent() throws Exception {
+	@org.junit.Test
+public void testParent() throws Exception {
 		RetryContext parent = new RetryContextSupport(null);
 		RetryContext child = new RetryContextSupport(parent);
 		assertSame(parent, child.getParent());

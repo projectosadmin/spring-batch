@@ -2,7 +2,7 @@ package org.springframework.batch.sample.item.writer;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.sample.dao.CustomerCreditDao;
 import org.springframework.batch.sample.domain.CustomerCredit;
@@ -12,14 +12,15 @@ import org.springframework.batch.sample.domain.CustomerCredit;
  * 
  * @author Robert Kasanicky
  */
-public class CustomerCreditIncreaseProcessorTests extends TestCase {
+public class CustomerCreditIncreaseProcessorTests {
 
 	private CustomerCreditIncreaseWriter writer = new CustomerCreditIncreaseWriter();
 
 	/**
 	 * Increases customer's credit by fixed value
 	 */
-	public void testProcess() throws Exception {
+	@org.junit.Test
+public void testProcess() throws Exception {
 		
 		final BigDecimal oldCredit = new BigDecimal(10.54);
 		class CustomerDaoStub implements CustomerCreditDao {

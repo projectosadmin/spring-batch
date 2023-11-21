@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.step;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -25,14 +25,15 @@ import org.springframework.batch.item.NoWorkFoundException;
 /**
  * Tests for {@link NoWorkFoundStepExecutionListener}.
  */
-public class NoWorkFoundStepExecutionListenerTests extends TestCase {
+public class NoWorkFoundStepExecutionListenerTests {
 
     private NoWorkFoundStepExecutionListener tested = new NoWorkFoundStepExecutionListener();
 
     /**
      *  If item count is zero exception is thrown
      */
-    public void testAfterStep() {
+    @org.junit.Test
+public void testAfterStep() {
         StepExecution stepExecution = new StepExecution("NoProcessingStep",
                 new JobExecution(
                 new JobInstance(new Long(1), new JobParameters(), "NoProcessingJob")));

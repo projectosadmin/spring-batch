@@ -112,7 +112,7 @@ public class ExitStatus implements Serializable {
 	 * Create a new {@link ExitStatus} with a logical combination of the
 	 * continuable flag.
 	 * 
-	 * @param continuable
+	 * @param continuable continuable
 	 *            true if the caller thinks it is safe to continue.
 	 * @return a new {@link ExitStatus} with {@link #isContinuable()} the
 	 *         logical and of the current value and the argument provided.
@@ -130,7 +130,7 @@ public class ExitStatus implements Serializable {
 	 * 
 	 * If the input is null just return this.
 	 * 
-	 * @param status
+	 * @param status status
 	 *            an {@link ExitStatus} to combine with this one.
 	 * @return a new {@link ExitStatus} with {@link #isContinuable()} the
 	 *         logical and of the current value and the argument provided.
@@ -182,7 +182,7 @@ public class ExitStatus implements Serializable {
 	 * Add an exit code to an existing {@link ExitStatus}. If there is already a
 	 * code present tit will be replaced.
 	 * 
-	 * @param code
+	 * @param code code
 	 *            the code to add
 	 * @return a new {@link ExitStatus} with the same properties but a new exit
 	 *         code.
@@ -206,7 +206,7 @@ public class ExitStatus implements Serializable {
 	 * already a description present the two will be concatenated with a
 	 * semicolon.
 	 * 
-	 * @param description
+	 * @param description description
 	 *            the description to add
 	 * @return a new {@link ExitStatus} with the same properties but a new exit
 	 *         description

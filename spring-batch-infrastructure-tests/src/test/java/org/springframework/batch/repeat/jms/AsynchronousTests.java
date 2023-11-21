@@ -29,7 +29,7 @@ import org.springframework.batch.jms.ExternalRetryInBatchTests;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SessionAwareMessageListener;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.util.ClassUtils;
 
 public class AsynchronousTests extends AbstractDependencyInjectionSpringContextTests {
@@ -57,7 +57,8 @@ public class AsynchronousTests extends AbstractDependencyInjectionSpringContextT
 		this.container = container;
 	}
 
-	protected void onSetUp() throws Exception {
+	@org.junit.Before
+public void onSetUp() throws Exception {
 		super.onSetUp();
 		String foo = "";
 		int count = 0;
@@ -76,7 +77,8 @@ public class AsynchronousTests extends AbstractDependencyInjectionSpringContextT
 		
 	}
 
-	protected void onTearDown() throws Exception {
+	@org.junit.After
+public void onTearDown() throws Exception {
 		super.onTearDown();
 		container.stop();
 		// Need to give the container time to shutdown
@@ -92,11 +94,12 @@ public class AsynchronousTests extends AbstractDependencyInjectionSpringContextT
 	List list = new ArrayList();
 
 	private void assertInitialState() {
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 	}
 
-	public void testSunnyDay() throws Exception {
+	@org.junit.Test
+public void testSunnyDay() throws Exception {
 
 		assertInitialState();
 
@@ -123,12 +126,13 @@ public class AsynchronousTests extends AbstractDependencyInjectionSpringContextT
 		String foo = (String) jmsTemplate.receiveAndConvert("queue");
 		assertEquals(null, foo);
 
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(2, count);
 
 	}
 
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 
 		assertInitialState();
 		
@@ -171,7 +175,7 @@ public class AsynchronousTests extends AbstractDependencyInjectionSpringContextT
 		}
 		logger.debug("Messages: "+msgs);
 
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		assertTrue("Foo not on queue", msgs.contains("foo"));

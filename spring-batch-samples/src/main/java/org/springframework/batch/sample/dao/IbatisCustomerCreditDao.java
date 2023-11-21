@@ -15,14 +15,15 @@
  */
 package org.springframework.batch.sample.dao;
 
+import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.batch.sample.domain.CustomerCredit;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+
 
 /**
  * @author Lucas Ward
  *
  */
-public class IbatisCustomerCreditDao extends SqlMapClientDaoSupport
+public class IbatisCustomerCreditDao extends SqlSessionDaoSupport
 		implements CustomerCreditDao {
 
 	String statementId;
@@ -32,7 +33,7 @@ public class IbatisCustomerCreditDao extends SqlMapClientDaoSupport
 	 */
 	public void writeCredit(CustomerCredit customerCredit) {
 
-		getSqlMapClientTemplate().update(statementId, customerCredit);
+		getSqlSessionTemplate().update(statementId, customerCredit);
 	}
 
 	/* (non-Javadoc)

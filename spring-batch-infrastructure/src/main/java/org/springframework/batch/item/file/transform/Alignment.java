@@ -15,24 +15,34 @@
  */
 package org.springframework.batch.item.file.transform;
 
-import org.springframework.core.enums.StringCodedLabeledEnum;
 
 /**
  * @author Dave Syer
- *
  */
-public class Alignment extends StringCodedLabeledEnum {
+public enum Alignment {
 
-	public static final Alignment CENTER = new Alignment("CENTER", "center");
-	public static final Alignment RIGHT = new Alignment("RIGHT", "right");
-	public static final Alignment LEFT = new Alignment("LEFT", "left");
+    CENTER("CENTER", "center"),
+    RIGHT("RIGHT", "right"),
+    LEFT("LEFT", "left"),
+    ;
 
-	/**
-	 * @param code
-	 * @param label
-	 */
-	public Alignment(String code, String label) {
-		super(code, label);
-	}
+    private final String code;
+    private final String label;
 
+    /**
+     * @param code code
+     * @param label label
+     */
+    Alignment(String code, String label) {
+        this.code = code;
+        this.label = label;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

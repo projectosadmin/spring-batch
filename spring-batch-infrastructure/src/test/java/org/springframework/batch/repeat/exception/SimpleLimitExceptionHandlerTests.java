@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.repeat.exception.SimpleLimitExceptionHandler;
@@ -31,12 +31,13 @@ import org.springframework.batch.repeat.exception.SimpleLimitExceptionHandler;
  * @author Robert Kasanicky
  * @author Dave Syer
  */
-public class SimpleLimitExceptionHandlerTests extends TestCase {
+public class SimpleLimitExceptionHandlerTests {
 
 	// object under test
 	private SimpleLimitExceptionHandler handler = new SimpleLimitExceptionHandler();
 
-	public void testInitializeWithNullContext() throws Throwable {
+	@org.junit.Test
+public void testInitializeWithNullContext() throws Throwable {
 		try {
 			handler.handleException(null, new RuntimeException("foo"));
 			fail("Expected IllegalArgumentException");
@@ -45,7 +46,8 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testInitializeWithNullContextAndNullException() throws Throwable {
+	@org.junit.Test
+public void testInitializeWithNullContextAndNullException() throws Throwable {
 		try {
 			handler.handleException(null, null);
 		} catch (NullPointerException e) {
@@ -56,9 +58,10 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	/**
 	 * Other than nominated exception type should be rethrown, ignoring the exception limit.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testNormalExceptionThrown() throws Throwable {
+	@org.junit.Test
+public void testNormalExceptionThrown() throws Throwable {
 		Throwable throwable = new RuntimeException("foo");
 
 		final int MORE_THAN_ZERO = 1;
@@ -77,9 +80,10 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	/**
 	 * TransactionInvalidException should only be rethrown below the exception limit.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testLimitedExceptionTypeNotThrown() throws Throwable {
+	@org.junit.Test
+public void testLimitedExceptionTypeNotThrown() throws Throwable {
 		final int MORE_THAN_ZERO = 1;
 		handler.setLimit(MORE_THAN_ZERO);
 		handler.setExceptionClasses(new Class[] {RuntimeException.class} );
@@ -94,9 +98,10 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	/**
 	 * TransactionInvalidException should only be rethrown below the exception limit.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testLimitedExceptionNotThrownFromSiblings() throws Throwable {
+	@org.junit.Test
+public void testLimitedExceptionNotThrownFromSiblings() throws Throwable {
 		Throwable throwable = new RuntimeException("foo");
 
 		final int MORE_THAN_ZERO = 1;
@@ -118,9 +123,10 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	/**
 	 * TransactionInvalidException should only be rethrown below the exception limit.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testLimitedExceptionThrownFromSiblingsWhenUsingParent() throws Throwable {
+	@org.junit.Test
+public void testLimitedExceptionThrownFromSiblingsWhenUsingParent() throws Throwable {
 		Throwable throwable = new RuntimeException("foo");
 
 		final int MORE_THAN_ZERO = 1;
@@ -145,7 +151,8 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	 * TransactionInvalidExceptions are swallowed until the exception limit is exceeded. After the limit is exceeded
 	 * exceptions are rethrown as BatchCriticalExceptions
 	 */
-	public void testExceptionNotThrownBelowLimit() throws Throwable {
+	@org.junit.Test
+public void testExceptionNotThrownBelowLimit() throws Throwable {
 
 		final int EXCEPTION_LIMIT = 3;
 		handler.setLimit(EXCEPTION_LIMIT);
@@ -178,7 +185,8 @@ public class SimpleLimitExceptionHandlerTests extends TestCase {
 	 * TransactionInvalidExceptions are swallowed until the exception limit is exceeded. After the limit is exceeded
 	 * exceptions are rethrown as BatchCriticalExceptions
 	 */
-	public void testExceptionThrownAboveLimit() throws Throwable {
+	@org.junit.Test
+public void testExceptionThrownAboveLimit() throws Throwable {
 
 		final int EXCEPTION_LIMIT = 3;
 		handler.setLimit(EXCEPTION_LIMIT);

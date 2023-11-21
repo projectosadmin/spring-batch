@@ -43,7 +43,7 @@ public class JobExecutionRequest {
 	private Throwable throwable;
 
 	/**
-	 * @param jobExecution
+	 * @param jobExecution jobExecution
 	 */
 	public JobExecutionRequest(JobExecution jobExecution) {
 		this.jobExecution = jobExecution;

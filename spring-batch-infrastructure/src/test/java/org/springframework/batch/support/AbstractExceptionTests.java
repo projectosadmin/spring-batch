@@ -15,17 +15,19 @@
  */
 
 package org.springframework.batch.support;
+import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+public abstract class AbstractExceptionTests {
 
-public abstract class AbstractExceptionTests extends TestCase {
-
-	public void testExceptionString() throws Exception {
+	@org.junit.Test
+public void testExceptionString() throws Exception {
 		Exception exception = getException("foo");
 		assertEquals("foo", exception.getMessage());
 	}
 
-	public void testExceptionStringThrowable() throws Exception {
+	@org.junit.Test
+public void testExceptionStringThrowable() throws Exception {
 		Exception exception = getException("foo", new IllegalStateException());
 		assertEquals("foo", exception.getMessage().substring(0, 3));
 	}

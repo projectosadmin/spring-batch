@@ -17,7 +17,7 @@ package org.springframework.batch.core.configuration.support;
 
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.configuration.JobFactory;
 import org.springframework.batch.core.configuration.support.MapJobRegistry;
@@ -30,7 +30,7 @@ import org.springframework.batch.core.repository.NoSuchJobException;
  * @author Dave Syer
  *
  */
-public class MapJobRegistryTests extends TestCase {
+public class MapJobRegistryTests {
 	
 	private MapJobRegistry registry = new MapJobRegistry();
 
@@ -38,7 +38,8 @@ public class MapJobRegistryTests extends TestCase {
 	 * Test method for {@link org.springframework.batch.core.configuration.support.MapJobRegistry#unregister(String)}.
 	 * @throws Exception 
 	 */
-	public void testUnregister() throws Exception {
+	@org.junit.Test
+public void testUnregister() throws Exception {
 		registry.register(new ReferenceJobFactory(new JobSupport("foo")));
 		assertNotNull(registry.getJob("foo"));
 		registry.unregister("foo");
@@ -55,7 +56,8 @@ public class MapJobRegistryTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.configuration.support.MapJobRegistry#getJob(java.lang.String)}.
 	 */
-	public void testReplaceDuplicateConfiguration() throws Exception {
+	@org.junit.Test
+public void testReplaceDuplicateConfiguration() throws Exception {
 		registry.register(new ReferenceJobFactory(new JobSupport("foo")));
 		try {
 			registry.register(new ReferenceJobFactory(new JobSupport("foo")));
@@ -69,7 +71,8 @@ public class MapJobRegistryTests extends TestCase {
 	/**
 	 * Test method for {@link org.springframework.batch.core.configuration.support.MapJobRegistry#getJob(java.lang.String)}.
 	 */
-	public void testRealDuplicateConfiguration() throws Exception {
+	@org.junit.Test
+public void testRealDuplicateConfiguration() throws Exception {
 		JobFactory jobFactory = new ReferenceJobFactory(new JobSupport("foo"));
 		registry.register(jobFactory);
 		try {
@@ -85,7 +88,8 @@ public class MapJobRegistryTests extends TestCase {
 	 * Test method for {@link org.springframework.batch.core.configuration.support.MapJobRegistry#getJobNames()}.
 	 * @throws Exception 
 	 */
-	public void testGetJobConfigurations() throws Exception {
+	@org.junit.Test
+public void testGetJobConfigurations() throws Exception {
 		JobFactory jobFactory = new ReferenceJobFactory(new JobSupport("foo"));
 		registry.register(jobFactory);
 		registry.register(new ReferenceJobFactory(new JobSupport("bar")));

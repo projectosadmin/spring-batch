@@ -6,8 +6,8 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import static org.junit.Assert.*;
 /**
  * Tests for {@link HibernateCursorItemReader} using {@link StatelessSession}.
  * 
@@ -45,7 +45,8 @@ public class HibernateCursorItemReaderIntegrationTests extends AbstractDataSourc
 	 * {@link HibernateCursorItemReader#setUseStatelessSession(boolean)} can be
 	 * called only in uninitialized state.
 	 */
-	public void testSetUseStatelessSession() {
+	@org.junit.Test
+public void testSetUseStatelessSession() {
 		HibernateCursorItemReader inputSource = ((HibernateCursorItemReader) reader);
 
 		// initialize and call setter => error

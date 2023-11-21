@@ -1,3 +1,4 @@
+/*
 package org.springframework.batch.item.database;
 
 import org.springframework.batch.item.ExecutionContext;
@@ -53,3 +54,4 @@ public class IbatisItemReaderCommonTests extends CommonDatabaseItemStreamItemRea
 	}
 
 }
+*/

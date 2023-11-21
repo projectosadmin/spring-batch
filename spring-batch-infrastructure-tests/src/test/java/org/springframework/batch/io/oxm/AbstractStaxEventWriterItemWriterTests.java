@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -21,7 +21,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.oxm.Marshaller;
 import org.springframework.util.ClassUtils;
 
-public abstract class AbstractStaxEventWriterItemWriterTests extends TestCase {
+public abstract class AbstractStaxEventWriterItemWriterTests {
 
 	private StaxEventItemWriter writer = new StaxEventItemWriter();
 
@@ -42,7 +42,8 @@ public abstract class AbstractStaxEventWriterItemWriterTests extends TestCase {
 	/**
 	 * Write list of domain objects and check the output file.
 	 */
-	public void testWrite() throws Exception {
+	@org.junit.Test
+public void testWrite() throws Exception {
 		for (Iterator iterator = objects.listIterator(); iterator.hasNext();) {
 			writer.write(iterator.next());
 		}
@@ -52,7 +53,8 @@ public abstract class AbstractStaxEventWriterItemWriterTests extends TestCase {
 
 	}
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		// File outputFile = File.createTempFile("AbstractStaxStreamWriterOutputSourceTests", "xml");
 		outputFile = File.createTempFile(ClassUtils.getShortName(this.getClass()), ".xml");
 		resource = new FileSystemResource(outputFile);
@@ -64,8 +66,9 @@ public abstract class AbstractStaxEventWriterItemWriterTests extends TestCase {
 		writer.open(new ExecutionContext());
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@org.junit.After
+    public void tearDown() throws Exception {
+		
 
 		outputFile.delete();
 	}

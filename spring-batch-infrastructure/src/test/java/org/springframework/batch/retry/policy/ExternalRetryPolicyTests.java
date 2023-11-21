@@ -18,7 +18,7 @@ package org.springframework.batch.retry.policy;
 
 import java.util.regex.Pattern;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryCallback;
 import org.springframework.batch.retry.RetryContext;
@@ -26,9 +26,10 @@ import org.springframework.batch.retry.TerminatedRetryException;
 import org.springframework.batch.retry.context.RetryContextSupport;
 import org.springframework.batch.retry.support.RetryTemplate;
 
-public class ExternalRetryPolicyTests extends TestCase {
+public class ExternalRetryPolicyTests {
 
-	public void testExternalRetryStopsLoop() throws Exception {
+	@org.junit.Test
+public void testExternalRetryStopsLoop() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		callback.setExceptionToThrow(new IllegalArgumentException());
 
@@ -49,7 +50,8 @@ public class ExternalRetryPolicyTests extends TestCase {
 		assertEquals("start_foo", result);
 	}
 
-	public void testExternalRetryWithFailAndNoRetry() throws Exception {
+	@org.junit.Test
+public void testExternalRetryWithFailAndNoRetry() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		callback.setExceptionToThrow(new IllegalArgumentException());
 
@@ -85,7 +87,8 @@ public class ExternalRetryPolicyTests extends TestCase {
 		assertEquals(null, result);
 	}
 
-	public void testNonThrowableIsNotRecoverable() throws Exception {
+	@org.junit.Test
+public void testNonThrowableIsNotRecoverable() throws Exception {
 
 		try {
 			MockExternalRetryPolicy policy = new MockExternalRetryPolicy(1);
@@ -100,7 +103,8 @@ public class ExternalRetryPolicyTests extends TestCase {
 
 	}
 
-	public void testSuclassIsRecoverable() throws Exception {
+	@org.junit.Test
+public void testSuclassIsRecoverable() throws Exception {
 
 		MockExternalRetryPolicy policy = new MockExternalRetryPolicy(1);
 		policy.setRecoverableExceptionClasses(new Class[] { IllegalArgumentException.class });
@@ -122,7 +126,8 @@ public class ExternalRetryPolicyTests extends TestCase {
 
 	}
 
-	public void testRecoverableException() throws Exception {
+	@org.junit.Test
+public void testRecoverableException() throws Exception {
 		MockRetryCallback callback = new MockRetryCallback();
 		callback.setExceptionToThrow(new IllegalArgumentException());
 

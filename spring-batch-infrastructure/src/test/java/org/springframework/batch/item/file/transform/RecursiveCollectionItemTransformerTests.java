@@ -18,7 +18,7 @@ package org.springframework.batch.item.file.transform;
 import java.util.Arrays;
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.transform.ItemTransformer;
 import org.springframework.util.StringUtils;
@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * 
  */
-public class RecursiveCollectionItemTransformerTests extends TestCase {
+public class RecursiveCollectionItemTransformerTests {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -36,9 +36,10 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#setDelegate(org.springframework.batch.item.transform.ItemTransformer)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testSetDelegate() throws Exception {
+	@org.junit.Test
+public void testSetDelegate() throws Exception {
 		transformer.setDelegate(new ItemTransformer() {
 			public Object transform(Object item) throws Exception {
 				return "bar";
@@ -50,9 +51,10 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#setDelegate(org.springframework.batch.item.transform.ItemTransformer)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testSetDelegateAndPassInString() throws Exception {
+	@org.junit.Test
+public void testSetDelegateAndPassInString() throws Exception {
 		transformer.setDelegate(new ItemTransformer() {
 			public Object transform(Object item) throws Exception {
 				return "bar";
@@ -64,9 +66,10 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#setDelegate(org.springframework.batch.item.transform.ItemTransformer)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testSetDelegateReturnsList() throws Exception {
+	@org.junit.Test
+public void testSetDelegateReturnsList() throws Exception {
 		transformer.setDelegate(new ItemTransformer() {
 			public Object transform(Object item) throws Exception {
 				return Collections.singletonList("bar");
@@ -80,18 +83,20 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testTransformString() throws Exception {
+	@org.junit.Test
+public void testTransformString() throws Exception {
 		assertEquals("foo", transformer.transform("foo"));
 	}
 
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testTransformArray() throws Exception {
+	@org.junit.Test
+public void testTransformArray() throws Exception {
 		String result = (String) transformer.transform(StringUtils.commaDelimitedListToStringArray("foo,bar"));
 		String[] array = StringUtils.delimitedListToStringArray(result, LINE_SEPARATOR);
 		assertEquals("foo", array[0]);
@@ -101,9 +106,10 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testTransformList() throws Exception {
+	@org.junit.Test
+public void testTransformList() throws Exception {
 		String result = (String) transformer.transform(Arrays.asList(StringUtils.commaDelimitedListToStringArray("foo,bar")));
 		String[] array = StringUtils.delimitedListToStringArray(result, LINE_SEPARATOR);
 		assertEquals("foo", array[0]);
@@ -113,9 +119,10 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 	/**
 	 * Test method for
 	 * {@link org.springframework.batch.item.file.transform.RecursiveCollectionItemTransformer#transform(java.lang.Object)}.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testTransformArrayOfArrays() throws Exception {
+	@org.junit.Test
+public void testTransformArrayOfArrays() throws Exception {
 		String[][] input = new String[][] { StringUtils.commaDelimitedListToStringArray("foo,bar"),
 				StringUtils.commaDelimitedListToStringArray("spam,bucket") };
 		String result = (String) transformer.transform(input);

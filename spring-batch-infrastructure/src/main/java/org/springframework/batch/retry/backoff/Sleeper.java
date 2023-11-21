@@ -26,7 +26,7 @@ public interface Sleeper {
 	/**
 	 * Pause for the specified period using whatever means available.
 	 * 
-	 * @param backOffPeriod
+	 * @param backOffPeriod backOffPeriod
 	 */
 	void sleep(long backOffPeriod) throws InterruptedException;
 

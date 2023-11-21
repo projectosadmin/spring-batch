@@ -2,12 +2,14 @@ package org.springframework.batch.core.repository.dao;
 
 import java.util.Date;
 
+import static org.junit.Assert.*;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.test.context.ContextConfiguration;
 
-
+@ContextConfiguration({"sql-dao-test.xml"})
 public class MapJobExecutionDaoTests extends AbstractJobExecutionDaoTests {
 
 	protected JobExecutionDao getJobExecutionDao() {
@@ -19,7 +21,8 @@ public class MapJobExecutionDaoTests extends AbstractJobExecutionDaoTests {
 	/**
 	 * Modifications to saved entity do not affect the persisted object.
 	 */
-	public void testPersistentCopy() {
+	@org.junit.Test
+public void testPersistentCopy() {
 		
 		JobExecutionDao tested = new MapJobExecutionDao();
 		JobInstance jobInstance = new JobInstance(new Long(1), new JobParameters(), "mapJob");

@@ -261,7 +261,7 @@ public class StepExecution extends Entity {
 	}
 
 	/**
-	 * @param exitStatus
+	 * @param exitStatus exitStatus
 	 */
 	public void setExitStatus(ExitStatus exitStatus) {
 		this.exitStatus = exitStatus;
@@ -298,7 +298,7 @@ public class StepExecution extends Entity {
 	 * called. Synchronizes access to the {@link StepExecution} so that changes
 	 * are atomic.
 	 * 
-	 * @param contribution
+	 * @param contribution contribution
 	 */
 	public synchronized void apply(StepContribution contribution) {
 		itemCount += contribution.getItemCount();

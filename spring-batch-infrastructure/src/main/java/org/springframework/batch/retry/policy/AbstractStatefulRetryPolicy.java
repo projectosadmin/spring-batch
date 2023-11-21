@@ -50,7 +50,7 @@ public abstract class AbstractStatefulRetryPolicy implements RetryPolicy {
 	 * Optional setter for the retry context cache. The default value is a
 	 * {@link MapRetryContextCache}.
 	 * 
-	 * @param retryContextCache
+	 * @param retryContextCache retryContextCache
 	 */
 	public void setRetryContextCache(RetryContextCache retryContextCache) {
 		this.retryContextCache = retryContextCache;

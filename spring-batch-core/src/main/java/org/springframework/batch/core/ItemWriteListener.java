@@ -43,9 +43,9 @@ public interface ItemWriteListener extends StepListener {
 	/**
 	 * Called if an error occurs while trying to write.
 	 * 
-	 * @param ex
+	 * @param ex ex
 	 *            thrown from {@link ItemWriter}
-	 * @param item
+	 * @param item item
 	 *            attempted to be written.
 	 */
 	void onWriteError(Exception ex, Object item);

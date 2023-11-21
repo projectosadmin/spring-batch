@@ -24,15 +24,15 @@ import org.springframework.batch.core.JobExecutionException;
 public class JobExecutionAlreadyRunningException extends JobExecutionException {
 
 	/**
-	 * @param msg
+	 * @param msg msg
 	 */
 	public JobExecutionAlreadyRunningException(String msg) {
 		super(msg);
 	}
 
 	/**
-	 * @param msg
-	 * @param cause
+	 * @param msg msg
+	 * @param cause cause
 	 */
 	public JobExecutionAlreadyRunningException(String msg, Throwable cause) {
 		super(msg, cause);

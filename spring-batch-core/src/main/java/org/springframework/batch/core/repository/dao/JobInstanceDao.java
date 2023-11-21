@@ -21,8 +21,8 @@ public interface JobInstanceDao {
 	 * PostConditions: A valid job instance will be returned which has been persisted and
 	 * contains an unique Id.
 	 * 
-	 * @param job
-	 * @param jobParameters
+	 * @param job job
+	 * @param jobParameters jobParameters
 	 * @return JobInstance
 	 */
 	JobInstance createJobInstance(Job job, JobParameters jobParameters);
@@ -32,8 +32,8 @@ public interface JobInstanceDao {
 	 * matching job instances are found, then a list of size 0 will be
 	 * returned.
 	 * 
-	 * @param job
-	 * @param jobParameters
+	 * @param job job
+	 * @param jobParameters jobParameters
 	 * @return {@link JobInstance} object matching
 	 * {@link Job} and {@link JobParameters}
 	 */

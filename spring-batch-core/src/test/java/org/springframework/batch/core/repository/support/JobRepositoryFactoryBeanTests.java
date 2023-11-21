@@ -20,7 +20,7 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.core.JobParameters;
@@ -36,7 +36,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
  * @author Lucas Ward
  * 
  */
-public class JobRepositoryFactoryBeanTests extends TestCase {
+public class JobRepositoryFactoryBeanTests {
 
 	private JobRepositoryFactoryBean factory;
 
@@ -54,8 +54,9 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 
 	private MockControl dataSourceControl;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 
 		factory = new JobRepositoryFactoryBean();
 		dataSourceControl = MockControl.createControl(DataSource.class);
@@ -69,7 +70,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		factory.setTablePrefix(tablePrefix);
 	}
 
-	public void testNoDatabaseType() throws Exception {
+	@org.junit.Test
+public void testNoDatabaseType() throws Exception {
 
 		try {
 			incrementerFactory.isSupportedIncrementerType(null);
@@ -87,7 +89,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testMissingDataSource() throws Exception {
+	@org.junit.Test
+public void testMissingDataSource() throws Exception {
 
 		factory.setDataSource(null);
 		try {
@@ -101,7 +104,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testMissingTransactionManager() throws Exception {
+	@org.junit.Test
+public void testMissingTransactionManager() throws Exception {
 
 		factory.setTransactionManager(null);
 		try {
@@ -120,7 +124,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testInvalidDatabaseType() throws Exception {
+	@org.junit.Test
+public void testInvalidDatabaseType() throws Exception {
 
 		factory.setDatabaseType("foo");
 		try {
@@ -139,7 +144,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testCreateRepository() throws Exception {
+	@org.junit.Test
+public void testCreateRepository() throws Exception {
 		String databaseType = "foo";
 		factory.setDatabaseType(databaseType);
 
@@ -161,7 +167,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		incrementerControl.verify();
 	}
 
-	public void testTransactionAttributesForCreateMethodNullHypothesis() throws Exception {
+	@org.junit.Test
+public void testTransactionAttributesForCreateMethodNullHypothesis() throws Exception {
 		testCreateRepository();
 		JobRepository repository = (JobRepository) factory.getObject();
 		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition(
@@ -181,7 +188,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testTransactionAttributesForCreateMethod() throws Exception {
+	@org.junit.Test
+public void testTransactionAttributesForCreateMethod() throws Exception {
 		testCreateRepository();
 		JobRepository repository = (JobRepository) factory.getObject();
 		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition(
@@ -204,7 +212,8 @@ public class JobRepositoryFactoryBeanTests extends TestCase {
 		}
 	}
 
-	public void testSetTransactionAttributesForCreateMethod() throws Exception {
+	@org.junit.Test
+public void testSetTransactionAttributesForCreateMethod() throws Exception {
 		factory.setIsolationLevelForCreate("ISOLATION_READ_UNCOMMITTED");
 		testCreateRepository();
 		JobRepository repository = (JobRepository) factory.getObject();

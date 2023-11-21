@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.io.oxm.domain.Trade;
 import org.springframework.batch.item.ExecutionContext;
@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
 
-public abstract class AbstractStaxEventReaderItemReaderTests extends TestCase {
+public abstract class AbstractStaxEventReaderItemReaderTests {
 
 	private StaxEventItemReader source = new StaxEventItemReader();
 
@@ -22,7 +22,8 @@ public abstract class AbstractStaxEventReaderItemReaderTests extends TestCase {
 	"org/springframework/batch/io/oxm/input.xml");
 
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		//TODO sensible resource allocation
 		source.setResource(resource);
 
@@ -34,7 +35,8 @@ public abstract class AbstractStaxEventReaderItemReaderTests extends TestCase {
 
 	}
 
-	public void testRead() throws Exception {
+	@org.junit.Test
+public void testRead() throws Exception {
 		Object result;
 		List results = new ArrayList();
 		while ((result = source.read()) != null) {
@@ -74,7 +76,8 @@ public abstract class AbstractStaxEventReaderItemReaderTests extends TestCase {
 		assertEquals("Customer3", trade3.getCustomer());
 	}
 
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		source.close(null);
 	}
 

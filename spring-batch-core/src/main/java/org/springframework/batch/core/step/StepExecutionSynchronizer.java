@@ -36,7 +36,7 @@ public interface StepExecutionSynchronizer {
 	/**
 	 * Release the lock.  Use this in a finally block.
 	 * 
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 */
 	void release(StepExecution stepExecution);
 

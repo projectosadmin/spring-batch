@@ -149,7 +149,7 @@ public class CommandLineJobRunner {
 	/**
 	 * Injection setter for the {@link SystemExiter}.
 	 * 
-	 * @param systemExitor
+	 * @param systemExitor systemExitor
 	 */
 	public void setSystemExiter(SystemExiter systemExitor) {
 		this.systemExiter = systemExitor;
@@ -158,7 +158,7 @@ public class CommandLineJobRunner {
 	/**
 	 * Injection setter for {@link JobParametersConverter}.
 	 * 
-	 * @param jobParametersConverter
+	 * @param jobParametersConverter jobParametersConverter
 	 */
 	public void setJobParametersConverter(JobParametersConverter jobParametersConverter) {
 		this.jobParametersConverter = jobParametersConverter;
@@ -167,7 +167,7 @@ public class CommandLineJobRunner {
 	/**
 	 * Delegate to the exiter to (possibly) exit the VM gracefully.
 	 * 
-	 * @param status
+	 * @param status status
 	 */
 	public void exit(int status) {
 		systemExiter.exit(status);
@@ -225,7 +225,7 @@ public class CommandLineJobRunner {
 	 * Spring context).<br/> Parameters can be provided in the form key=value,
 	 * and will be converted using the injected {@link JobParametersConverter}.
 	 * 
-	 * @param args
+	 * @param args args
 	 * <p>
 	 * <ul>
 	 * <li>jobPath: the xml application context containing a {@link Job}

@@ -28,7 +28,8 @@ public class ExhaustedRetryExceptionTests extends AbstractExceptionTests {
 		return new ExhaustedRetryException(msg, t);
 	}
 
-	public void testNothing() throws Exception {
+	@org.junit.Test
+public void testNothing() throws Exception {
 		// fool coverage tools...
 	}
 }

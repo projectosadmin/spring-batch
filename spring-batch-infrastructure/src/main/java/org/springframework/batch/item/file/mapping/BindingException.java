@@ -22,7 +22,7 @@ package org.springframework.batch.item.file.mapping;
 public class BindingException extends RuntimeException {
 
 	/**
-	 * @param msg
+	 * @param msg msg
 	 */
 	public BindingException(String msg) {
 		super(msg);

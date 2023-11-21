@@ -2,18 +2,18 @@ package org.springframework.batch.item.file;
 
 import java.util.Comparator;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.mapping.FieldSet;
 import org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-
+import static org.junit.Assert.*;
 /**
  * Tests for {@link MultiResourceItemReader}.
  */
-public class MultiResourceItemReaderIntegrationTests extends TestCase {
+public class MultiResourceItemReaderIntegrationTests {
 
 	private MultiResourceItemReader tested = new MultiResourceItemReader();
 
@@ -35,7 +35,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	/**
 	 * Setup the tested reader to read from the test resources.
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		itemReader.setFieldSetMapper(new PassThroughFieldSetMapper());
 
@@ -50,7 +51,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	/**
 	 * Read input from start to end.
 	 */
-	public void testRead() throws Exception {
+	@org.junit.Test
+public void testRead() throws Exception {
 
 		tested.open(ctx);
 
@@ -71,7 +73,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	 * Read items with a couple of rollbacks, requiring to jump back to items
 	 * from previous resources.
 	 */
-	public void testReset() throws Exception {
+	@org.junit.Test
+public void testReset() throws Exception {
 
 		tested.open(ctx);
 
@@ -114,7 +117,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	/**
 	 * Restore from saved state.
 	 */
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 
 		itemReader.setSaveState(true);
 		tested.setSaveState(true);
@@ -145,7 +149,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	/**
 	 * Resources are ordered according to injected comparator.
 	 */
-	public void testResourceOrderingWithCustomComparator() {
+	@org.junit.Test
+public void testResourceOrderingWithCustomComparator() {
 		
 		Resource r1 = new ByteArrayResource("".getBytes(), "b");
 		Resource r2 = new ByteArrayResource("".getBytes(), "a");
@@ -179,7 +184,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 	/**
 	 * Empty resource list is OK.
 	 */
-	public void testNoResourcesFound() throws Exception {
+	@org.junit.Test
+public void testNoResourcesFound() throws Exception {
 		tested.setResources(new Resource[] {});
 		tested.open(ctx);
 		
@@ -192,7 +198,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 
 	}
 	
-	public void testNullResourceInOpen() throws Exception{
+	@org.junit.Test
+public void testNullResourceInOpen() throws Exception{
 		
 		tested.setResources(null);
 		try{
@@ -204,7 +211,8 @@ public class MultiResourceItemReaderIntegrationTests extends TestCase {
 		}
 	}
 	
-	public void testNullDelegateInOpen() throws Exception{
+	@org.junit.Test
+public void testNullDelegateInOpen() throws Exception{
 		
 		tested.setDelegate(null);
 		try{

@@ -16,16 +16,18 @@
 
 package org.springframework.batch.core;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public abstract class AbstractExceptionTests extends TestCase {
+public abstract class AbstractExceptionTests {
 
-	public void testExceptionString() throws Exception {
+	@org.junit.Test
+public void testExceptionString() throws Exception {
 		Exception exception = getException("foo");
 		assertEquals("foo", exception.getMessage());
 	}
 
-	public void testExceptionStringThrowable() throws Exception {
+	@org.junit.Test
+public void testExceptionStringThrowable() throws Exception {
 		Exception exception = getException("foo", new IllegalStateException());
 		assertEquals("foo", exception.getMessage().substring(0, 3));
 	}

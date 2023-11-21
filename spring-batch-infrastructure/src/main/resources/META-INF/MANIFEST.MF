@@ -33,7 +33,7 @@ Import-Package: com.ibatis.sqlmap.client;version="[2.3.0, 3.0.0)";reso
  rk.jdbc.support.incrementer;version="[2.0.0, 3.0.0)";resolution:=opti
  onal,org.springframework.jms;version="[2.0.0, 3.0.0)";resolution:=opt
  ional,org.springframework.jms.core;version="[2.0.0, 3.0.0)";resolutio
- n:=optional,org.springframework.orm.hibernate3;version="[2.0.0, 3.0.0
+ n:=optional,org.springframework.orm.hibernate5;version="[2.0.0, 3.0.0
  )";resolution:=optional,org.springframework.orm.ibatis;version="[2.0.
  0, 3.0.0)";resolution:=optional,org.springframework.oxm;version="[1.0
  .0, 2.0.0)";resolution:=optional,org.springframework.transaction;vers

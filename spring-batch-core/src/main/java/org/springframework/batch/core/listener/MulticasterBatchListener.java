@@ -93,7 +93,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 * @see org.springframework.batch.core.listener.CompositeStepExecutionListener#beforeStep(org.springframework.batch.core.StepExecution)
 	 */
 	public void beforeStep(StepExecution stepExecution) {
@@ -101,7 +101,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param e
+	 * @param e e
 	 * @see org.springframework.batch.core.listener.CompositeStepExecutionListener#onErrorInStep(StepExecution, Throwable)
 	 */
 	public ExitStatus onErrorInStep(StepExecution stepExecution, Throwable e) {
@@ -125,7 +125,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param item
+	 * @param item item
 	 * @see org.springframework.batch.core.listener.CompositeItemReadListener#afterRead(java.lang.Object)
 	 */
 	public void afterRead(Object item) {
@@ -141,7 +141,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param ex
+	 * @param ex ex
 	 * @see org.springframework.batch.core.listener.CompositeItemReadListener#onReadError(java.lang.Exception)
 	 */
 	public void onReadError(Exception ex) {
@@ -157,7 +157,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param item
+	 * @param item item
 	 * @see org.springframework.batch.core.listener.CompositeItemWriteListener#beforeWrite(java.lang.Object)
 	 */
 	public void beforeWrite(Object item) {
@@ -165,8 +165,8 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param ex
-	 * @param item
+	 * @param ex ex
+	 * @param item item
 	 * @see org.springframework.batch.core.listener.CompositeItemWriteListener#onWriteError(java.lang.Exception,
 	 * java.lang.Object)
 	 */
@@ -175,7 +175,7 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param t
+	 * @param t t
 	 * @see org.springframework.batch.core.listener.CompositeSkipListener#onSkipInRead(java.lang.Throwable)
 	 */
 	public void onSkipInRead(Throwable t) {
@@ -183,8 +183,8 @@ public class MulticasterBatchListener implements StepExecutionListener, ChunkLis
 	}
 
 	/**
-	 * @param item
-	 * @param t
+	 * @param item item
+	 * @param t t
 	 * @see org.springframework.batch.core.listener.CompositeSkipListener#onSkipInWrite(java.lang.Object, java.lang.Throwable)
 	 */
 	public void onSkipInWrite(Object item, Throwable t) {

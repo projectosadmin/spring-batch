@@ -47,8 +47,8 @@ public class SimpleItemHandler implements ItemHandler {
 	private ItemWriter itemWriter;
 
 	/**
-	 * @param itemReader
-	 * @param itemWriter
+	 * @param itemReader itemReader
+	 * @param itemWriter itemWriter
 	 */
 	public SimpleItemHandler(ItemReader itemReader, ItemWriter itemWriter) {
 		super();
@@ -82,7 +82,7 @@ public class SimpleItemHandler implements ItemHandler {
 
 	/**
 	 * @return item
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
 	protected final Object doRead() throws Exception {
 		return itemReader.read();
@@ -98,15 +98,15 @@ public class SimpleItemHandler implements ItemHandler {
 	}
 
 	/**
-	 * @param item
-	 * @throws Exception
+	 * @param item item
+	 * @throws Exception Exception
 	 */
 	protected final void doWrite(Object item) throws Exception {
 		itemWriter.write(item);
 	}
 
 	/**
-	 * @throws MarkFailedException
+	 * @throws MarkFailedException MarkFailedException
 	 * @see org.springframework.batch.item.ItemReader#mark()
 	 */
 	public void mark() throws MarkFailedException {
@@ -114,7 +114,7 @@ public class SimpleItemHandler implements ItemHandler {
 	}
 
 	/**
-	 * @throws ResetFailedException
+	 * @throws ResetFailedException ResetFailedException
 	 * @see org.springframework.batch.item.ItemReader#reset()
 	 */
 	public void reset() throws ResetFailedException {
@@ -122,7 +122,7 @@ public class SimpleItemHandler implements ItemHandler {
 	}
 
 	/**
-	 * @throws ClearFailedException
+	 * @throws ClearFailedException ClearFailedException
 	 * @see org.springframework.batch.item.ItemWriter#clear()
 	 */
 	public void clear() throws ClearFailedException {
@@ -130,7 +130,7 @@ public class SimpleItemHandler implements ItemHandler {
 	}
 
 	/**
-	 * @throws FlushFailedException
+	 * @throws FlushFailedException FlushFailedException
 	 * @see org.springframework.batch.item.ItemWriter#flush()
 	 */
 	public void flush() throws FlushFailedException {

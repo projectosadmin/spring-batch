@@ -82,7 +82,7 @@ abstract class AbstractResultQueue extends RepeatInternalStateSupport implements
 	/**
 	 * Acquire permission for one more task on the queue.
 	 * 
-	 * @throws InterruptedException
+	 * @throws InterruptedException InterruptedException
 	 */
 	protected abstract void aquireWait() throws InterruptedException;
 

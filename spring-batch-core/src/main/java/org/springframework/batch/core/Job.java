@@ -43,7 +43,7 @@ public interface Job {
 	 * and statistics as necessary.
 	 * 
 	 * @param execution a {@link JobExecution}
-	 * @throws JobExecutionException
+	 * @throws JobExecutionException JobExecutionException
 	 */
 	void execute(JobExecution execution) throws JobExecutionException;
 

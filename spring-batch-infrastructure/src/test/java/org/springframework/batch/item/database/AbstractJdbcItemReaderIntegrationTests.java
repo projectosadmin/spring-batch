@@ -1,21 +1,27 @@
 package org.springframework.batch.item.database;
 
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.batch.AbstractDaoTest;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-import org.springframework.util.Assert;
+import static org.junit.Assert.*;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.Assert;
+import static org.junit.Assert.*;
 /**
  * Common scenarios for testing {@link ItemReader} implementations which read data from database.
  *
  * @author Lucas Ward
  * @author Robert Kasanicky
  */
-public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("/org/springframework/batch/item/database/data-source-context.xml")
+public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractDaoTest {
 
 	protected ItemReader itemReader;
 
@@ -30,22 +36,25 @@ public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTra
 		return new String[] { "org/springframework/batch/item/database/data-source-context.xml"};
 	}
 
-	protected void onSetUp()throws Exception{
-		super.onSetUp();
+	@Before
+	public void onSetUp()throws Exception{
+
 		itemReader = createItemReader();
 		getAsInitializingBean(itemReader).afterPropertiesSet();
 		executionContext = new ExecutionContext();
 	}
 
-	protected void onTearDown()throws Exception {
+	@After
+	public void onTearDown()throws Exception {
 		getAsDisposableBean(itemReader).destroy();
-		super.onTearDown();
+
 	}
 
 	/**
 	 * Regular scenario - read all rows and eventually return null.
 	 */
-	public void testNormalProcessing() throws Exception {
+	@org.junit.Test
+public void testNormalProcessing() throws Exception {
 		getAsInitializingBean(itemReader).afterPropertiesSet();
 		getAsItemStream(itemReader).open(executionContext);
 
@@ -69,9 +78,10 @@ public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTra
 
 	/**
 	 * Restart scenario.
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 		getAsItemStream(itemReader).open(executionContext);
 		Foo foo1 = (Foo) itemReader.read();
 		assertEquals(1, foo1.getValue());
@@ -92,7 +102,8 @@ public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTra
 	/**
 	 * Reading from an input source and then trying to restore causes an error.
 	 */
-	public void testInvalidRestore() throws Exception {
+	@org.junit.Test
+public void testInvalidRestore() throws Exception {
 
 		getAsItemStream(itemReader).open(executionContext);
 		Foo foo1 = (Foo) itemReader.read();
@@ -123,7 +134,8 @@ public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTra
 	 * Empty restart data should be handled gracefully.
 	 * @throws Exception 
 	 */
-	public void testRestoreFromEmptyData() throws Exception {
+	@org.junit.Test
+public void testRestoreFromEmptyData() throws Exception {
 		ExecutionContext streamContext = new ExecutionContext();
 		getAsItemStream(itemReader).open(streamContext);
 		Foo foo = (Foo) itemReader.read();
@@ -134,7 +146,8 @@ public abstract class AbstractJdbcItemReaderIntegrationTests extends AbstractTra
 	 * Rollback scenario.
 	 * @throws Exception 
 	 */
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		getAsItemStream(itemReader).open(executionContext);
 		Foo foo1 = (Foo) itemReader.read();
 

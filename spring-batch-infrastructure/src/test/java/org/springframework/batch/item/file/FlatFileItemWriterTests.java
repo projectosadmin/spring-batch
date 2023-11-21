@@ -22,7 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.UnsupportedCharsetException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -33,7 +33,7 @@ import org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.ClassUtils;
-
+import static org.junit.Assert.*;
 /**
  * Tests of regular usage for {@link FlatFileItemWriter} Exception cases will be
  * in separate TestCase classes with different <code>setUp</code> and
@@ -43,7 +43,7 @@ import org.springframework.util.ClassUtils;
  * @author Dave Syer
  * 
  */
-public class FlatFileItemWriterTests extends TestCase {
+public class FlatFileItemWriterTests {
 
 	// object under test
 	private FlatFileItemWriter writer = new FlatFileItemWriter();
@@ -63,7 +63,8 @@ public class FlatFileItemWriterTests extends TestCase {
 	 * Create temporary output file, define mock behaviour, set dependencies and
 	 * initialize the object under test
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 			TransactionSynchronizationManager.clearSynchronization();
@@ -82,7 +83,8 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Release resources and delete the temporary output file
 	 */
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		if (reader != null) {
 			reader.close();
 		}
@@ -104,7 +106,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		return reader.readLine();
 	}
 	
-	public void testWriteWithMultipleOpen() throws Exception{
+	@org.junit.Test
+public void testWriteWithMultipleOpen() throws Exception{
 		
 		writer.open(executionContext);
 		writer.write("test1");
@@ -116,7 +119,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals("test2", readLine());
 	}
 	
-	public void testOpenTwice(){
+	@org.junit.Test
+public void testOpenTwice(){
 		//opening the writer twice should cause no issues
 		writer.open(executionContext);
 		writer.open(executionContext);
@@ -125,9 +129,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteString() throws Exception {
+	@org.junit.Test
+public void testWriteString() throws Exception {
 		writer.open(executionContext);
 		writer.write(TEST_STRING);
 		writer.flush();
@@ -140,9 +145,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteWithConverter() throws Exception {
+	@org.junit.Test
+public void testWriteWithConverter() throws Exception {
 		writer.setFieldSetCreator(new FieldSetCreator() {
 			public FieldSet mapItem(Object data) {
 				return new DefaultFieldSet(new String[] { "FOO:" + data });
@@ -160,9 +166,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteWithConverterAndInfiniteLoop() throws Exception {
+	@org.junit.Test
+public void testWriteWithConverterAndInfiniteLoop() throws Exception {
 		writer.setFieldSetCreator(new FieldSetCreator() {
 			public FieldSet mapItem(Object data) {
 				return new DefaultFieldSet(new String[] { "FOO:" + data });
@@ -180,9 +187,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteWithConverterAndString() throws Exception {
+	@org.junit.Test
+public void testWriteWithConverterAndString() throws Exception {
 		writer.setFieldSetCreator(new FieldSetCreator() {
 			public FieldSet mapItem(Object data) {
 				return new DefaultFieldSet(new String[] { "FOO:" + data });
@@ -198,9 +206,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String[], LineDescriptor)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteRecord() throws Exception {
+	@org.junit.Test
+public void testWriteRecord() throws Exception {
 		String args = "1";
 		writer.open(executionContext);
 		writer.write(args);
@@ -209,7 +218,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals(args, lineFromFile);
 	}
 
-	public void testWriteRecordWithrecordSeparator() throws Exception {
+	@org.junit.Test
+public void testWriteRecordWithrecordSeparator() throws Exception {
 		writer.setLineSeparator("|");
 		writer.open(executionContext);
 		writer.write("1");
@@ -219,7 +229,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals("1|2|", lineFromFile);
 	}
 
-	public void testRollback() throws Exception {
+	@org.junit.Test
+public void testRollback() throws Exception {
 		writer.open(executionContext);
 		writer.write("testLine1");
 		// rollback
@@ -230,7 +241,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals(null, lineFromFile);
 	}
 
-	public void testCommit() throws Exception {
+	@org.junit.Test
+public void testCommit() throws Exception {
 		writer.open(executionContext);
 		writer.write("testLine1");
 		// rollback
@@ -240,7 +252,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals("testLine1", lineFromFile);
 	}
 
-	public void testRestart() throws Exception {
+	@org.junit.Test
+public void testRestart() throws Exception {
 		
 		writer.open(executionContext);
 		// write some lines
@@ -294,7 +307,8 @@ public class FlatFileItemWriterTests extends TestCase {
 
 	}
 	
-	public void testOpenWithNonWritableFile() throws Exception {
+	@org.junit.Test
+public void testOpenWithNonWritableFile() throws Exception {
 		writer = new FlatFileItemWriter();
 		writer.setFieldSetCreator(new PassThroughFieldSetMapper());
 		FileSystemResource file = new FileSystemResource("target/no-such-file.foo");
@@ -311,7 +325,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		}
 	}
 
-	public void testAfterPropertiesSetChecksMandatory() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSetChecksMandatory() throws Exception {
 		writer = new FlatFileItemWriter();
 		try {
 			writer.afterPropertiesSet();
@@ -322,7 +337,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		}
 	}
 
-	public void testDefaultStreamContext() throws Exception {
+	@org.junit.Test
+public void testDefaultStreamContext() throws Exception {
 		writer = new FlatFileItemWriter();
 		writer.setResource(new FileSystemResource(outputFile));
 		writer.setFieldSetCreator(new PassThroughFieldSetMapper());
@@ -338,9 +354,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteStringWithBogusEncoding() throws Exception {
+	@org.junit.Test
+public void testWriteStringWithBogusEncoding() throws Exception {
 		writer.setEncoding("BOGUS");
 		try {
 			writer.open(executionContext);
@@ -355,9 +372,10 @@ public class FlatFileItemWriterTests extends TestCase {
 	/**
 	 * Regular usage of <code>write(String)</code> method
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testWriteStringWithEncodingAfterClose() throws Exception {
+	@org.junit.Test
+public void testWriteStringWithEncodingAfterClose() throws Exception {
 		testWriteStringWithBogusEncoding();
 		writer.setEncoding("UTF-8");
 		writer.open(executionContext);
@@ -368,7 +386,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals(TEST_STRING, lineFromFile);
 	}
 
-	public void testWriteHeader() throws Exception {
+	@org.junit.Test
+public void testWriteHeader() throws Exception {
 		writer.setHeaderLines(new String[] {"a", "b"});
 		writer.open(executionContext);
 		writer.write(TEST_STRING);
@@ -382,7 +401,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals(TEST_STRING, lineFromFile);
 	}
 
-	public void testWriteHeaderAfterRestartOnFirstChunk() throws Exception {
+	@org.junit.Test
+public void testWriteHeaderAfterRestartOnFirstChunk() throws Exception {
 		writer.setHeaderLines(new String[] {"a", "b"});
 		writer.open(executionContext);
 		writer.write(TEST_STRING);
@@ -402,7 +422,8 @@ public class FlatFileItemWriterTests extends TestCase {
 		assertEquals(null, lineFromFile);
 	}
 
-	public void testWriteHeaderAfterRestartOnSecondChunk() throws Exception {
+	@org.junit.Test
+public void testWriteHeaderAfterRestartOnSecondChunk() throws Exception {
 		writer.setHeaderLines(new String[] {"a", "b"});
 		writer.open(executionContext);
 		writer.write(TEST_STRING);

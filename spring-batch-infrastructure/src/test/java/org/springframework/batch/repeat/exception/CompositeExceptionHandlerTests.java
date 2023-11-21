@@ -19,17 +19,18 @@ package org.springframework.batch.repeat.exception;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.exception.CompositeExceptionHandler;
 import org.springframework.batch.repeat.exception.ExceptionHandler;
 
-public class CompositeExceptionHandlerTests extends TestCase {
+public class CompositeExceptionHandlerTests {
 
 	private CompositeExceptionHandler handler = new CompositeExceptionHandler();
 	
-	public void testNewHandler() throws Throwable {
+	@org.junit.Test
+public void testNewHandler() throws Throwable {
 		try {
 			handler.handleException(null, new RuntimeException());
 		}
@@ -38,7 +39,8 @@ public class CompositeExceptionHandlerTests extends TestCase {
 		}
 	}
 	
-	public void testDelegation() throws Throwable {
+	@org.junit.Test
+public void testDelegation() throws Throwable {
 		final List list = new ArrayList();
 		handler.setHandlers(new ExceptionHandler[] {
 			new ExceptionHandler() {

@@ -26,7 +26,7 @@ import org.springframework.batch.retry.RetryContext;
 import org.springframework.batch.retry.callback.RecoveryRetryCallback;
 import org.springframework.batch.retry.support.RetryTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import static org.junit.Assert.*;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -47,7 +47,8 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 				"jms-context.xml") };
 	}
 
-	protected void onSetUpBeforeTransaction() throws Exception {
+	@org.junit.Before
+public void onSetUpBeforeTransaction() throws Exception {
 		super.onSetUpBeforeTransaction();
 		String foo = "";
 		int count = 0;
@@ -62,7 +63,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	}
 
 	private void assertInitialState() {
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 	}
 
@@ -72,9 +73,10 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	 * Message processing is successful on the second attempt without having to
 	 * receive the message again.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testInternalRetrySuccessOnSecondAttempt() throws Exception {
+	@org.junit.Test
+public void testInternalRetrySuccessOnSecondAttempt() throws Exception {
 
 		assertInitialState();
 
@@ -120,7 +122,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		List msgs = getMessages();
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(1, count);
 
 		// ... and so did the message session.
@@ -131,9 +133,10 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	 * Message processing is successful on the second attempt without having to
 	 * receive the message again - uses JmsItemProvider internally.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testInternalRetrySuccessOnSecondAttemptWithItemProvider() throws Exception {
+	@org.junit.Test
+public void testInternalRetrySuccessOnSecondAttemptWithItemProvider() throws Exception {
 
 		assertInitialState();
 
@@ -176,7 +179,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		List msgs = getMessages();
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(1, count);
 
 		// ... and so did the message session.
@@ -187,9 +190,10 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	 * Message processing is successful on the second attempt without having to
 	 * receive the message again.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testInternalRetrySuccessOnFirstAttemptRollbackOuter() throws Exception {
+	@org.junit.Test
+public void testInternalRetrySuccessOnFirstAttemptRollbackOuter() throws Exception {
 
 		assertInitialState();
 
@@ -224,7 +228,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		});
 
 		// The database transaction has committed...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(1, count);
 
 		// force rollback...
@@ -235,7 +239,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		List msgs = getMessages();
 
 		// The database portion rolled back...
-		count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		// ... and so did the message session.
@@ -246,9 +250,10 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	 * Message processing is successful on the second attempt but must receive
 	 * the message again.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testExternalRetrySuccessOnSecondAttempt() throws Exception {
+	@org.junit.Test
+public void testExternalRetrySuccessOnSecondAttempt() throws Exception {
 
 		assertInitialState();
 
@@ -287,7 +292,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		List msgs = getMessages();
 
 		// The database portion committed once...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(1, count);
 
 		// ... and so did the message session.
@@ -297,9 +302,10 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 	/**
 	 * Message processing fails.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testExternalRetryFailOnSecondAttempt() throws Exception {
+	@org.junit.Test
+public void testExternalRetryFailOnSecondAttempt() throws Exception {
 
 		assertInitialState();
 
@@ -345,7 +351,7 @@ public class SynchronousTests extends AbstractTransactionalDataSourceSpringConte
 		List msgs = getMessages();
 
 		// The database portion rolled back...
-		int count = jdbcTemplate.queryForInt("select count(*) from T_FOOS");
+		int count = jdbcTemplate.queryForObject("select count(*) from T_FOOS", Integer.class);
 		assertEquals(0, count);
 
 		// ... and so did the message session.

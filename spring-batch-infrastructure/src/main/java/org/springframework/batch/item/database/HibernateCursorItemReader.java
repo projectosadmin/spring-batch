@@ -77,7 +77,7 @@ public class HibernateCursorItemReader extends AbstractBufferedItemReaderItemStr
 	/**
 	 * Open appropriate type of hibernate session and create the query.
 	 */
-	private Query createQuery() {
+	private org.hibernate.query.Query createQuery() {
 		if (useStatelessSession) {
 			statelessSession = sessionFactory.openStatelessSession();
 			return statelessSession.createQuery(queryString);

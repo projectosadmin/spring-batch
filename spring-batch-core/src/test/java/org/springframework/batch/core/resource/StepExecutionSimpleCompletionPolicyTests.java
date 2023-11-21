@@ -18,7 +18,7 @@ package org.springframework.batch.core.resource;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -34,7 +34,7 @@ import org.springframework.batch.repeat.RepeatContext;
  * 
  * @author Dave Syer
  */
-public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
+public class StepExecutionSimpleCompletionPolicyTests {
 
 	/**
 	 * Object under test
@@ -49,7 +49,8 @@ public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
 	 * mock step context
 	 */
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		JobParameters jobParameters = new JobParametersBuilder().addLong("commit.interval", new Long(2L)).toJobParameters();
 		jobInstance = new JobInstance(new Long(0), jobParameters, "testJob");
@@ -60,12 +61,14 @@ public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
 
 	}
 	
-	public void testToString() throws Exception {
+	@org.junit.Test
+public void testToString() throws Exception {
 		String msg = policy.toString();
 		assertTrue("String does not contain chunk size", msg.indexOf("chunkSize=2")>=0);
 	}
 
-	public void testKeyName() throws Exception, IOException {
+	@org.junit.Test
+public void testKeyName() throws Exception, IOException {
 		RepeatContext context = policy.start(null);
 		assertFalse(policy.isComplete(context));
 	}

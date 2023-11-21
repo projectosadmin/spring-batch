@@ -20,7 +20,7 @@ public class JobLaunchingMessageHandler {
 	private final JobLauncher jobLauncher;
 
 	/**
-	 * @param jobLauncher
+	 * @param jobLauncher jobLauncher
 	 */
 	public JobLaunchingMessageHandler(JobLauncher jobLauncher) {
 		super();

@@ -25,7 +25,7 @@ import org.springframework.batch.repeat.callback.ItemReaderRepeatCallback;
 import org.springframework.batch.repeat.callback.NestedRepeatCallback;
 import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
-
+import static org.junit.Assert.*;
 /**
  * Test various approaches to chunking of a batch. Not really a unit test, but
  * it should be fast.
@@ -41,9 +41,10 @@ public class ChunkedRepeatTests extends AbstractTradeBatchTests {
 	 * Chunking using a dedicated TerminationPolicy. Transactions would be laid
 	 * on at the level of chunkTemplate.execute() or the surrounding callback.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testChunkedBatchWithTerminationPolicy() throws Exception {
+	@org.junit.Test
+public void testChunkedBatchWithTerminationPolicy() throws Exception {
 
 		RepeatTemplate repeatTemplate = new RepeatTemplate();
 		final RepeatCallback callback = new ItemReaderRepeatCallback(provider, processor);
@@ -75,9 +76,10 @@ public class ChunkedRepeatTests extends AbstractTradeBatchTests {
 	 * Chunking with an asynchronous taskExecutor in the chunks. Transactions
 	 * have to be at the level of the business callback.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testAsynchronousChunkedBatchWithCompletionPolicy() throws Exception {
+	@org.junit.Test
+public void testAsynchronousChunkedBatchWithCompletionPolicy() throws Exception {
 
 		RepeatTemplate repeatTemplate = new RepeatTemplate();
 		final RepeatCallback callback = new ItemReaderRepeatCallback(provider, processor);
@@ -107,9 +109,10 @@ public class ChunkedRepeatTests extends AbstractTradeBatchTests {
 	 * Explicit chunking of input data. Transactions would be laid on at the
 	 * level of template.execute().
 	 * 
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
-	public void testChunksWithTruncatedItemProvider() throws Exception {
+	@org.junit.Test
+public void testChunksWithTruncatedItemProvider() throws Exception {
 
 		RepeatTemplate template = new RepeatTemplate();
 

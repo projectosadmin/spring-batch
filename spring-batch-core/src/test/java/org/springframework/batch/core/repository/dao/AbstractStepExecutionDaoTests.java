@@ -16,6 +16,7 @@
 
 package org.springframework.batch.core.repository.dao;
 
+import org.junit.Before;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -27,199 +28,209 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link StepExecutionDao} implementations.
- * 
+ *
  * @see #getStepExecutionDao()
  */
-public abstract class AbstractStepExecutionDaoTests extends AbstractTransactionalDataSourceSpringContextTests {
 
-	protected StepExecutionDao dao;
+public abstract class AbstractStepExecutionDaoTests extends AbstractDaoTest {
 
-	protected JobInstance jobInstance;
+    protected StepExecutionDao dao;
 
-	protected JobExecution jobExecution;
+    protected JobInstance jobInstance;
 
-	protected Step step;
+    protected JobExecution jobExecution;
 
-	protected StepExecution stepExecution;
+    protected Step step;
 
-	protected JobRepository repository;
+    protected StepExecution stepExecution;
 
-	/**
-	 * @return {@link StepExecutionDao} implementation ready for use.
-	 */
-	protected abstract StepExecutionDao getStepExecutionDao();
+    protected JobRepository repository;
 
-	/**
-	 * @return {@link JobRepository} that uses the stepExecution dao.
-	 */
-	protected abstract JobRepository getJobRepository();
+    /**
+     * @return {@link StepExecutionDao} implementation ready for use.
+     */
+    protected abstract StepExecutionDao getStepExecutionDao();
 
-	protected void onSetUp() throws Exception {
-		repository = getJobRepository();
-		
-		
-		jobExecution = repository.createJobExecution(new JobSupport("testJob"), new JobParameters());
-		jobInstance = jobExecution.getJobInstance();
-		step = new StepSupport("foo");
-		stepExecution = new StepExecution(step.getName(), jobExecution);
-		dao = getStepExecutionDao();
-	}
+    /**
+     * @return {@link JobRepository} that uses the stepExecution dao.
+     */
+    protected abstract JobRepository getJobRepository();
 
-	public void testSaveExecutionAssignsIdAndVersion() throws Exception {
-		
-		assertNull(stepExecution.getId());
-		assertNull(stepExecution.getVersion());
-		dao.saveStepExecution(stepExecution);
-		assertNotNull(stepExecution.getId());
-		assertNotNull(stepExecution.getVersion());
-	}
+    @Before
+    public void init() throws Exception {
+        repository = getJobRepository();
+        jobExecution = repository.createJobExecution(new JobSupport("testJob"), new JobParameters());
+        jobInstance = jobExecution.getJobInstance();
+        step = new StepSupport("foo");
+        stepExecution = new StepExecution(step.getName(), jobExecution);
+        dao = getStepExecutionDao();
+    }
 
-	public void testSaveAndFindExecution() {
-		
-		stepExecution.setStatus(BatchStatus.STARTED);
-		stepExecution.setReadSkipCount(7);
-		stepExecution.setWriteSkipCount(5);
-		stepExecution.setRollbackCount(3);
-		dao.saveStepExecution(stepExecution);
+    @org.junit.Test
+    public void testSaveExecutionAssignsIdAndVersion() throws Exception {
 
-		StepExecution retrieved = dao.getStepExecution(jobExecution, step);
-		assertEquals(stepExecution, retrieved);
-		assertEquals(BatchStatus.STARTED, retrieved.getStatus());
-		assertEquals(stepExecution.getReadSkipCount(), retrieved.getReadSkipCount());
-		assertEquals(stepExecution.getWriteSkipCount(), retrieved.getWriteSkipCount());
-		assertEquals(stepExecution.getRollbackCount(), retrieved.getRollbackCount());
-		
-		assertNull(dao.getStepExecution(jobExecution, new StepSupport("not-existing step")));
-	}
+        assertNull(stepExecution.getId());
+        assertNull(stepExecution.getVersion());
+        dao.saveStepExecution(stepExecution);
+        assertNotNull(stepExecution.getId());
+        assertNotNull(stepExecution.getVersion());
+    }
 
-	public void testGetForNotExistingJobExecution() {
-		assertNull(dao.getStepExecution(new JobExecution(jobInstance, new Long(777)), step));
-	}
+    @org.junit.Test
+    public void testSaveAndFindExecution() {
 
-	/**
-	 * To-be-saved execution must not already have an id.
-	 */
-	public void testSaveExecutionWithIdAlreadySet() {
-		stepExecution.setId(new Long(7));
-		try {
-			dao.saveStepExecution(stepExecution);
-			fail();
-		}
-		catch (IllegalArgumentException e) {
-			// expected
-		}
-	}
+        stepExecution.setStatus(BatchStatus.STARTED);
+        stepExecution.setReadSkipCount(7);
+        stepExecution.setWriteSkipCount(5);
+        stepExecution.setRollbackCount(3);
+        dao.saveStepExecution(stepExecution);
 
-	/**
-	 * To-be-saved execution must not already have a version.
-	 */
-	public void testSaveExecutionWithVersionAlreadySet() {
-		stepExecution.incrementVersion();
-		try {
-			dao.saveStepExecution(stepExecution);
-			fail();
-		}
-		catch (IllegalArgumentException e) {
-			// expected
-		}
-	}
+        StepExecution retrieved = dao.getStepExecution(jobExecution, step);
+        assertEquals(stepExecution, retrieved);
+        assertEquals(BatchStatus.STARTED, retrieved.getStatus());
+        assertEquals(stepExecution.getReadSkipCount(), retrieved.getReadSkipCount());
+        assertEquals(stepExecution.getWriteSkipCount(), retrieved.getWriteSkipCount());
+        assertEquals(stepExecution.getRollbackCount(), retrieved.getRollbackCount());
 
-	/**
-	 * Update and retrieve updated StepExecution - make sure the update is
-	 * reflected as expected and version number has been incremented
-	 */
-	public void testUpdateExecution() {
-		stepExecution.setStatus(BatchStatus.STARTED);
-		dao.saveStepExecution(stepExecution);
-		Integer versionAfterSave = stepExecution.getVersion();
+        assertNull(dao.getStepExecution(jobExecution, new StepSupport("not-existing step")));
+    }
 
-		stepExecution.setStatus(BatchStatus.STOPPED);
-		dao.updateStepExecution(stepExecution);
-		assertEquals(versionAfterSave.intValue() + 1, stepExecution.getVersion().intValue());
+    @org.junit.Test
+    public void testGetForNotExistingJobExecution() {
+        assertNull(dao.getStepExecution(new JobExecution(jobInstance, new Long(777)), step));
+    }
 
-		StepExecution retrieved = dao.getStepExecution(jobExecution, step);
-		assertEquals(stepExecution, retrieved);
-		assertEquals(BatchStatus.STOPPED, retrieved.getStatus());
-	}
+    /**
+     * To-be-saved execution must not already have an id.
+     */
+    @org.junit.Test
+    public void testSaveExecutionWithIdAlreadySet() {
+        stepExecution.setId(new Long(7));
+        try {
+            dao.saveStepExecution(stepExecution);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 
-	public void testSaveAndFindContext() {
-		dao.saveStepExecution(stepExecution);
-		ExecutionContext ctx = new ExecutionContext();
-		ctx.put("key", "value");
-		stepExecution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(stepExecution);
+    /**
+     * To-be-saved execution must not already have a version.
+     */
+    @org.junit.Test
+    public void testSaveExecutionWithVersionAlreadySet() {
+        stepExecution.incrementVersion();
+        try {
+            dao.saveStepExecution(stepExecution);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 
-		ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
-		assertEquals(ctx, retrieved);
-	}
-	
-	public void testSaveAndFindEmptyContext() {
-		dao.saveStepExecution(stepExecution);
-		ExecutionContext ctx = new ExecutionContext();
-		stepExecution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(stepExecution);
+    /**
+     * Update and retrieve updated StepExecution - make sure the update is
+     * reflected as expected and version number has been incremented
+     */
+    @org.junit.Test
+    public void testUpdateExecution() {
+        stepExecution.setStatus(BatchStatus.STARTED);
+        dao.saveStepExecution(stepExecution);
+        Integer versionAfterSave = stepExecution.getVersion();
 
-		ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
-		assertEquals(ctx, retrieved);
-	}
+        stepExecution.setStatus(BatchStatus.STOPPED);
+        dao.updateStepExecution(stepExecution);
+        assertEquals(versionAfterSave.intValue() + 1, stepExecution.getVersion().intValue());
 
-	public void testUpdateContext() {
-		dao.saveStepExecution(stepExecution);
-		ExecutionContext ctx = new ExecutionContext();
-		ctx.put("key", "value");
-		stepExecution.setExecutionContext(ctx);
-		dao.saveOrUpdateExecutionContext(stepExecution);
+        StepExecution retrieved = dao.getStepExecution(jobExecution, step);
+        assertEquals(stepExecution, retrieved);
+        assertEquals(BatchStatus.STOPPED, retrieved.getStatus());
+    }
 
-		ctx.putLong("longKey", 7);
-		dao.saveOrUpdateExecutionContext(stepExecution);
+    @org.junit.Test
+    public void testSaveAndFindContext() {
+        dao.saveStepExecution(stepExecution);
+        ExecutionContext ctx = new ExecutionContext();
+        ctx.put("key", "value");
+        stepExecution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(stepExecution);
 
-		ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
-		assertEquals(ctx, retrieved);
-		assertEquals(7, retrieved.getLong("longKey"));
-	}
+        ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
+        assertEquals(ctx, retrieved);
+    }
 
-	/**
-	 * Exception should be raised when the version of update argument doesn't
-	 * match the version of persisted entity.
-	 */
-	public void testConcurrentModificationException() {
-		step = new StepSupport("foo");
+    @org.junit.Test
+    public void testSaveAndFindEmptyContext() {
+        dao.saveStepExecution(stepExecution);
+        ExecutionContext ctx = new ExecutionContext();
+        stepExecution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(stepExecution);
 
-		StepExecution exec1 = new StepExecution(step.getName(), jobExecution);
-		dao.saveStepExecution(exec1);
+        ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
+        assertEquals(ctx, retrieved);
+    }
 
-		StepExecution exec2 = new StepExecution(step.getName(), jobExecution);
-		exec2.setId(exec1.getId());
+    @org.junit.Test
+    public void testUpdateContext() {
+        dao.saveStepExecution(stepExecution);
+        ExecutionContext ctx = new ExecutionContext();
+        ctx.put("key", "value");
+        stepExecution.setExecutionContext(ctx);
+        dao.saveOrUpdateExecutionContext(stepExecution);
 
-		exec2.incrementVersion();
-		assertEquals(new Integer(0), exec1.getVersion());
-		assertEquals(exec1.getVersion(), exec2.getVersion());
+        ctx.putLong("longKey", 7);
+        dao.saveOrUpdateExecutionContext(stepExecution);
 
-		dao.updateStepExecution(exec1);
-		assertEquals(new Integer(1), exec1.getVersion());
+        ExecutionContext retrieved = dao.findExecutionContext(stepExecution);
+        assertEquals(ctx, retrieved);
+        assertEquals(7, retrieved.getLong("longKey"));
+    }
 
-		try {
-			dao.updateStepExecution(exec2);
-			fail();
-		}
-		catch (OptimisticLockingFailureException e) {
-			// expected
-		}
+    /**
+     * Exception should be raised when the version of update argument doesn't
+     * match the version of persisted entity.
+     */
+    @org.junit.Test
+    public void testConcurrentModificationException() {
+        step = new StepSupport("foo");
 
-	}
-	
-	public void testStoreInteger(){	
-		dao.saveStepExecution(stepExecution);
-		ExecutionContext ec = new ExecutionContext();
-		ec.put("intValue", new Integer(343232));
-		stepExecution.setExecutionContext(ec);
-		dao.saveOrUpdateExecutionContext(stepExecution);
-		ExecutionContext restoredEc = dao.findExecutionContext(stepExecution);
-		assertEquals(ec, restoredEc);
-	}
+        StepExecution exec1 = new StepExecution(step.getName(), jobExecution);
+        dao.saveStepExecution(exec1);
+
+        StepExecution exec2 = new StepExecution(step.getName(), jobExecution);
+        exec2.setId(exec1.getId());
+
+        exec2.incrementVersion();
+        assertEquals(new Integer(0), exec1.getVersion());
+        assertEquals(exec1.getVersion(), exec2.getVersion());
+
+        dao.updateStepExecution(exec1);
+        assertEquals(new Integer(1), exec1.getVersion());
+
+        try {
+            dao.updateStepExecution(exec2);
+            fail();
+        } catch (OptimisticLockingFailureException e) {
+            // expected
+        }
+
+    }
+
+    @org.junit.Test
+    public void testStoreInteger() {
+        dao.saveStepExecution(stepExecution);
+        ExecutionContext ec = new ExecutionContext();
+        ec.put("intValue", new Integer(343232));
+        stepExecution.setExecutionContext(ec);
+        dao.saveOrUpdateExecutionContext(stepExecution);
+        ExecutionContext restoredEc = dao.findExecutionContext(stepExecution);
+        assertEquals(ec, restoredEc);
+    }
 
 }

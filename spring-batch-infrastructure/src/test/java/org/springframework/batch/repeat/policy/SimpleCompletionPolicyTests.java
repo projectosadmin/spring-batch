@@ -16,12 +16,12 @@
 
 package org.springframework.batch.repeat.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.repeat.RepeatContext;
 
-public class SimpleCompletionPolicyTests extends TestCase {
+public class SimpleCompletionPolicyTests {
 
 	SimpleCompletionPolicy policy = new SimpleCompletionPolicy();
 
@@ -29,12 +29,14 @@ public class SimpleCompletionPolicyTests extends TestCase {
 
 	ExitStatus dummy = ExitStatus.CONTINUABLE;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		context = policy.start(null);
 	}
 
-	public void testTerminationAfterDefaultSize() throws Exception {
+	@org.junit.Test
+public void testTerminationAfterDefaultSize() throws Exception {
 		for (int i = 0; i < SimpleCompletionPolicy.DEFAULT_CHUNK_SIZE - 1; i++) {
 			policy.update(context);
 			assertFalse(policy.isComplete(context, dummy));
@@ -43,7 +45,8 @@ public class SimpleCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context, dummy));
 	}
 
-	public void testTerminationAfterExplicitChunkSize() throws Exception {
+	@org.junit.Test
+public void testTerminationAfterExplicitChunkSize() throws Exception {
 		int chunkSize = 2;
 		policy.setChunkSize(chunkSize);
 		for (int i = 0; i < chunkSize - 1; i++) {
@@ -54,14 +57,16 @@ public class SimpleCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context, dummy));
 	}
 
-	public void testTerminationAfterNullResult() throws Exception {
+	@org.junit.Test
+public void testTerminationAfterNullResult() throws Exception {
 		policy.update(context);
 		assertFalse(policy.isComplete(context, dummy));
 		policy.update(context);
 		assertTrue(policy.isComplete(context, null));
 	}
 
-	public void testReset() throws Exception {
+	@org.junit.Test
+public void testReset() throws Exception {
 		policy.setChunkSize(2);
 		policy.update(context);
 		assertFalse(policy.isComplete(context, dummy));

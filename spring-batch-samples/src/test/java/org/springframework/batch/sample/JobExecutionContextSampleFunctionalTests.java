@@ -2,6 +2,7 @@ package org.springframework.batch.sample;
 
 import org.springframework.batch.sample.tasklet.DummyMessageReceivingTasklet;
 import org.springframework.batch.sample.tasklet.DummyMessageSendingTasklet;
+import static org.junit.Assert.*;
 
 public class JobExecutionContextSampleFunctionalTests extends AbstractValidatingBatchLauncherTests {
 

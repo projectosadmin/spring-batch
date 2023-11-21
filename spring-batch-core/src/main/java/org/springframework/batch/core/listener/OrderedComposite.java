@@ -40,7 +40,7 @@ class OrderedComposite {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param items
+	 * @param items items
 	 */
 	public void setItems(Object[] items) {
 		unordered.clear();
@@ -53,7 +53,7 @@ class OrderedComposite {
 	/**
 	 * Register additional item.
 	 * 
-	 * @param item
+	 * @param item item
 	 */
 	public void add(Object item) {
 		if (item instanceof Ordered) {

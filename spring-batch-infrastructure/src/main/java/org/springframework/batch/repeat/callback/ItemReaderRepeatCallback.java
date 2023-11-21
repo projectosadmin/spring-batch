@@ -45,7 +45,7 @@ public class ItemReaderRepeatCallback implements RepeatCallback {
 	 * Default writer is null, in which case we do nothing - subclasses can
 	 * extend this behaviour, but must be careful to actually exhaust the
 	 * provider by calling next().
-	 * @param provider
+	 * @param provider provider
 	 */
 	public ItemReaderRepeatCallback(ItemReader provider) {
 		this(provider, null);

@@ -19,17 +19,18 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  *
  */
-public class TransactionInterceptorValidatorTests extends TestCase {
+public class TransactionInterceptorValidatorTests {
 	
 	private TransactionInterceptorValidator validator = new TransactionInterceptorValidator(1);
 
-	public void testValidateNull() {
+	@org.junit.Test
+public void testValidateNull() {
 		try {
 			validator.validate(null);
 			fail("Expected IllegalArgumentException");
@@ -39,15 +40,18 @@ public class TransactionInterceptorValidatorTests extends TestCase {
 		}
 	}
 
-	public void testValidateWithNoInterceptors() {
+	@org.junit.Test
+public void testValidateWithNoInterceptors() {
 		validator.validate(new Object());
 	}
 	
-	public void testValidateAdvisedWithOneInterceptor() {
+	@org.junit.Test
+public void testValidateAdvisedWithOneInterceptor() {
 		validator.validate(ProxyFactory.getProxy(JobRepository.class, new TransactionInterceptor()));
 	}
 	
-	public void testValidateAdvisedWithTwoInterceptors() {
+	@org.junit.Test
+public void testValidateAdvisedWithTwoInterceptors() {
 		Object target = ProxyFactory.getProxy(JobRepository.class, new TransactionInterceptor());
 		ProxyFactory factory = new ProxyFactory();
 		factory.setTarget(target);

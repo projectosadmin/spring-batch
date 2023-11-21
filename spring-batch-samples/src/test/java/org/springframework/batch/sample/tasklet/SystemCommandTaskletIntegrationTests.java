@@ -2,7 +2,7 @@ package org.springframework.batch.sample.tasklet;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
 /**
  * Tests for {@link SystemCommandTasklet}.
  */
-public class SystemCommandTaskletIntegrationTests extends TestCase {
+public class SystemCommandTaskletIntegrationTests {
 
 	private static final Log log = LogFactory.getLog(SystemCommandTaskletIntegrationTests.class);
 
@@ -29,7 +29,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	private StepExecution stepExecution = new StepExecution("systemCommandStep", new JobExecution(new JobInstance(
 			new Long(1), new JobParameters(), "systemCommandJob")));
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		tasklet.setEnvironmentParams(null); // inherit from parent process
 		tasklet.setWorkingDirectory(null); // inherit from parent process
 		tasklet.setSystemProcessExitCodeMapper(new TestExitCodeMapper());
@@ -44,7 +45,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Regular usage scenario - successful execution of system command.
 	 */
-	public void testExecute() throws Exception {
+	@org.junit.Test
+public void testExecute() throws Exception {
 		String command = "java -version";
 		tasklet.setCommand(command);
 		tasklet.afterPropertiesSet();
@@ -58,7 +60,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Failed execution scenario - error exit code returned by system command.
 	 */
-	public void testExecuteFailure() throws Exception {
+	@org.junit.Test
+public void testExecuteFailure() throws Exception {
 		String command = "java org.springframework.batch.sample.tasklet.UnknownClass";
 		tasklet.setCommand(command);
 		tasklet.afterPropertiesSet();
@@ -72,7 +75,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Failed execution scenario - execution time exceeds timeout.
 	 */
-	public void testExecuteTimeout() throws Exception {
+	@org.junit.Test
+public void testExecuteTimeout() throws Exception {
 		String command = "sleep 3";
 		tasklet.setCommand(command);
 		tasklet.setTimeout(10);
@@ -91,7 +95,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Job interrupted scenario.
 	 */
-	public void testInterruption() throws Exception {
+	@org.junit.Test
+public void testInterruption() throws Exception {
 		String command = "sleep 5";
 		tasklet.setCommand(command);
 		tasklet.setTerminationCheckInterval(10);
@@ -112,7 +117,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Command property value is required to be set.
 	 */
-	public void testCommandNotSet() throws Exception {
+	@org.junit.Test
+public void testCommandNotSet() throws Exception {
 		tasklet.setCommand(null);
 		try {
 			tasklet.afterPropertiesSet();
@@ -135,7 +141,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	/**
 	 * Timeout must be set to non-zero value.
 	 */
-	public void testTimeoutNotSet() throws Exception {
+	@org.junit.Test
+public void testTimeoutNotSet() throws Exception {
 		tasklet.setCommand("not-empty placeholder");
 		tasklet.setTimeout(0);
 		try {
@@ -151,7 +158,8 @@ public class SystemCommandTaskletIntegrationTests extends TestCase {
 	 * Working directory property must point to an existing location and it must
 	 * be a directory
 	 */
-	public void testWorkingDirectory() throws Exception {
+	@org.junit.Test
+public void testWorkingDirectory() throws Exception {
 		File notExistingFile = new File("not-existing-path");
 		Assert.state(!notExistingFile.exists());
 

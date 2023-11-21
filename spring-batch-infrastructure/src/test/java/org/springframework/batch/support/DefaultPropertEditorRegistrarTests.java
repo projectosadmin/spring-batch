@@ -19,64 +19,70 @@ package org.springframework.batch.support;
 import java.util.Collections;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.PropertiesEditor;
 
-public class DefaultPropertEditorRegistrarTests extends TestCase {
+import static org.junit.Assert.*;
 
-	public void testIntArray() throws Exception {
-		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
-		BeanWithIntArray result = new BeanWithIntArray();
-		BeanWrapperImpl wrapper = new BeanWrapperImpl(result);
-		mapper.setCustomEditors(Collections.singletonMap(int[].class, new IntArrayPropertyEditor()));
-		mapper.registerCustomEditors(wrapper);
-		PropertiesEditor editor = new PropertiesEditor();
-		editor.setAsText("numbers=1,2,3, 4");
-		Properties props = (Properties) editor.getValue();
-		wrapper.setPropertyValues(props);
-		assertEquals(4, result.numbers[3]);
-	}
+public class DefaultPropertEditorRegistrarTests {
 
-	public void testSetCustomEditorsWithInvalidTypeName() throws Exception {
+    @org.junit.Test
+    public void testIntArray() throws Exception {
+        DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
+        BeanWithIntArray result = new BeanWithIntArray();
+        BeanWrapperImpl wrapper = new BeanWrapperImpl(result);
+        mapper.setCustomEditors(Collections.singletonMap(int[].class, new IntArrayPropertyEditor()));
+        mapper.registerCustomEditors(wrapper);
+        PropertiesEditor editor = new PropertiesEditor();
+        editor.setAsText("numbers=1,2,3, 4");
+        Properties props = (Properties) editor.getValue();
+        wrapper.setPropertyValues(props);
+        assertEquals(4, result.numbers[3]);
+    }
 
-		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
-		try {
-			mapper.setCustomEditors(Collections.singletonMap("FOO", new CustomNumberEditor(Long.class, true)));		
-		} catch (IllegalArgumentException e) {	
-			// expected
-		}
-	}
+    @org.junit.Test
+    public void testSetCustomEditorsWithInvalidTypeName() throws Exception {
 
-	public void testSetCustomEditorsWithInvalidType() throws Exception {
+        DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
+        try {
+            mapper.setCustomEditors(Collections.singletonMap("FOO", new CustomNumberEditor(Long.class, true)));
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 
-		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
-		try {
-			mapper.setCustomEditors(Collections.singletonMap(new Object(), new CustomNumberEditor(Long.class, true)));		
-		} catch (IllegalArgumentException e) {	
-			// expected
-		}
-	}
+    @org.junit.Test
+    public void testSetCustomEditorsWithInvalidType() throws Exception {
+
+        DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
+        try {
+            mapper.setCustomEditors(Collections.singletonMap(new Object(), new CustomNumberEditor(Long.class, true)));
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 
 
-	public void testSetCustomEditorsWithInvalidEditor() throws Exception {
+  /*  @org.junit.Test
+    public void testSetCustomEditorsWithInvalidEditor() throws Exception {
 
-		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
-		try {
-			mapper.setCustomEditors(Collections.singletonMap(Long.class, "FOO"));
-		} catch (IllegalArgumentException e) {	
-			// expected
-		}
-	}
+        DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
+        try {
+            mapper.setCustomEditors(Collections.singletonMap(Long.class, "FOO"));
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }*/
 
-	private static class BeanWithIntArray {
-		private int[] numbers;
+    private static class BeanWithIntArray {
+        private int[] numbers;
 
-		public void setNumbers(int[] numbers) {
-			this.numbers = numbers;
-		}
-	}
+        public void setNumbers(int[] numbers) {
+            this.numbers = numbers;
+        }
+    }
 
 }

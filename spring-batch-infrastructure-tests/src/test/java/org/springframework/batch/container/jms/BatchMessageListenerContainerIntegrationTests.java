@@ -27,7 +27,7 @@ import org.springframework.batch.retry.policy.NeverRetryPolicy;
 import org.springframework.batch.retry.policy.RecoveryCallbackRetryPolicy;
 import org.springframework.batch.retry.support.RetryTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
 import org.springframework.util.ClassUtils;
 
 /**
@@ -72,7 +72,8 @@ public class BatchMessageListenerContainerIntegrationTests extends AbstractDepen
 	/* (non-Javadoc)
 	 * @see org.springframework.test.AbstractSingleSpringContextTests#onSetUp()
 	 */
-	protected void onSetUp() throws Exception {
+	@org.junit.Before
+public void onSetUp() throws Exception {
 		while(jmsTemplate.receiveAndConvert("queue")!=null) {
 			// do nothing
 		}
@@ -82,18 +83,21 @@ public class BatchMessageListenerContainerIntegrationTests extends AbstractDepen
 	 * (non-Javadoc)
 	 * @see org.springframework.test.AbstractSingleSpringContextTests#onTearDown()
 	 */
-	protected void onTearDown() throws Exception {
+	@org.junit.After
+public void onTearDown() throws Exception {
 		container.stop();
 		while(jmsTemplate.receiveAndConvert("queue")!=null) {
 			// do nothing
 		}
 	}
 
-	public void testConfiguration() throws Exception {
+	@org.junit.Test
+public void testConfiguration() throws Exception {
 		assertNotNull(container);
 	}
 
-	public void testSendAndReceive() throws Exception {
+	@org.junit.Test
+public void testSendAndReceive() throws Exception {
 		container.setMessageListener(new MessageListener() {
 			public void onMessage(Message msg) {
 				count++;
@@ -112,7 +116,8 @@ public class BatchMessageListenerContainerIntegrationTests extends AbstractDepen
 		}
 	}
 
-	public void testFailureAndRepresent() throws Exception {
+	@org.junit.Test
+public void testFailureAndRepresent() throws Exception {
 		container.setMessageListener(new MessageListener() {
 			public void onMessage(Message msg) {
 				logger.debug("Message: "+msg);
@@ -133,7 +138,8 @@ public class BatchMessageListenerContainerIntegrationTests extends AbstractDepen
 		}
 	}
 
-	public void testFailureAndRecovery() throws Exception {
+	@org.junit.Test
+public void testFailureAndRecovery() throws Exception {
 		final RetryTemplate retryTemplate = new RetryTemplate();
 		retryTemplate.setRetryPolicy(new RecoveryCallbackRetryPolicy(new NeverRetryPolicy()));
 		container.setMessageListener(new MessageListener() {

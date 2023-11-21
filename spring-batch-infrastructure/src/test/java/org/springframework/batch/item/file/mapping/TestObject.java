@@ -18,7 +18,7 @@ package org.springframework.batch.item.file.mapping;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+import static org.junit.Assert.*;
 public class TestObject {
 	String varString;
 

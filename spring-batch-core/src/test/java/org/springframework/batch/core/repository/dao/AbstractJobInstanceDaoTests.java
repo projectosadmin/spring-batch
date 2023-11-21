@@ -2,78 +2,83 @@ package org.springframework.batch.core.repository.dao;
 
 import java.util.Date;
 
+import org.junit.Before;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.job.JobSupport;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
-public abstract class AbstractJobInstanceDaoTests extends AbstractTransactionalDataSourceSpringContextTests {
+import static org.junit.Assert.*;
 
-	private static final long DATE = 777;
+public abstract class AbstractJobInstanceDaoTests extends AbstractDaoTest {
 
-	private JobInstanceDao dao = new MapJobInstanceDao();
+    private static final long DATE = 777;
 
-	private Job fooJob = new JobSupport("foo");
+    private JobInstanceDao dao = new MapJobInstanceDao();
 
-	private JobParameters fooParams = new JobParametersBuilder().addString("stringKey", "stringValue").addLong(
-			"longKey", new Long(Long.MAX_VALUE)).addDouble("doubleKey", new Double(Double.MAX_VALUE)).addDate(
-			"dateKey", new Date(DATE)).toJobParameters();
+    private Job fooJob = new JobSupport("foo");
 
-	protected abstract JobInstanceDao getJobInstanceDao();
+    private JobParameters fooParams = new JobParametersBuilder().addString("stringKey", "stringValue").addLong(
+            "longKey", new Long(Long.MAX_VALUE)).addDouble("doubleKey", new Double(Double.MAX_VALUE)).addDate(
+            "dateKey", new Date(DATE)).toJobParameters();
 
-	protected void onSetUp() throws Exception {
-		dao = getJobInstanceDao();
-	}
+    protected abstract JobInstanceDao getJobInstanceDao();
 
-	/**
-	 * Create and retrieve a job instance.
-	 */
-	public void testCreateAndRetrieve() throws Exception {
+    @Before
+    public void onSetUp() throws Exception {
+        dao = getJobInstanceDao();
+    }
 
-		JobInstance fooInstance = dao.createJobInstance(fooJob, fooParams);
-		assertNotNull(fooInstance.getId());
-		assertEquals(fooJob.getName(), fooInstance.getJobName());
-		assertEquals(fooParams, fooInstance.getJobParameters());
+    /**
+     * Create and retrieve a job instance.
+     */
+    @org.junit.Test
+    public void testCreateAndRetrieve() throws Exception {
 
-		JobInstance retrievedInstance = dao.getJobInstance(fooJob, fooParams);
-		JobParameters retrievedParams = retrievedInstance.getJobParameters();
-		assertEquals(fooInstance, retrievedInstance);
-		assertEquals(fooJob.getName(), retrievedInstance.getJobName());
-		assertEquals(fooParams, retrievedParams);
-		
-		assertEquals(Long.MAX_VALUE, retrievedParams.getLong("longKey").longValue());
-		assertEquals(Double.MAX_VALUE, retrievedParams.getDouble("doubleKey").doubleValue(), 0.001);
-		assertEquals("stringValue", retrievedParams.getString("stringKey"));
-		assertEquals(new Date(DATE), retrievedParams.getDate("dateKey"));
-	}
+        JobInstance fooInstance = dao.createJobInstance(fooJob, fooParams);
+        assertNotNull(fooInstance.getId());
+        assertEquals(fooJob.getName(), fooInstance.getJobName());
+        assertEquals(fooParams, fooInstance.getJobParameters());
 
-	/**
-	 * Trying to create instance twice for the same job+parameters causes error
-	 */
-	public void testCreateDuplicateInstance() {
+        JobInstance retrievedInstance = dao.getJobInstance(fooJob, fooParams);
+        JobParameters retrievedParams = retrievedInstance.getJobParameters();
+        assertEquals(fooInstance, retrievedInstance);
+        assertEquals(fooJob.getName(), retrievedInstance.getJobName());
+        assertEquals(fooParams, retrievedParams);
 
-		dao.createJobInstance(fooJob, fooParams);
+        assertEquals(Long.MAX_VALUE, retrievedParams.getLong("longKey").longValue());
+        assertEquals(Double.MAX_VALUE, retrievedParams.getDouble("doubleKey").doubleValue(), 0.001);
+        assertEquals("stringValue", retrievedParams.getString("stringKey"));
+        assertEquals(new Date(DATE), retrievedParams.getDate("dateKey"));
+    }
 
-		try {
-			dao.createJobInstance(fooJob, fooParams);
-			fail();
-		}
-		catch (IllegalStateException e) {
-			// expected
-		}
-	}
+    /**
+     * Trying to create instance twice for the same job+parameters causes error
+     */
+    @org.junit.Test
+    public void testCreateDuplicateInstance() {
 
-	public void testCreationAddsVersion() {
+        dao.createJobInstance(fooJob, fooParams);
 
-		JobInstance jobInstance = new JobInstance(new Long(1), new JobParameters(), "testVersionAndId");
+        try {
+            dao.createJobInstance(fooJob, fooParams);
+            fail();
+        } catch (IllegalStateException e) {
+            // expected
+        }
+    }
 
-		assertNull(jobInstance.getVersion());
+    @org.junit.Test
+    public void testCreationAddsVersion() {
 
-		jobInstance = dao.createJobInstance(new JobSupport("testVersion"), new JobParameters());
+        JobInstance jobInstance = new JobInstance(new Long(1), new JobParameters(), "testVersionAndId");
 
-		assertNotNull(jobInstance.getVersion());
-	}
+        assertNull(jobInstance.getVersion());
+
+        jobInstance = dao.createJobInstance(new JobSupport("testVersion"), new JobParameters());
+
+        assertNotNull(jobInstance.getVersion());
+    }
 
 }

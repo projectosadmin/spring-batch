@@ -155,7 +155,7 @@ public class SimpleStepFactoryBean extends AbstractStepFactoryBean {
 	}
 
 	/**
-	 * @param step
+	 * @param step step
 	 * 
 	 */
 	protected void applyConfiguration(ItemOrientedStep step) {

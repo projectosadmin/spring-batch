@@ -32,7 +32,7 @@ public class CompositeExecutionJobListener implements JobExecutionListener {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setListeners(JobExecutionListener[] listeners) {
 		this.listeners.setItems(listeners);
@@ -41,7 +41,7 @@ public class CompositeExecutionJobListener implements JobExecutionListener {
 	/**
 	 * Register additional listener.
 	 * 
-	 * @param jobExecutionListener
+	 * @param jobExecutionListener jobExecutionListener
 	 */
 	public void register(JobExecutionListener jobExecutionListener) {
 		listeners.add(jobExecutionListener);

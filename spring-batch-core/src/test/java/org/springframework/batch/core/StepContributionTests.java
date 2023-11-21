@@ -15,13 +15,13 @@
  */
 package org.springframework.batch.core;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
  * 
  */
-public class StepContributionTests extends TestCase {
+public class StepContributionTests {
 
 	private StepExecution execution = new StepExecution("step", null);
 
@@ -31,7 +31,8 @@ public class StepContributionTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.StepContribution#incrementItemCount()}.
 	 */
-	public void testIncrementTaskCount() {
+	@org.junit.Test
+public void testIncrementTaskCount() {
 		assertEquals(0, contribution.getItemCount());
 		contribution.incrementItemCount();
 		assertEquals(1, contribution.getItemCount());
@@ -41,7 +42,8 @@ public class StepContributionTests extends TestCase {
 	 * Test method for
 	 * {@link org.springframework.batch.core.StepContribution#incrementCommitCount()}.
 	 */
-	public void testIncrementCommitCount() {
+	@org.junit.Test
+public void testIncrementCommitCount() {
 		assertEquals(0, contribution.getCommitCount());
 		contribution.incrementCommitCount();
 		assertEquals(1, contribution.getCommitCount());

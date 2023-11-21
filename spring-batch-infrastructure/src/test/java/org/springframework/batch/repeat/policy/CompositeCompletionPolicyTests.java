@@ -16,22 +16,24 @@
 
 package org.springframework.batch.repeat.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.CompletionPolicy;
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.repeat.RepeatContext;
 
-public class CompositeCompletionPolicyTests extends TestCase {
+public class CompositeCompletionPolicyTests {
 
-	public void testEmptyPolicies() throws Exception {
+	@org.junit.Test
+public void testEmptyPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		RepeatContext context = policy.start(null);
 		assertNotNull(context);
 		assertFalse(policy.isComplete(context));
 	}
 
-	public void testTrivialPolicies() throws Exception {
+	@org.junit.Test
+public void testTrivialPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() });
@@ -43,7 +45,8 @@ public class CompositeCompletionPolicyTests extends TestCase {
 		assertEquals(1, context.getStartedCount());
 	}
 
-	public void testNonTrivialPolicies() throws Exception {
+	@org.junit.Test
+public void testNonTrivialPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() {
@@ -55,7 +58,8 @@ public class CompositeCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context));
 	}
 
-	public void testNonTrivialPoliciesWithResult() throws Exception {
+	@org.junit.Test
+public void testNonTrivialPoliciesWithResult() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() {

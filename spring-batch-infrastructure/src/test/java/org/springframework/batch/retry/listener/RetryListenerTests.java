@@ -19,7 +19,7 @@ package org.springframework.batch.retry.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.retry.RetryCallback;
 import org.springframework.batch.retry.RetryContext;
@@ -28,7 +28,7 @@ import org.springframework.batch.retry.TerminatedRetryException;
 import org.springframework.batch.retry.policy.NeverRetryPolicy;
 import org.springframework.batch.retry.support.RetryTemplate;
 
-public class RetryListenerTests extends TestCase {
+public class RetryListenerTests {
 
 	RetryTemplate template = new RetryTemplate();
 
@@ -36,7 +36,8 @@ public class RetryListenerTests extends TestCase {
 
 	List list = new ArrayList();
 
-	public void testOpenInterceptors() throws Exception {
+	@org.junit.Test
+public void testOpenInterceptors() throws Exception {
 		template.setListeners(new RetryListener[] { new RetryListenerSupport() {
 			public boolean open(RetryContext context, RetryCallback callback) {
 				count++;
@@ -60,7 +61,8 @@ public class RetryListenerTests extends TestCase {
 		assertEquals("1:1", list.get(0));
 	}
 
-	public void testOpenCanVetoRetry() throws Exception {
+	@org.junit.Test
+public void testOpenCanVetoRetry() throws Exception {
 		template.registerListener(new RetryListenerSupport() {
 			public boolean open(RetryContext context, RetryCallback callback) {
 				list.add("1");
@@ -84,7 +86,8 @@ public class RetryListenerTests extends TestCase {
 		assertEquals("1", list.get(0));
 	}
 
-	public void testCloseInterceptors() throws Exception {
+	@org.junit.Test
+public void testCloseInterceptors() throws Exception {
 		template.setListeners(new RetryListener[] { new RetryListenerSupport() {
 			public void close(RetryContext context, RetryCallback callback, Throwable t) {
 				count++;
@@ -107,7 +110,8 @@ public class RetryListenerTests extends TestCase {
 		assertEquals("2:1", list.get(0));
 	}
 
-	public void testOnError() throws Exception {
+	@org.junit.Test
+public void testOnError() throws Exception {
 		template.setRetryPolicy(new NeverRetryPolicy());
 		template.setListeners(new RetryListener[] { new RetryListenerSupport() {
 			public void onError(RetryContext context, RetryCallback callback, Throwable throwable) {
@@ -138,7 +142,8 @@ public class RetryListenerTests extends TestCase {
 
 	}
 
-	public void testCloseInterceptorsAfterRetry() throws Exception {
+	@org.junit.Test
+public void testCloseInterceptorsAfterRetry() throws Exception {
 		template.registerListener(new RetryListenerSupport() {
 			public void close(RetryContext context, RetryCallback callback, Throwable t) {
 				list.add("" + count);

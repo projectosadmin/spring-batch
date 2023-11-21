@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotWritablePropertyException;
@@ -31,10 +31,11 @@ import org.springframework.beans.propertyeditors.PropertiesEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
+import static org.junit.Assert.*;
+public class BeanWrapperFieldSetMapperTests {
 
-public class BeanWrapperFieldSetMapperTests extends TestCase {
-
-	public void testNameAndTypeSpecified() throws Exception {
+	@org.junit.Test
+public void testNameAndTypeSpecified() throws Exception {
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		mapper.setTargetType(TestObject.class);
 		mapper.setPrototypeBeanName("foo");
@@ -46,7 +47,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		}
 	}
 
-	public void testNameNorTypeSpecified() throws Exception {
+	@org.junit.Test
+public void testNameNorTypeSpecified() throws Exception {
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		try {
 			mapper.afterPropertiesSet();
@@ -56,7 +58,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		}
 	}
 
-	public void testVanillaBeanCreatedFromType() throws Exception {
+	@org.junit.Test
+public void testVanillaBeanCreatedFromType() throws Exception {
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		mapper.setTargetType(TestObject.class);
 		mapper.afterPropertiesSet();
@@ -69,7 +72,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals('C', result.getVarChar());
 	}
 
-	public void testMapperWithSingleton() throws Exception {
+	@org.junit.Test
+public void testMapperWithSingleton() throws Exception {
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		StaticApplicationContext context = new StaticApplicationContext();
 		mapper.setBeanFactory(context);
@@ -84,7 +88,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals('C', result.getVarChar());
 	}
 
-	public void testPropertyNameMatching() throws Exception {
+	@org.junit.Test
+public void testPropertyNameMatching() throws Exception {
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		StaticApplicationContext context = new StaticApplicationContext();
 		mapper.setBeanFactory(context);
@@ -99,7 +104,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals('C', result.getVarChar());
 	}
 
-	public void testMapperWithPrototype() throws Exception {
+	@org.junit.Test
+public void testMapperWithPrototype() throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("bean-wrapper.xml", getClass());
 
 		BeanWrapperFieldSetMapper mapper = (BeanWrapperFieldSetMapper) context.getBean("fieldSetMapper");
@@ -113,7 +119,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 
 	}
 
-	public void testMapperWithNestedBeanPaths() throws Exception {
+	@org.junit.Test
+public void testMapperWithNestedBeanPaths() throws Exception {
 		TestNestedA testNestedA = new TestNestedA();
 		TestNestedB testNestedB = new TestNestedB();
 		testNestedA.setTestObjectB(testNestedB);
@@ -137,7 +144,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(2, result.getTestObjectB().getTestObjectC().getValue());
 	}
 
-	public void testMapperWithSimilarNamePropertyMatches() throws Exception {
+	@org.junit.Test
+public void testMapperWithSimilarNamePropertyMatches() throws Exception {
 		TestNestedA testNestedA = new TestNestedA();
 
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
@@ -155,7 +163,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(1, result.getValueB());
 	}
 
-	public void testMapperWithNotVerySimilarNamePropertyMatches() throws Exception {
+	@org.junit.Test
+public void testMapperWithNotVerySimilarNamePropertyMatches() throws Exception {
 		TestNestedC testNestedC = new TestNestedC();
 
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
@@ -173,7 +182,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(1, result.getValue());
 	}
 
-	public void testMapperWithNestedBeanPathsAndPropertyMatches() throws Exception {
+	@org.junit.Test
+public void testMapperWithNestedBeanPathsAndPropertyMatches() throws Exception {
 		TestNestedA testNestedA = new TestNestedA();
 		TestNestedB testNestedB = new TestNestedB();
 		testNestedA.setTestObjectB(testNestedB);
@@ -194,7 +204,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(2, result.getTestObjectB().getTestObjectC().getValue());
 	}
 
-	public void testMapperWithNestedBeanPathsAndPropertyMisMatches() throws Exception {
+	@org.junit.Test
+public void testMapperWithNestedBeanPathsAndPropertyMisMatches() throws Exception {
 		TestNestedA testNestedA = new TestNestedA();
 		TestNestedB testNestedB = new TestNestedB();
 		testNestedA.setTestObjectB(testNestedB);
@@ -216,7 +227,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		}
 	}
 
-	public void testMapperWithNestedBeanPathsAndPropertyPrefixMisMatches() throws Exception {
+	@org.junit.Test
+public void testMapperWithNestedBeanPathsAndPropertyPrefixMisMatches() throws Exception {
 		TestNestedA testNestedA = new TestNestedA();
 		TestNestedB testNestedB = new TestNestedB();
 		testNestedA.setTestObjectB(testNestedB);
@@ -238,7 +250,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		}
 	}
 
-	public void testPlainBeanWrapper() throws Exception {
+	@org.junit.Test
+public void testPlainBeanWrapper() throws Exception {
 		TestObject result = new TestObject();
 		BeanWrapperImpl wrapper = new BeanWrapperImpl(result);
 		PropertiesEditor editor = new PropertiesEditor();
@@ -252,7 +265,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 
 	// BeanWrapperFieldSetMapper doesn't currently support nesting with
 	// collections.
-	public void testNestedList() {
+	@org.junit.Test
+public void testNestedList() {
 
 		TestNestedList nestedList = new TestNestedList();
 		List nestedC = new ArrayList();
@@ -278,7 +292,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 
 	}
 
-	public void testPaddedLongWithNoEditor() throws Exception {
+	@org.junit.Test
+public void testPaddedLongWithNoEditor() throws Exception {
 
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		mapper.setTargetType(TestObject.class);
@@ -289,7 +304,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(9, bean.getVarLong());
 	}
 
-	public void testPaddedLongWithEditor() throws Exception {
+	@org.junit.Test
+public void testPaddedLongWithEditor() throws Exception {
 
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		mapper.setTargetType(TestObject.class);
@@ -303,7 +319,8 @@ public class BeanWrapperFieldSetMapperTests extends TestCase {
 		assertEquals(9, bean.getVarLong());
 	}
 
-	public void testPaddedLongWithDefaultAndCustomEditor() throws Exception {
+	@org.junit.Test
+public void testPaddedLongWithDefaultAndCustomEditor() throws Exception {
 
 		BeanWrapperFieldSetMapper mapper = new BeanWrapperFieldSetMapper();
 		mapper.setTargetType(TestObject.class);

@@ -64,8 +64,8 @@ public class ResourceSplitterIntegrationTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testVanillaConversion() throws Exception {
+	@org.junit.Test
+public void testVanillaConversion() throws Exception {
 		resources.send(new GenericMessage<String>("classpath:*-context.xml"));
 		Message<Resource> message = (Message<Resource>) requests.receive(100L);
 		assertNotNull(message);

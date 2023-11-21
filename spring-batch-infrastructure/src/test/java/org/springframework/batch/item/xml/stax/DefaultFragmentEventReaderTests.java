@@ -7,7 +7,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.xml.EventHelper;
 import org.springframework.core.io.ByteArrayResource;
@@ -18,7 +18,7 @@ import org.springframework.core.io.Resource;
  * 
  * @author Robert Kasanicky
  */
-public class DefaultFragmentEventReaderTests extends TestCase {
+public class DefaultFragmentEventReaderTests {
 
 	// object under test
 	private FragmentEventReader fragmentReader;
@@ -32,7 +32,8 @@ public class DefaultFragmentEventReaderTests extends TestCase {
 	/**
 	 * Setup the fragmentReader to read the test input.
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		Resource input = new ByteArrayResource(xml.getBytes());
 		eventReader = XMLInputFactory.newInstance().createXMLEventReader(
 				input.getInputStream());
@@ -45,7 +46,8 @@ public class DefaultFragmentEventReaderTests extends TestCase {
 	 * Test uses redundant peek() calls before nextEvent() in important moments to assure
 	 * peek() has no side effects on the inner state of reader.
 	 */
-	public void testFragmentWrapping() throws XMLStreamException {
+	@org.junit.Test
+public void testFragmentWrapping() throws XMLStreamException {
 		
 		assertTrue(fragmentReader.hasNext());
 		moveCursorBeforeFragmentStart();
@@ -89,7 +91,8 @@ public class DefaultFragmentEventReaderTests extends TestCase {
 	 * When fragment is marked as processed the cursor is moved after the end of
 	 * the fragment.
 	 */
-	public void testMarkFragmentProcessed() throws XMLStreamException {
+	@org.junit.Test
+public void testMarkFragmentProcessed() throws XMLStreamException {
 		moveCursorBeforeFragmentStart();
 
 		fragmentReader.markStartFragment(); // mark the fragment start
@@ -110,7 +113,8 @@ public class DefaultFragmentEventReaderTests extends TestCase {
 	 * if nothing was read from the event reader after beginning
 	 * of fragment was marked.
 	 */
-	public void testMarkFragmentProcessedImmediatelyAfterMarkFragmentStart() throws Exception {
+	@org.junit.Test
+public void testMarkFragmentProcessedImmediatelyAfterMarkFragmentStart() throws Exception {
 		moveCursorBeforeFragmentStart();
 
 		fragmentReader.markStartFragment();

@@ -175,7 +175,7 @@ public class BeanWrapperFieldSetMapper extends DefaultPropertyEditorRegistrar im
 	 * {@link #initBinder(DataBinder)} and
 	 * {@link #registerCustomEditors(PropertyEditorRegistry)}.
 	 * 
-	 * @param target
+	 * @param target target
 	 * @return a {@link DataBinder} that can be used to bind properties to the
 	 * target.
 	 */
@@ -220,8 +220,8 @@ public class BeanWrapperFieldSetMapper extends DefaultPropertyEditorRegistrar im
 	}
 
 	/**
-	 * @param bean
-	 * @param properties
+	 * @param bean bean
+	 * @param properties properties
 	 * @return
 	 */
 	private Properties getBeanProperties(Object bean, Properties properties) {

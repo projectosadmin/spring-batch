@@ -76,7 +76,7 @@ public class RepeatTemplate implements RepeatOperations {
 	 * Set the listeners for this template, registering them for callbacks at
 	 * appropriate times in the iteration.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setListeners(RepeatListener[] listeners) {
 		this.listeners = listeners;
@@ -85,7 +85,7 @@ public class RepeatTemplate implements RepeatOperations {
 	/**
 	 * Register an additional listener.
 	 * 
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void registerListener(RepeatListener listener) {
 		List list = new ArrayList(Arrays.asList(listeners));

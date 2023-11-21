@@ -154,8 +154,8 @@ public class FileToMessagesJobFactoryBean implements FactoryBean, BeanNameAware 
 	}
 
 	/**
-	 * @param itemReader
-	 * @param resource
+	 * @param itemReader itemReader
+	 * @param resource resource
 	 */
 	private void setResource(ItemReader itemReader, Resource resource) {
 		if (itemReader instanceof FlatFileItemReader) {

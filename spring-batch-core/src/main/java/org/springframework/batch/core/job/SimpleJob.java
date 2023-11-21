@@ -90,8 +90,8 @@ public class SimpleJob extends AbstractJob {
 
 					StepExecution lastStepExecution = getJobRepository().getLastStepExecution(jobInstance, step);
 
-					boolean isRestart = (lastStepExecution != null && !lastStepExecution.getStatus().equals(
-							BatchStatus.COMPLETED)) ? true : false;
+					boolean isRestart = lastStepExecution != null && !lastStepExecution.getStatus().equals(
+							BatchStatus.COMPLETED);
 
 					if (isRestart) {
 						currentStepExecution.setExecutionContext(lastStepExecution.getExecutionContext());
@@ -200,7 +200,7 @@ public class SimpleJob extends AbstractJob {
 	}
 
 	/**
-	 * @param t
+	 * @param t t
 	 */
 	private static void rethrow(Throwable t) throws RuntimeException {
 		if (t instanceof RuntimeException) {

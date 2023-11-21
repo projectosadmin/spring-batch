@@ -2,6 +2,8 @@ package org.springframework.batch.sample;
 
 import org.springframework.batch.sample.item.reader.GeneratingItemReader;
 import org.springframework.batch.sample.item.writer.RetrySampleItemWriter;
+import static org.junit.Assert.*;
+
 
 /**
  * Checks that expected number of items have been processed.

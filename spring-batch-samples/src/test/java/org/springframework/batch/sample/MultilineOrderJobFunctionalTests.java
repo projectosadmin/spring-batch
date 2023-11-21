@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import static org.junit.Assert.*;
 
 public class MultilineOrderJobFunctionalTests extends AbstractValidatingBatchLauncherTests {
 	//private static final Log log = LogFactory.getLog(MultilineOrderJobFunctionalTests.class);

@@ -2,7 +2,7 @@ package org.springframework.batch.item.database;
 
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.support.SingleColumnJdbcKeyCollector;
-
+import static org.junit.Assert.*;
 public class SingleColumnJdbcDrivingQueryItemReaderIntegrationTests extends AbstractJdbcItemReaderIntegrationTests {
 
 	protected ItemReader source;

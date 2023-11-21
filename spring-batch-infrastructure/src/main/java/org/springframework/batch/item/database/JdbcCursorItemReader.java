@@ -158,7 +158,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	/**
 	 * Public setter for the data source for injection purposes.
 	 * 
-	 * @param dataSource
+	 * @param dataSource dataSource
 	 */
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -198,7 +198,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	 * Prepare the given JDBC Statement (or PreparedStatement or
 	 * CallableStatement), applying statement settings such as fetch size, max
 	 * rows, and query timeout. @param stmt the JDBC Statement to prepare
-	 * @throws SQLException
+	 * @throws SQLException SQLException
 	 * 
 	 * @see #setFetchSize
 	 * @see #setMaxRows
@@ -266,7 +266,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	/**
 	 * Moves the cursor in the ResultSet to the position specified by the row
 	 * parameter by traversing the ResultSet.
-	 * @param row
+	 * @param row row
 	 */
 	private void moveCursorToRow(int row) {
 		try {
@@ -344,7 +344,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	/**
 	 * Set the RowMapper to be used for all calls to read().
 	 * 
-	 * @param mapper
+	 * @param mapper mapper
 	 */
 	public void setMapper(RowMapper mapper) {
 		this.mapper = mapper;
@@ -355,7 +355,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	 * should be a complete and valid SQL statement, as it will be run directly
 	 * without any modification.
 	 * 
-	 * @param sql
+	 * @param sql sql
 	 */
 	public void setSql(String sql) {
 		this.sql = sql;
@@ -365,7 +365,7 @@ public class JdbcCursorItemReader extends AbstractBufferedItemReaderItemStream i
 	 * Set the PreparedStatementSetter to use if any parameter values that need
 	 * to be set in the supplied query.
 	 * 
-	 * @param preparedStatementSetter
+	 * @param preparedStatementSetter preparedStatementSetter
 	 */
 	public void setPreparedStatementSetter(PreparedStatementSetter preparedStatementSetter) {
 		this.preparedStatementSetter = preparedStatementSetter;

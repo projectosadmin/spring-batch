@@ -16,15 +16,16 @@
 
 package org.springframework.batch.repeat.policy;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 
-public class CountingCompletionPolicyTests extends TestCase {
+public class CountingCompletionPolicyTests {
 
-	public void testDefaultBehaviour() throws Exception {
+	@org.junit.Test
+public void testDefaultBehaviour() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			protected int getCount(RepeatContext context) {
 				return 1;
@@ -34,7 +35,8 @@ public class CountingCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context));
 	}
 
-	public void testNullResult() throws Exception {
+	@org.junit.Test
+public void testNullResult() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			protected int getCount(RepeatContext context) {
 				return 1;
@@ -45,7 +47,8 @@ public class CountingCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context, null));
 	}
 
-	public void testFinishedResult() throws Exception {
+	@org.junit.Test
+public void testFinishedResult() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			protected int getCount(RepeatContext context) {
 				return 1;
@@ -56,7 +59,8 @@ public class CountingCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context, ExitStatus.FINISHED));
 	}
 
-	public void testDefaultBehaviourWithUpdate() throws Exception {
+	@org.junit.Test
+public void testDefaultBehaviourWithUpdate() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			int count = 0;
 
@@ -77,7 +81,8 @@ public class CountingCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context));
 	}
 
-	public void testUpdateNotSavedAcrossSession() throws Exception {
+	@org.junit.Test
+public void testUpdateNotSavedAcrossSession() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			int count = 0;
 
@@ -106,7 +111,8 @@ public class CountingCompletionPolicyTests extends TestCase {
 		assertFalse(policy.isComplete(context));
 	}
 
-	public void testUpdateSavedAcrossSession() throws Exception {
+	@org.junit.Test
+public void testUpdateSavedAcrossSession() throws Exception {
 		CountingCompletionPolicy policy = new CountingCompletionPolicy() {
 			int count = 0;
 

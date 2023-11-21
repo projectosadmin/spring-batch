@@ -19,7 +19,7 @@ package org.springframework.batch.core.repository.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.core.JobExecution;
@@ -42,7 +42,7 @@ import org.springframework.batch.core.step.StepSupport;
  * @author Lucas Ward
  * 
  */
-public class SimpleJobRepositoryTests extends TestCase {
+public class SimpleJobRepositoryTests {
 
 	SimpleJobRepository jobRepository;
 
@@ -75,7 +75,8 @@ public class SimpleJobRepositoryTests extends TestCase {
 	List steps;
 
 
-	public void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 
 		jobExecutionDao = (JobExecutionDao) jobExecutionDaoControl.getMock();
 		jobInstanceDao = (JobInstanceDao) jobInstanceDaoControl.getMock();
@@ -111,7 +112,8 @@ public class SimpleJobRepositoryTests extends TestCase {
 	}
 
 
-	public void testSaveOrUpdateInvalidJobExecution() {
+	@org.junit.Test
+public void testSaveOrUpdateInvalidJobExecution() {
 
 		// failure scenario - must have job ID
 		JobExecution jobExecution = new JobExecution(null);
@@ -124,7 +126,8 @@ public class SimpleJobRepositoryTests extends TestCase {
 		}
 	}
 
-	public void testSaveOrUpdateValidJobExecution() throws Exception {
+	@org.junit.Test
+public void testSaveOrUpdateValidJobExecution() throws Exception {
 
 		JobExecution jobExecution = new JobExecution(new JobInstance(new Long(1), jobParameters, job.getName()));
 
@@ -141,7 +144,8 @@ public class SimpleJobRepositoryTests extends TestCase {
 		jobRepository.saveOrUpdate(jobExecution);
 	}
 
-	public void testSaveOrUpdateStepExecutionException() {
+	@org.junit.Test
+public void testSaveOrUpdateStepExecutionException() {
 
 		StepExecution stepExecution = new StepExecution("stepName", null, null);
 

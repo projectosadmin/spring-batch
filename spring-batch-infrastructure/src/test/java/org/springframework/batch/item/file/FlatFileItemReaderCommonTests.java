@@ -8,7 +8,7 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-
+import static org.junit.Assert.*;
 public class FlatFileItemReaderCommonTests extends CommonItemStreamItemReaderTests {
 
 	private static final String FOOS = "1 \n 2 \n 3 \n 4 \n 5 \n"; 

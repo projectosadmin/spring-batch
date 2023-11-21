@@ -16,7 +16,7 @@
 
 package org.springframework.batch.core.step.item;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -38,7 +38,7 @@ import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 
-public class StepExecutorInterruptionTests extends TestCase {
+public class StepExecutorInterruptionTests {
 
 	private ItemOrientedStep step;
 
@@ -48,7 +48,8 @@ public class StepExecutorInterruptionTests extends TestCase {
 
 	private StepExecution stepExecution;
 
-	public void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		MapJobInstanceDao.clear();
 		MapJobExecutionDao.clear();
 		MapStepExecutionDao.clear();
@@ -75,7 +76,8 @@ public class StepExecutorInterruptionTests extends TestCase {
 		stepExecution = new StepExecution(step.getName(), jobExecution);
 	}
 
-	public void testInterruptChunk() throws Exception {
+	@org.junit.Test
+public void testInterruptChunk() throws Exception {
 
 		Thread processingThread = createThread(stepExecution);
 
@@ -95,7 +97,8 @@ public class StepExecutorInterruptionTests extends TestCase {
 
 	}
 
-	public void testInterruptStep() throws Exception {
+	@org.junit.Test
+public void testInterruptStep() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		// N.B, If we don't set the completion policy it might run forever
 		template.setCompletionPolicy(new SimpleCompletionPolicy(2));
@@ -103,7 +106,8 @@ public class StepExecutorInterruptionTests extends TestCase {
 		testInterruptChunk();
 	}
 
-	public void testInterruptOnInterruptedException() throws Exception {
+	@org.junit.Test
+public void testInterruptOnInterruptedException() throws Exception {
 
 		Thread processingThread = createThread(stepExecution);
 
@@ -141,7 +145,8 @@ public class StepExecutorInterruptionTests extends TestCase {
 
 	}
 
-	public void testLockNotReleasedIfChunkFails() throws Exception {
+	@org.junit.Test
+public void testLockNotReleasedIfChunkFails() throws Exception {
 
 		step.setItemHandler(new SimpleItemHandler(new AbstractItemReader() {
 			public Object read() throws Exception {

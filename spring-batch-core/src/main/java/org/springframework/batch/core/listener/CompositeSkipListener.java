@@ -31,7 +31,7 @@ public class CompositeSkipListener implements SkipListener {
 	/**
 	 * Public setter for the listeners.
 	 * 
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public void setListeners(SkipListener[] listeners) {
 		this.listeners.setItems(listeners);
@@ -40,7 +40,7 @@ public class CompositeSkipListener implements SkipListener {
 	/**
 	 * Register additional listener.
 	 * 
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void register(SkipListener listener) {
 		listeners.add(listener);

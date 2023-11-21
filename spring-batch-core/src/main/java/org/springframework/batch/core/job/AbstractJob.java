@@ -61,7 +61,7 @@ public abstract class AbstractJob implements Job, BeanNameAware, InitializingBea
 	 * Convenience constructor to immediately add name (which is mandatory but
 	 * not final).
 	 * 
-	 * @param name
+	 * @param name name
 	 */
 	public AbstractJob(String name) {
 		super();
@@ -158,7 +158,7 @@ public abstract class AbstractJob implements Job, BeanNameAware, InitializingBea
 	 * state of the batch meta domain (jobs, steps, executions) during the life
 	 * of a job.
 	 * 
-	 * @param jobRepository
+	 * @param jobRepository jobRepository
 	 */
 	public void setJobRepository(JobRepository jobRepository) {
 		this.jobRepository = jobRepository;

@@ -20,7 +20,7 @@ import java.io.FileReader;
 
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-
+import static org.junit.Assert.*;
 
 public class XmlStaxJobFunctionalTests extends AbstractValidatingBatchLauncherTests {
 	

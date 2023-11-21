@@ -21,7 +21,7 @@ import java.util.List;
 import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,7 +35,7 @@ import org.springframework.jmx.support.MBeanServerConnectionFactoryBean;
  * @author Dave Syer
  * 
  */
-public class RemoteLauncherTests extends TestCase {
+public class RemoteLauncherTests {
 	
 	private static Log logger = LogFactory.getLog(RemoteLauncherTests.class);
 
@@ -47,19 +47,22 @@ public class RemoteLauncherTests extends TestCase {
 
 	private static JobLoader loader;
 
-	public void testConnect() throws Exception {
+	@org.junit.Test
+public void testConnect() throws Exception {
 		assertEquals(0, errors.size());
 		assertTrue(isConnected());
 	}
 
-	public void testLaunchBadJob() throws Exception {
+	@org.junit.Test
+public void testLaunchBadJob() throws Exception {
 		assertEquals(0, errors.size());
 		assertTrue(isConnected());
 		String result = launcher.run("foo");
 		assertTrue("Should contain 'NoSuchJobException': " + result, result.indexOf("NoSuchJobException") >= 0);
 	}
 
-	public void testLaunchAndStopRealJob() throws Exception {
+	@org.junit.Test
+public void testLaunchAndStopRealJob() throws Exception {
 		assertEquals(0, errors.size());
 		assertTrue(isConnected());
 		String result = launcher.run("loopJob");
@@ -74,7 +77,8 @@ public class RemoteLauncherTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		if (launcher != null) {
 			return;
 		}
@@ -129,10 +133,10 @@ public class RemoteLauncherTests extends TestCase {
 	}
 
 	/**
-	 * @param connectionFactory
+	 * @param connectionFactory connectionFactory
 	 * @param objectName 
 	 * @param interfaceType 
-	 * @throws MalformedObjectNameException
+	 * @throws MalformedObjectNameException MalformedObjectNameException
 	 */
 	private static Object getMBean(MBeanServerConnectionFactoryBean connectionFactory, String objectName, Class interfaceType)
 			throws MalformedObjectNameException {

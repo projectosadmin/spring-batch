@@ -86,7 +86,7 @@ public class JobRepositoryFactoryBean extends AbstractJobRepositoryFactoryBean {
 
 	/**
 	 * Sets the table prefix for all the batch meta-data tables.
-	 * @param tablePrefix
+	 * @param tablePrefix tablePrefix
 	 */
 	public void setTablePrefix(String tablePrefix) {
 		this.tablePrefix = tablePrefix;

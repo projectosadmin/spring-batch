@@ -16,62 +16,66 @@
 package org.springframework.batch.sample.dao;
 
 
+import org.springframework.batch.sample.AbstractDaoTest;
 import org.springframework.batch.sample.domain.PlayerSummary;
 import org.springframework.batch.sample.mapping.PlayerSummaryMapper;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+
+import static org.junit.Assert.*;
 
 
 /**
  * @author Lucas Ward
- * 
  */
-public class JdbcPlayerSummaryDaoIntegrationTests extends
-		AbstractTransactionalDataSourceSpringContextTests {
+@ContextConfiguration("data-source-context.xml")
+public class JdbcPlayerSummaryDaoIntegrationTests extends AbstractDaoTest {
 
-	JdbcPlayerSummaryDao playerSummaryDao;
-	PlayerSummary summary;
+    JdbcPlayerSummaryDao playerSummaryDao;
+    PlayerSummary summary;
 
-	protected String[] getConfigLocations() {
-		return new String[] { "data-source-context.xml" };
-	}
+    protected String[] getConfigLocations() {
+        return new String[]{"data-source-context.xml"};
+    }
 
-	protected void onSetUpBeforeTransaction() throws Exception {
-		super.onSetUpBeforeTransaction();
+    @org.junit.Before
+    public void onSetUpBeforeTransaction() throws Exception {
+        super.onSetUpBeforeTransaction();
 
-		playerSummaryDao = new JdbcPlayerSummaryDao();
-		playerSummaryDao.setJdbcTemplate(getJdbcTemplate());
+        playerSummaryDao = new JdbcPlayerSummaryDao();
+        playerSummaryDao.setJdbcTemplate(getJdbcTemplate());
 
-		summary = new PlayerSummary();
-		summary.setId("AikmTr00");
-		summary.setYear(1997);
-		summary.setCompletes(294);
-		summary.setAttempts(517);
-		summary.setPassingYards(3283);
-		summary.setPassingTd(19);
-		summary.setInterceptions(12);
-		summary.setRushes(25);
-		summary.setRushYards(79);
-		summary.setReceptions(0);
-		summary.setReceptionYards(0);
-		summary.setTotalTd(0);
-	}
+        summary = new PlayerSummary();
+        summary.setId("AikmTr00");
+        summary.setYear(1997);
+        summary.setCompletes(294);
+        summary.setAttempts(517);
+        summary.setPassingYards(3283);
+        summary.setPassingTd(19);
+        summary.setInterceptions(12);
+        summary.setRushes(25);
+        summary.setRushYards(79);
+        summary.setReceptions(0);
+        summary.setReceptionYards(0);
+        summary.setTotalTd(0);
+    }
 
-	protected void onSetUpInTransaction() throws Exception {
-		super.onSetUpInTransaction();
+    protected void onSetUpInTransaction() throws Exception {
+        super.onSetUpInTransaction();
 
-		jdbcTemplate.execute("delete from PLAYER_SUMMARY");
+        jdbcTemplate.execute("delete from PLAYER_SUMMARY");
 
-	}
-	
-	public void testWrite() {
+    }
 
-		playerSummaryDao.write(summary);
+    @org.junit.Test
+    public void testWrite() {
 
-		PlayerSummary testSummary = (PlayerSummary) getJdbcTemplate()
-				.queryForObject("SELECT * FROM PLAYER_SUMMARY",
-						new PlayerSummaryMapper());
+        playerSummaryDao.write(summary);
 
-		assertEquals(testSummary, summary);
-	}
+        PlayerSummary testSummary = (PlayerSummary) getJdbcTemplate()
+                .queryForObject("SELECT * FROM PLAYER_SUMMARY",
+                        new PlayerSummaryMapper());
+
+        assertEquals(testSummary, summary);
+    }
 
 }

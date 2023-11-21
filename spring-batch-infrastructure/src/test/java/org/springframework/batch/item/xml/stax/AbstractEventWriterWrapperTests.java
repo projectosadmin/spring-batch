@@ -21,7 +21,7 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 
@@ -32,20 +32,22 @@ import com.bea.xml.stream.util.NamespaceContextImpl;
  * @author Lucas Ward
  *
  */
-public class AbstractEventWriterWrapperTests extends TestCase {
+public class AbstractEventWriterWrapperTests {
 
 	AbstractEventWriterWrapper eventWriterWrapper;
 	MockControl mockEventWriterControl = MockControl.createControl(XMLEventWriter.class);
 	XMLEventWriter xmlEventWriter;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 
 		xmlEventWriter = (XMLEventWriter)mockEventWriterControl.getMock();
 		eventWriterWrapper = new StubEventWriter(xmlEventWriter);
 	}
 
-	public void testAdd() throws XMLStreamException {
+	@org.junit.Test
+public void testAdd() throws XMLStreamException {
 
 		XMLEvent event = new StartDocumentEvent();
 		xmlEventWriter.add(event);
@@ -55,7 +57,8 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 
 	}
 
-	public void testAddReader() throws XMLStreamException {
+	@org.junit.Test
+public void testAddReader() throws XMLStreamException {
 
 		MockControl readerControl = MockControl.createControl(XMLEventReader.class);
 		XMLEventReader reader = (XMLEventReader)readerControl.getMock();
@@ -65,21 +68,24 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 		mockEventWriterControl.verify();
 	}
 
-	public void testClose() throws XMLStreamException {
+	@org.junit.Test
+public void testClose() throws XMLStreamException {
 		xmlEventWriter.close();
 		mockEventWriterControl.replay();
 		eventWriterWrapper.close();
 		mockEventWriterControl.verify();
 	}
 
-	public void testFlush() throws XMLStreamException {
+	@org.junit.Test
+public void testFlush() throws XMLStreamException {
 		xmlEventWriter.flush();
 		mockEventWriterControl.replay();
 		eventWriterWrapper.flush();
 		mockEventWriterControl.verify();
 	}
 
-	public void testGetNamespaceContext() {
+	@org.junit.Test
+public void testGetNamespaceContext() {
 		NamespaceContext context = new NamespaceContextImpl();
 		xmlEventWriter.getNamespaceContext();
 		mockEventWriterControl.setReturnValue(context);
@@ -88,7 +94,8 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 		mockEventWriterControl.verify();
 	}
 
-	public void testGetPrefix() throws XMLStreamException {
+	@org.junit.Test
+public void testGetPrefix() throws XMLStreamException {
 
 		String uri = "uri";
 		xmlEventWriter.getPrefix(uri);
@@ -98,7 +105,8 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 		mockEventWriterControl.verify();
 	}
 
-	public void testSetDefaultNamespace() throws XMLStreamException {
+	@org.junit.Test
+public void testSetDefaultNamespace() throws XMLStreamException {
 		String uri = "uri";
 		xmlEventWriter.setDefaultNamespace(uri);
 		mockEventWriterControl.replay();
@@ -106,7 +114,8 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 		mockEventWriterControl.verify();
 	}
 
-	public void testSetNamespaceContext()
+	@org.junit.Test
+public void testSetNamespaceContext()
 			throws XMLStreamException {
 
 		NamespaceContext context = new NamespaceContextImpl();
@@ -116,7 +125,8 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 		mockEventWriterControl.verify();
 	}
 
-	public void testSetPrefix() throws XMLStreamException {
+	@org.junit.Test
+public void testSetPrefix() throws XMLStreamException {
 
 		String uri = "uri";
 		String prefix = "prefix";

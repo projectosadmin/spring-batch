@@ -88,7 +88,7 @@ public class DrivingQueryItemReader implements ItemReader, InitializingBean, Ite
 	/**
 	 * Initialize the input source with the provided keys list.
 	 * 
-	 * @param keys
+	 * @param keys keys
 	 */
 	public DrivingQueryItemReader(List keys) {
 		this.keys = keys;
@@ -171,7 +171,7 @@ public class DrivingQueryItemReader implements ItemReader, InitializingBean, Ite
 	/**
 	 * Set the key generation strategy to use for this input source.
 	 * 
-	 * @param keyCollector
+	 * @param keyCollector keyCollector
 	 */
 	public void setKeyCollector(KeyCollector keyCollector) {
 		this.keyCollector = keyCollector;

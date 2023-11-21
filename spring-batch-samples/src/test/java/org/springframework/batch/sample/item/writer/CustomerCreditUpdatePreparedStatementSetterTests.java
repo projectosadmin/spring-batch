@@ -19,47 +19,50 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.sample.domain.CustomerCredit;
 
 /**
  * @author Dave Syer
- *
  */
-public class CustomerCreditUpdatePreparedStatementSetterTests extends TestCase {
-	
-	private CustomerCreditUpdatePreparedStatementSetter setter = new CustomerCreditUpdatePreparedStatementSetter();
+public class CustomerCreditUpdatePreparedStatementSetterTests {
 
-	private CustomerCredit credit;
+    private CustomerCreditUpdatePreparedStatementSetter setter = new CustomerCreditUpdatePreparedStatementSetter();
 
-	private PreparedStatement ps;
+    private CustomerCredit credit;
 
-	private MockControl control = MockControl.createControl(PreparedStatement.class);
+    private PreparedStatement ps;
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		ps = (PreparedStatement) control.getMock();
-		credit = new CustomerCredit();
-		credit.setId(13);
-		credit.setCredit(new BigDecimal(12000));
-		credit.setName("foo");
-	}
-	/**
-	 * Test method for {@link org.springframework.batch.sample.item.writer.CustomerCreditUpdatePreparedStatementSetter#setValues(java.lang.Object, java.sql.PreparedStatement)}.
-	 * @throws SQLException 
-	 */
-	public void testSetValues() throws SQLException {
-		ps.setBigDecimal(1, credit.getCredit());
-		control.setVoidCallable();
-		ps.setLong(2, credit.getId());
-		control.setVoidCallable();
-		control.replay();
-		setter.setValues(credit, ps);
-		control.verify();
-	}
+    private MockControl control = MockControl.createControl(PreparedStatement.class);
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @org.junit.Before
+    public void setUp() throws Exception {
+        ps = (PreparedStatement) control.getMock();
+        credit = new CustomerCredit();
+        credit.setId(13);
+        credit.setCredit(new BigDecimal(12000));
+        credit.setName("foo");
+    }
+
+    /**
+     * Test method for {@link org.springframework.batch.sample.item.writer.CustomerCreditUpdatePreparedStatementSetter#setValues(java.lang.Object, java.sql.PreparedStatement)}.
+     *
+     * @throws SQLException SQLException
+     */
+    @org.junit.Test
+    public void testSetValues() throws SQLException {
+        ps.setBigDecimal(1, credit.getCredit());
+        control.setVoidCallable();
+        ps.setLong(2, credit.getId());
+        control.setVoidCallable();
+        control.replay();
+        setter.setValues(credit, ps);
+        control.verify();
+    }
 
 }

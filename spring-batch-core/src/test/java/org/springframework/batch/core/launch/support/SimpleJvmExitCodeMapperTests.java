@@ -19,18 +19,19 @@ package org.springframework.batch.core.launch.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.core.launch.support.ExitCodeMapper;
 import org.springframework.batch.core.launch.support.SimpleJvmExitCodeMapper;
 import org.springframework.batch.repeat.ExitStatus;
 
-public class SimpleJvmExitCodeMapperTests extends TestCase {
+public class SimpleJvmExitCodeMapperTests {
 
 	private SimpleJvmExitCodeMapper ecm;
 	private SimpleJvmExitCodeMapper ecm2;
 	
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		ecm = new SimpleJvmExitCodeMapper();
 		Map ecmMap = new HashMap();
 		ecmMap.put("MY_CUSTOM_CODE", new Integer(3));
@@ -45,11 +46,13 @@ public class SimpleJvmExitCodeMapperTests extends TestCase {
 		ecm2.setMapping(ecm2Map);
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@org.junit.After
+    public void tearDown() throws Exception {
+		
 	}
 
-	public void testGetExitCodeWithpPredefinedCodes() {
+	@org.junit.Test
+public void testGetExitCodeWithpPredefinedCodes() {
 		assertEquals(
 				ecm.intValue(ExitStatus.FINISHED.getExitCode()),
 				ExitCodeMapper.JVM_EXITCODE_COMPLETED);
@@ -64,7 +67,8 @@ public class SimpleJvmExitCodeMapperTests extends TestCase {
 				ExitCodeMapper.JVM_EXITCODE_JOB_ERROR);		
 	}
 	
-	public void testGetExitCodeWithPredefinedCodesOverridden() {
+	@org.junit.Test
+public void testGetExitCodeWithPredefinedCodesOverridden() {
 		System.out.println(ecm2.intValue(ExitStatus.FINISHED.getExitCode()));
 		assertEquals(
 				ecm2.intValue(ExitStatus.FINISHED.getExitCode()), -1);
@@ -76,11 +80,13 @@ public class SimpleJvmExitCodeMapperTests extends TestCase {
 				ecm2.intValue(ExitCodeMapper.NO_SUCH_JOB), -3);		
 	}
 
-	public void testGetExitCodeWithCustomCode() {
+	@org.junit.Test
+public void testGetExitCodeWithCustomCode() {
 		assertEquals(ecm.intValue("MY_CUSTOM_CODE"),3);		
 	}
 
-	public void testGetExitCodeWithDefaultCode() {
+	@org.junit.Test
+public void testGetExitCodeWithDefaultCode() {
 		assertEquals(
 				ecm.intValue("UNDEFINED_CUSTOM_CODE"),
 				ExitCodeMapper.JVM_EXITCODE_GENERIC_ERROR);		

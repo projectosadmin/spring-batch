@@ -72,7 +72,7 @@ public interface JobRepository {
 	 * Preconditions: {@link JobExecution} must contain a valid
 	 * {@link JobInstance}.
 	 * 
-	 * @param jobExecution
+	 * @param jobExecution jobExecution
 	 */
 	void saveOrUpdate(JobExecution jobExecution);
 
@@ -87,7 +87,7 @@ public interface JobRepository {
 	 * 
 	 * Preconditions: {@link StepExecution} must have a valid {@link Step}.
 	 * 
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 */
 	void saveOrUpdate(StepExecution stepExecution);
 

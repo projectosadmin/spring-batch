@@ -16,18 +16,19 @@
 
 package org.springframework.batch.repeat.callback;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.ExitStatus;
 import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 
-public class NestedRepeatCallbackTests extends TestCase {
+public class NestedRepeatCallbackTests {
 
 	int count = 0;
 
-	public void testExecute() throws Exception {
+	@org.junit.Test
+public void testExecute() throws Exception {
 		NestedRepeatCallback callback = new NestedRepeatCallback(new RepeatTemplate(), new RepeatCallback() {
 			public ExitStatus doInIteration(RepeatContext context) throws Exception {
 				count++;

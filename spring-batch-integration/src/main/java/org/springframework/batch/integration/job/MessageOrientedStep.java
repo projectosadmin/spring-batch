@@ -59,7 +59,7 @@ public class MessageOrientedStep extends AbstractStep {
 	
 	/**
 	 * Public setter for the execution timeout in milliseconds.  Defaults to 30 minutes.
-	 * @param executionTimeout
+	 * @param executionTimeout executionTimeout
 	 */
 	public void setExecutionTimeout(long executionTimeout) {
 		this.executionTimeout = executionTimeout;
@@ -139,7 +139,7 @@ public class MessageOrientedStep extends AbstractStep {
 	}
 
 	/**
-	 * @param expectedJobId
+	 * @param expectedJobId expectedJobId
 	 */
 	private void waitForReply(Long expectedJobId) {
 		long timeout = pollingInterval;
@@ -181,7 +181,7 @@ public class MessageOrientedStep extends AbstractStep {
 	}
 
 	/**
-	 * @param lastThrowable
+	 * @param lastThrowable lastThrowable
 	 */
 	private static void rethrow(Throwable t) throws RuntimeException {
 		if (t instanceof RuntimeException) {

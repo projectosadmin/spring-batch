@@ -27,8 +27,8 @@ public class ItemWriterChunkHandlerTests {
 	};
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testVanillaHandleChunk() {
+	@org.junit.Test
+public void testVanillaHandleChunk() {
 		handler.setItemWriter(new AbstractItemWriter() {
 			public void write(Object item) throws Exception {
 				count++;
@@ -43,8 +43,8 @@ public class ItemWriterChunkHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testSetItemSkipPolicy() {
+	@org.junit.Test
+public void testSetItemSkipPolicy() {
 		handler.setItemWriter(new AbstractItemWriter() {
 			public void write(Object item) throws Exception {
 				count++;
@@ -61,8 +61,8 @@ public class ItemWriterChunkHandlerTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testRegisterSkipListener() {
+	@org.junit.Test
+public void testRegisterSkipListener() {
 		handler.setItemWriter(new AbstractItemWriter() {
 			public void write(Object item) throws Exception {
 				count++;
@@ -77,8 +77,8 @@ public class ItemWriterChunkHandlerTests {
 		assertEquals(4, count);
 	}
 
-	@Test
-	public void testSetSkipListeners() {
+	@org.junit.Test
+public void testSetSkipListeners() {
 		handler.setSkipListeners(new SkipListener[] { listener });
 		testRegisterSkipListener();
 	}

@@ -17,7 +17,7 @@ package org.springframework.batch.item;
 
 import java.io.Serializable;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -27,17 +27,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Lucas Ward
  *
  */
-public class ExecutionContextTests extends TestCase{
+public class ExecutionContextTests{
 
 	ExecutionContext context;
 	
-	protected void setUp() throws Exception {
-		super.setUp();
+	    @org.junit.Before
+public void setUp() throws Exception {
+		
 		
 		context = new ExecutionContext();
 	}
 	
-	public void testNormalUsage(){
+	@org.junit.Test
+public void testNormalUsage(){
 		
 		context.putString("1", "testString1");
 		context.putString("2", "testString2");
@@ -53,7 +55,8 @@ public class ExecutionContextTests extends TestCase{
 		assertEquals(5, context.getLong("5", 5));
 	}
 	
-	public void testInvalidCast(){
+	@org.junit.Test
+public void testInvalidCast(){
 		
 		context.putLong("1", 1);
 		try{
@@ -65,13 +68,15 @@ public class ExecutionContextTests extends TestCase{
 		}
 	}
 	
-	public void testIsEmpty(){
+	@org.junit.Test
+public void testIsEmpty(){
 		assertTrue(context.isEmpty());
 		context.putString("1", "test");
 		assertFalse(context.isEmpty());
 	}
 	
-	public void testDirtyFlag(){
+	@org.junit.Test
+public void testDirtyFlag(){
 		assertFalse(context.isDirty());
 		context.putString("1", "test");
 		assertTrue(context.isDirty());
@@ -79,13 +84,15 @@ public class ExecutionContextTests extends TestCase{
 		assertFalse(context.isDirty());
 	}
 	
-	public void testContains(){
+	@org.junit.Test
+public void testContains(){
 		context.putString("1", "testString");
 		assertTrue(context.containsKey("1"));
 		assertTrue(context.containsValue("testString"));
 	}
 	
-	public void testEquals(){
+	@org.junit.Test
+public void testEquals(){
 		context.putString("1", "testString");
 		ExecutionContext tempContext = new ExecutionContext();
 		assertFalse(tempContext.equals(context));
@@ -93,7 +100,8 @@ public class ExecutionContextTests extends TestCase{
 		assertTrue(tempContext.equals(context));
 	}
 	
-	public void testSerializationCheck(){
+	@org.junit.Test
+public void testSerializationCheck(){
 		//adding a non serializable object should cause an error.
 		try{
 			context.put("1", new Object());
@@ -104,12 +112,14 @@ public class ExecutionContextTests extends TestCase{
 		}
 	}
 	
-	public void testPutNull(){
+	@org.junit.Test
+public void testPutNull(){
 		//putting null should work
 		context.put("1", null);
 	}
 	
-	public void testSerialization() {
+	@org.junit.Test
+public void testSerialization() {
 		
 		TestSerializable s = new TestSerializable();
 		s.value = 7;
@@ -128,14 +138,16 @@ public class ExecutionContextTests extends TestCase{
 		assertEquals(7, ((TestSerializable)deserialized.get("5")).value);
 	}
 	
-	public void testCopyConstructor() throws Exception {
+	@org.junit.Test
+public void testCopyConstructor() throws Exception {
 		ExecutionContext context = new ExecutionContext();
 		context.put("foo", "bar");
 		ExecutionContext copy = new ExecutionContext(context);
 		assertEquals(copy, context);
 	}
 	
-	public void testCopyConstructorNullnNput() throws Exception {
+	@org.junit.Test
+public void testCopyConstructorNullnNput() throws Exception {
 		ExecutionContext context = new ExecutionContext((ExecutionContext)null);
 		assertTrue(context.isEmpty());
 	}

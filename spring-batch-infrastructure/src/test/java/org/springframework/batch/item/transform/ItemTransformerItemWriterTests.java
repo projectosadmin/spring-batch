@@ -1,6 +1,6 @@
 package org.springframework.batch.item.transform;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.easymock.MockControl;
 import org.springframework.batch.item.ItemWriter;
@@ -10,7 +10,7 @@ import org.springframework.batch.item.ItemWriter;
  * 
  * @author Robert Kasanicky
  */
-public class ItemTransformerItemWriterTests extends TestCase {
+public class ItemTransformerItemWriterTests {
 
 	private ItemTransformerItemWriter processor = new ItemTransformerItemWriter();
 
@@ -20,7 +20,8 @@ public class ItemTransformerItemWriterTests extends TestCase {
 	private MockControl tControl = MockControl.createControl(ItemTransformer.class);
 	private MockControl outControl = MockControl.createControl(ItemWriter.class);
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		transformer = (ItemTransformer) tControl.getMock();
 		itemWriter = (ItemWriter) outControl.getMock();
 		
@@ -33,7 +34,8 @@ public class ItemTransformerItemWriterTests extends TestCase {
 	 * Regular usage scenario - item is passed to transformer
 	 * and the result of transformation is passed to output source.
 	 */
-	public void testProcess() throws Exception {
+	@org.junit.Test
+public void testProcess() throws Exception {
 		Object item = new Object();
 		Object itemAfterTransformation = new Object();
 
@@ -55,7 +57,8 @@ public class ItemTransformerItemWriterTests extends TestCase {
 	/**
 	 * Item transformer must be set.
 	 */
-	public void testAfterPropertiesSet() throws Exception {
+	@org.junit.Test
+public void testAfterPropertiesSet() throws Exception {
 		
 		// value not set
 		processor.setItemTransformer(null);

@@ -38,7 +38,7 @@ public class CompositeCompletionPolicy implements CompletionPolicy {
 	/**
 	 * Setter for the policies.
 	 * 
-	 * @param policies
+	 * @param policies policies
 	 */
 	public void setPolicies(CompletionPolicy[] policies) {
 		this.policies = policies;

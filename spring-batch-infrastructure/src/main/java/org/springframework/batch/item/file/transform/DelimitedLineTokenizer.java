@@ -78,7 +78,7 @@ public class DelimitedLineTokenizer extends AbstractLineTokenizer {
 	/**
 	 * Setter for the delimiter character.
 	 * 
-	 * @param delimiter
+	 * @param delimiter delimiter
 	 */
 	public void setDelimiter(char delimiter) {
 		this.delimiter = delimiter;
@@ -152,7 +152,7 @@ public class DelimitedLineTokenizer extends AbstractLineTokenizer {
 	 * If the string is quoted strip (possibly with whitespace outside the quotes (which will be stripped), replace
 	 * escaped quotes inside the string. Quotes are escaped with double instances of the quote character.
 	 * 
-	 * @param string
+	 * @param string string
 	 * @return the same string but stripped and unescaped if necessary
 	 */
 	private String maybeStripQuotes(String string) {
@@ -172,7 +172,7 @@ public class DelimitedLineTokenizer extends AbstractLineTokenizer {
 	/**
 	 * Is this string surrounded by quite characters?
 	 * 
-	 * @param value
+	 * @param value value
 	 * @return true if the value starts and ends with the {@link #quoteCharacter}
 	 */
 	private boolean isQuoted(String value) {

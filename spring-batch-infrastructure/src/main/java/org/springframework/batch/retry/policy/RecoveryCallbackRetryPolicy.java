@@ -51,7 +51,7 @@ public class RecoveryCallbackRetryPolicy extends AbstractStatefulRetryPolicy {
 	/**
 	 * Convenience constructor to set delegate on init.
 	 * 
-	 * @param delegate
+	 * @param delegate delegate
 	 */
 	public RecoveryCallbackRetryPolicy(RetryPolicy delegate) {
 		super();
@@ -69,7 +69,7 @@ public class RecoveryCallbackRetryPolicy extends AbstractStatefulRetryPolicy {
 	/**
 	 * Setter for delegate.
 	 * 
-	 * @param delegate
+	 * @param delegate delegate
 	 */
 	public void setDelegate(RetryPolicy delegate) {
 		this.delegate = delegate;

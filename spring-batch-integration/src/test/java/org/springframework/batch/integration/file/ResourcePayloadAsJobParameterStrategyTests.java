@@ -38,8 +38,8 @@ public class ResourcePayloadAsJobParameterStrategyTests {
 	/**
 	 * Test method for {@link org.springframework.batch.integration.file.ResourcePayloadAsJobParameterStrategy#getJobParameters(org.springframework.integration.message.Message)}.
 	 */
-	@Test
-	public void testGetJobParameters() {
+	@org.junit.Test
+public void testGetJobParameters() {
 		ResourcePayloadAsJobParameterStrategy strategy = new ResourcePayloadAsJobParameterStrategy();
 		JobParameters parameters  = strategy.getJobParameters(new GenericMessage<Resource>(new ClassPathResource("log4j.properties")));
 		assertTrue(parameters.getParameters().containsKey(INPUT_FILE_PATH));
@@ -48,8 +48,8 @@ public class ResourcePayloadAsJobParameterStrategyTests {
 	/**
 	 * Test method for {@link org.springframework.batch.integration.file.ResourcePayloadAsJobParameterStrategy#getJobParameters(org.springframework.integration.message.Message)}.
 	 */
-	@Test
-	public void testGetJobParametersWithWrongPayload() {
+	@org.junit.Test
+public void testGetJobParametersWithWrongPayload() {
 		ResourcePayloadAsJobParameterStrategy strategy = new ResourcePayloadAsJobParameterStrategy();
 		try {
 			strategy.getJobParameters(new GenericMessage<String>("log4j.properties"));

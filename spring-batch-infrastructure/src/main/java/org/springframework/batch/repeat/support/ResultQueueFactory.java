@@ -16,8 +16,6 @@
 
 package org.springframework.batch.repeat.support;
 
-import org.springframework.core.JdkVersion;
-import org.springframework.util.ClassUtils;
 
 /**
  * A factory that properly determines which version of the {@link ResultQueue} to return based on the availability of
@@ -26,20 +24,10 @@ import org.springframework.util.ClassUtils;
  * @author Ben Hale
  */
 class ResultQueueFactory {
-
-	/** Whether the backport-concurrent library is present on the classpath */
-	private static final boolean backportConcurrentAvailable = ClassUtils.isPresent(
-	        "edu.emory.mathcs.backport.java.util.concurrent.Semaphore", ResultQueueFactory.class.getClassLoader());
-
 	public RepeatInternalState getResultQueue(int throttleLimit) {
-		if (JdkVersion.isAtLeastJava15()) {
+
 			return new JdkConcurrentResultQueue(throttleLimit);
-		} else if (backportConcurrentAvailable) {
-			return new BackportConcurrentResultQueue(throttleLimit);
-		} else {
-			throw new IllegalStateException("Cannot create ResultQueue - "
-			        + "neither JDK 1.5 nor backport-concurrent available on the classpath");
-		}
+
 	}
 
 }

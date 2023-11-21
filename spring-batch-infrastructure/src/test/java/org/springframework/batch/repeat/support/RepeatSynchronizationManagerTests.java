@@ -16,30 +16,34 @@
 
 package org.springframework.batch.repeat.support;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 import org.springframework.batch.repeat.support.RepeatSynchronizationManager;
 
-public class RepeatSynchronizationManagerTests extends TestCase {
+public class RepeatSynchronizationManagerTests {
 
 	private RepeatContext context = new RepeatContextSupport(null);
 
-	protected void setUp() throws Exception {
+	    @org.junit.Before
+public void setUp() throws Exception {
 		RepeatSynchronizationManager.clear();
 	}
 	
-	protected void tearDown() throws Exception {
+	@org.junit.After
+    public void tearDown() throws Exception {
 		RepeatSynchronizationManager.clear();
 	}
 
-	public void testGetContext() {
+	@org.junit.Test
+public void testGetContext() {
 		RepeatSynchronizationManager.register(context);
 		assertEquals(context, RepeatSynchronizationManager.getContext());
 	}
 
-	public void testSetSessionCompleteOnly() {
+	@org.junit.Test
+public void testSetSessionCompleteOnly() {
 		assertNull(RepeatSynchronizationManager.getContext());
 		RepeatSynchronizationManager.register(context);
 		assertFalse(RepeatSynchronizationManager.getContext().isCompleteOnly());
@@ -47,7 +51,8 @@ public class RepeatSynchronizationManagerTests extends TestCase {
 		assertTrue(RepeatSynchronizationManager.getContext().isCompleteOnly());
 	}
 
-	public void testSetSessionCompleteOnlyWithParent() {
+	@org.junit.Test
+public void testSetSessionCompleteOnlyWithParent() {
 		assertNull(RepeatSynchronizationManager.getContext());
 		RepeatContext child = new RepeatContextSupport(context);
 		RepeatSynchronizationManager.register(child);
@@ -57,7 +62,8 @@ public class RepeatSynchronizationManagerTests extends TestCase {
 		assertTrue(context.isCompleteOnly());
 	}
 
-	public void testClear() {
+	@org.junit.Test
+public void testClear() {
 		RepeatSynchronizationManager.register(context);
 		assertEquals(context, RepeatSynchronizationManager.getContext());
 		RepeatSynchronizationManager.clear();

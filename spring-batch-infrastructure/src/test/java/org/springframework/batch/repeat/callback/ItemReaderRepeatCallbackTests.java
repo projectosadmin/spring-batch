@@ -20,18 +20,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.springframework.batch.item.support.AbstractItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 
-public class ItemReaderRepeatCallbackTests extends TestCase {
+public class ItemReaderRepeatCallbackTests {
 
 	ItemReaderRepeatCallback callback;
 
 	List list = new ArrayList();
 
-	public void testDoWithRepeat() throws Exception {
+	@org.junit.Test
+public void testDoWithRepeat() throws Exception {
 		callback = new ItemReaderRepeatCallback(new ListItemReader(Arrays.asList(new String[] { "foo", "bar" })),
 				new AbstractItemWriter() {
 					public void write(Object data) {
@@ -43,7 +44,8 @@ public class ItemReaderRepeatCallbackTests extends TestCase {
 		assertEquals("foo", list.get(0));
 	}
 
-	public void testDoWithRepeatNullProcessor() throws Exception {
+	@org.junit.Test
+public void testDoWithRepeatNullProcessor() throws Exception {
 		ListItemReader provider = new ListItemReader(Arrays.asList(new String[] { "foo", "bar" }));
 		callback = new ItemReaderRepeatCallback(provider);
 		callback.doInIteration(null);
