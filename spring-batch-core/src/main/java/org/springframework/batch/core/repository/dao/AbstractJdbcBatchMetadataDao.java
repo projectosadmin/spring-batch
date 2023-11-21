@@ -52,7 +52,7 @@ public abstract class AbstractJdbcBatchMetadataDao implements InitializingBean {
 	}
 
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(jdbcTemplate);
+		Assert.notNull(jdbcTemplate, "JdbcTemplate is null");
 	}
 
 }

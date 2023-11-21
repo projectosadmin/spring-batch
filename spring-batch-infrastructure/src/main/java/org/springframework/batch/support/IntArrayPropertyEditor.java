@@ -26,7 +26,7 @@ public class IntArrayPropertyEditor extends PropertyEditorSupport {
 		String[] strs = StringUtils.commaDelimitedListToStringArray(text);
 		int[] value = new int[strs.length];
 		for (int i = 0; i < value.length; i++) {
-			value[i] = Integer.valueOf(strs[i].trim()).intValue();
+			value[i] = Integer.parseInt(strs[i].trim());
 		}
 		setValue(value);
 	}

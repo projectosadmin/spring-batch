@@ -32,9 +32,9 @@ import org.springframework.util.Assert;
  */
 public class MapStepExecutionDao implements StepExecutionDao {
 
-	private static Map executionsByJobExecutionId;
+	private static final Map<Long, Map<String, StepExecution>> executionsByJobExecutionId;
 
-	private static Map contextsByStepExecutionId;
+	private static final Map<Long, ExecutionContext> contextsByStepExecutionId;
 
 	private static long currentId = 0;
 
@@ -57,32 +57,32 @@ public class MapStepExecutionDao implements StepExecutionDao {
 	}
 
 	public ExecutionContext findExecutionContext(StepExecution stepExecution) {
-		return copy((ExecutionContext) contextsByStepExecutionId.get(stepExecution.getId()));
+		return copy(contextsByStepExecutionId.get(stepExecution.getId()));
 	}
 
 	public void saveStepExecution(StepExecution stepExecution) {
-		Assert.isTrue(stepExecution.getId() == null);
-		Assert.isTrue(stepExecution.getVersion() == null);
+		Assert.isTrue(stepExecution.getId() == null, "stepExecution.id");
+		Assert.isTrue(stepExecution.getVersion() == null, "stepExecution.version");
 		Assert.notNull(stepExecution.getJobExecutionId(), "JobExecution must be saved already.");
 
-		Map executions = (Map) executionsByJobExecutionId.get(stepExecution.getJobExecutionId());
+		Map<String, StepExecution> executions = executionsByJobExecutionId.get(stepExecution.getJobExecutionId());
 		if (executions == null) {
 			executions = TransactionAwareProxyFactory.createTransactionalMap();
 			executionsByJobExecutionId.put(stepExecution.getJobExecutionId(), executions);
 		}
-		stepExecution.setId(new Long(currentId++));
+		stepExecution.setId(currentId++);
 		stepExecution.incrementVersion();
 		executions.put(stepExecution.getStepName(), copy(stepExecution));
 	}
 
 	public void updateStepExecution(StepExecution stepExecution) {
 
-		Assert.notNull(stepExecution.getJobExecutionId());
+		Assert.notNull(stepExecution.getJobExecutionId(), "stepExecution.getJobExecutionId");
 
-		Map executions = (Map) executionsByJobExecutionId.get(stepExecution.getJobExecutionId());
+		Map<String, StepExecution> executions = executionsByJobExecutionId.get(stepExecution.getJobExecutionId());
 		Assert.notNull(executions, "step executions for given job execution are expected to be already saved");
 
-		StepExecution persistedExecution = (StepExecution) executions.get(stepExecution.getStepName());
+		StepExecution persistedExecution = executions.get(stepExecution.getStepName());
 		Assert.notNull(persistedExecution, "step execution is expected to be already saved");
 
 		synchronized (stepExecution) {
@@ -98,12 +98,12 @@ public class MapStepExecutionDao implements StepExecutionDao {
 	}
 
 	public StepExecution getStepExecution(JobExecution jobExecution, Step step) {
-		Map executions = (Map) executionsByJobExecutionId.get(jobExecution.getId());
+		Map<String, StepExecution> executions = executionsByJobExecutionId.get(jobExecution.getId());
 		if (executions == null) {
 			return null;
 		}
 
-		return copy((StepExecution) executions.get(step.getName()));
+		return copy(executions.get(step.getName()));
 	}
 
 	public void saveOrUpdateExecutionContext(StepExecution stepExecution) {

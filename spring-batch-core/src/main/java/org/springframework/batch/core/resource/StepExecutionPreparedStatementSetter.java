@@ -41,11 +41,11 @@ import org.springframework.util.Assert;
 public class StepExecutionPreparedStatementSetter extends StepExecutionListenerSupport implements
 		PreparedStatementSetter, InitializingBean {
 
-	private List parameterKeys;
+	private List<String> parameterKeys;
 	private JobParameters jobParameters;
 	
 	public void setValues(PreparedStatement ps) throws SQLException {
-		Map parameters = jobParameters.getParameters();
+		Map<String, Object> parameters = jobParameters.getParameters();
 		for(int i = 0; i < parameterKeys.size(); i++){
 			Object arg = parameters.get(parameterKeys.get(i));
 			if(arg == null){
@@ -64,7 +64,7 @@ public class StepExecutionPreparedStatementSetter extends StepExecutionListenerS
 	 * assumed that their order in the List is the order of the parameters in the 
 	 * PreparedStatement.
 	 */
-	public void setParameterKeys(List parameterKeys) {
+	public void setParameterKeys(List<String> parameterKeys) {
 		this.parameterKeys = parameterKeys;
 	}
 

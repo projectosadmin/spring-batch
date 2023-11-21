@@ -39,7 +39,7 @@ class TransactionInterceptorValidator implements Validator {
 	private final int maxCount;
 
 	/**
-	 * @param maxCount
+	 * @param maxCount maxCount
 	 */
 	public TransactionInterceptorValidator(int maxCount) {
 		super();
@@ -69,8 +69,8 @@ class TransactionInterceptorValidator implements Validator {
 		while (target instanceof Advised) {
 			Advised advised = (Advised) target;
 			Advisor[] interceptors = advised.getAdvisors();
-			for (int i = 0; i < interceptors.length; i++) {
-				if (interceptors[i].getAdvice() instanceof TransactionInterceptor) {
+			for (Advisor interceptor : interceptors) {
+				if (interceptor.getAdvice() instanceof TransactionInterceptor) {
 					count++;
 				}
 			}

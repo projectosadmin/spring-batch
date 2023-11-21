@@ -52,6 +52,6 @@ public interface Tasklet {
 	 * @return ExitStatus indicating success or failure
 	 * @see org.springframework.batch.repeat.ExitStatus
 	 */
-	public ExitStatus execute() throws Exception;
+	ExitStatus execute() throws Exception;
 
 }

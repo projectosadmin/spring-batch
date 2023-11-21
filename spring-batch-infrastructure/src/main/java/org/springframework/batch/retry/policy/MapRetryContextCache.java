@@ -38,7 +38,7 @@ public class MapRetryContextCache implements RetryContextCache {
 	 */
 	public static final int DEFAULT_CAPACITY = 4096;
 
-	private Map map = Collections.synchronizedMap(new HashMap());
+	private final Map<Object, RetryContext> map = Collections.synchronizedMap(new HashMap<>());
 
 	private int capacity;
 
@@ -50,7 +50,7 @@ public class MapRetryContextCache implements RetryContextCache {
 	}
 
 	/**
-	 * @param defaultCapacity
+	 * @param defaultCapacity defaultCapacity
 	 */
 	public MapRetryContextCache(int defaultCapacity) {
 		super();
@@ -75,7 +75,7 @@ public class MapRetryContextCache implements RetryContextCache {
 	}
 
 	public RetryContext get(Object key) {
-		return (RetryContext) map.get(key);
+		return map.get(key);
 	}
 
 	public void put(Object key, RetryContext context) {

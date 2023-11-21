@@ -60,7 +60,7 @@ public abstract class AbstractStep implements Step, InitializingBean, BeanNameAw
 
 	private boolean allowStartIfComplete = false;
 
-	private CompositeStepExecutionListener listener = new CompositeStepExecutionListener();
+	private final CompositeStepExecutionListener listener = new CompositeStepExecutionListener();
 
 	private JobRepository jobRepository;
 
@@ -134,7 +134,7 @@ public abstract class AbstractStep implements Step, InitializingBean, BeanNameAw
 	/**
 	 * Convenient constructor for setting only the name property.
 	 * 
-	 * @param name
+	 * @param name name
 	 */
 	public AbstractStep(String name) {
 		this.name = name;
@@ -287,8 +287,8 @@ public abstract class AbstractStep implements Step, InitializingBean, BeanNameAw
 	 * @param listeners an array of listener objects of known types.
 	 */
 	public void setStepExecutionListeners(StepExecutionListener[] listeners) {
-		for (int i = 0; i < listeners.length; i++) {
-			registerStepExecutionListener(listeners[i]);
+		for (StepExecutionListener stepExecutionListener : listeners) {
+			registerStepExecutionListener(stepExecutionListener);
 		}
 	}
 
@@ -328,7 +328,7 @@ public abstract class AbstractStep implements Step, InitializingBean, BeanNameAw
 			exitStatus = new ExitStatus(false, ExitCodeMapper.NO_SUCH_JOB);
 		}
 		else {
-			String message = "";
+			String message;
 			StringWriter writer = new StringWriter();
 			ex.printStackTrace(new PrintWriter(writer));
 			message = writer.toString();

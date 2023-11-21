@@ -49,7 +49,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	private LobHandler lobHandler = new DefaultLobHandler();
 
 	/**
-	 * @param jobExecution
+	 * @param jobExecution jobExecution
 	 * @return execution context associated with the given jobExecution.
 	 */
 	public ExecutionContext getExecutionContext(JobExecution jobExecution) {
@@ -65,7 +65,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	}
 
 	/**
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 * @return execution context associated with the given stepExecution.
 	 */
 	public ExecutionContext getExecutionContext(StepExecution stepExecution) {
@@ -83,7 +83,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	/**
 	 * Persist or update the execution context associated with the given
 	 * jobExecution
-	 * @param jobExecution
+	 * @param jobExecution jobExecution
 	 */
 	public void saveOrUpdateExecutionContext(final JobExecution jobExecution) {
 		Long executionId = jobExecution.getId();
@@ -97,7 +97,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	/**
 	 * Persist or update the execution context associated with the given
 	 * stepExecution
-	 * @param stepExecution
+	 * @param stepExecution stepExecution
 	 */
 	public void saveOrUpdateExecutionContext(final StepExecution stepExecution) {
 
@@ -115,21 +115,17 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	 */
 	private void saveOrUpdateExecutionContext(ExecutionContext ctx, Long executionId, String discriminator) {
 
-		for (Iterator it = ctx.entrySet().iterator(); it.hasNext();) {
-			Entry entry = (Entry) it.next();
-			final String key = entry.getKey().toString();
-			final Object value = entry.getValue();
+		for (Entry<Object, Object> objectObjectEntry : ctx.entrySet()) {
+			final String key = objectObjectEntry.getKey().toString();
+			final Object value = objectObjectEntry.getValue();
 
 			if (value instanceof String) {
 				updateExecutionAttribute(executionId, discriminator, key, value, AttributeType.STRING);
-			}
-			else if (value instanceof Double) {
+			} else if (value instanceof Double) {
 				updateExecutionAttribute(executionId, discriminator, key, value, AttributeType.DOUBLE);
-			}
-			else if (value instanceof Long) {
+			} else if (value instanceof Long) {
 				updateExecutionAttribute(executionId, discriminator, key, value, AttributeType.LONG);
-			}
-			else {
+			} else {
 				updateExecutionAttribute(executionId, discriminator, key, value, AttributeType.OBJECT);
 			}
 		}
@@ -143,12 +139,12 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	private void updateExecutionAttribute(final Long executionId, final String discriminator, final String key,
 			final Object value, final AttributeType type) {
 
-		PreparedStatementCallback callback = new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
+		PreparedStatementCallback<Integer> callback = new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
 
 			protected void setValues(PreparedStatement ps, LobCreator lobCreator) throws SQLException,
 					DataAccessException {
 
-				ps.setLong(6, executionId.longValue());
+				ps.setLong(6, executionId);
 				ps.setString(7, key);
 				if (type == AttributeType.STRING) {
 					ps.setString(1, AttributeType.STRING.toString());
@@ -160,7 +156,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 				else if (type == AttributeType.DOUBLE) {
 					ps.setString(1, AttributeType.DOUBLE.toString());
 					ps.setString(2, null);
-					ps.setDouble(3, ((Double) value).doubleValue());
+					ps.setDouble(3, (Double) value);
 					ps.setLong(4, 0);
 					lobCreator.setBlobAsBytes(ps, 5, null);
 				}
@@ -168,7 +164,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 					ps.setString(1, AttributeType.LONG.toString());
 					ps.setString(2, null);
 					ps.setDouble(3, 0.0);
-					ps.setLong(4, ((Long) value).longValue());
+					ps.setLong(4, (Long) value);
 					lobCreator.setBlobAsBytes(ps, 5, null);
 				}
 				else {
@@ -184,8 +180,8 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 		// LobCreating callbacks always return the affect row count for SQL DML
 		// statements, if less than 1 row
 		// is affected, then this row is new and should be inserted.
-		Integer affectedRows = (Integer) getJdbcTemplate().execute(getQuery(UPDATE_STEP_EXECUTION_CONTEXT), callback);
-		if (affectedRows.intValue() < 1) {
+		Integer affectedRows = getJdbcTemplate().execute(getQuery(UPDATE_STEP_EXECUTION_CONTEXT), callback);
+		if (affectedRows < 1) {
 			insertExecutionAttribute(executionId, discriminator, key, value, type);
 		}
 	}
@@ -196,12 +192,12 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	 */
 	private void insertExecutionAttribute(final Long executionId, final String discriminator, final String key,
 			final Object value, final AttributeType type) {
-		PreparedStatementCallback callback = new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
+		PreparedStatementCallback<Integer> callback = new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
 
 			protected void setValues(PreparedStatement ps, LobCreator lobCreator) throws SQLException,
 					DataAccessException {
 
-				ps.setLong(1, executionId.longValue());
+				ps.setLong(1, executionId);
 				ps.setString(2, discriminator);
 				ps.setString(4, key);
 				if (type == AttributeType.STRING) {
@@ -214,7 +210,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 				else if (type == AttributeType.DOUBLE) {
 					ps.setString(3, AttributeType.DOUBLE.toString());
 					ps.setString(5, null);
-					ps.setDouble(6, ((Double) value).doubleValue());
+					ps.setDouble(6, (Double) value);
 					ps.setLong(7, 0);
 					lobCreator.setBlobAsBytes(ps, 8, null);
 				}
@@ -222,7 +218,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 					ps.setString(3, AttributeType.LONG.toString());
 					ps.setString(5, null);
 					ps.setDouble(6, 0.0);
-					ps.setLong(7, ((Long) value).longValue());
+					ps.setLong(7, (Long) value);
 					lobCreator.setBlobAsBytes(ps, 8, null);
 				}
 				else {
@@ -241,7 +237,7 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 	 * Code used to set BLOB values.  Uses a binary stream since that seems to be the most
 	 * compatibile option across database platforms.
 	 *
-	 * @throws SQLException
+	 * @throws SQLException SQLException
 	 */
 	private void setBlob(LobCreator lobCreator, PreparedStatement ps, int index, Object value) throws SQLException {
 		byte[] b = SerializationUtils.serialize((Serializable) value);
@@ -279,9 +275,9 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 
 		public static AttributeType getType(String typeAsString) {
 
-			for (int i = 0; i < VALUES.length; i++) {
-				if (VALUES[i].toString().equals(typeAsString)) {
-					return (AttributeType) VALUES[i];
+			for (AttributeType value : VALUES) {
+				if (value.toString().equals(typeAsString)) {
+					return value;
 				}
 			}
 
@@ -323,5 +319,5 @@ class JdbcExecutionContextDao extends AbstractJdbcBatchMetadataDao {
 				throw new UnexpectedJobExecutionException("Invalid type found: [" + typeCd + "]");
 			}
 		}
-	};
+	}
 }

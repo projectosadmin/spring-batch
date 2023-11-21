@@ -75,7 +75,7 @@ public class ItemOrientedStep extends AbstractStep {
 	// default to checking current thread for interruption.
 	private StepInterruptionPolicy interruptionPolicy = new ThreadStepInterruptionPolicy();
 
-	private CompositeItemStream stream = new CompositeItemStream();
+	private final CompositeItemStream stream = new CompositeItemStream();
 
 	private PlatformTransactionManager transactionManager;
 
@@ -92,7 +92,7 @@ public class ItemOrientedStep extends AbstractStep {
 	private StepExecutionSynchronizer synchronizer;
 
 	/**
-	 * @param name
+	 * @param name name
 	 */
 	public ItemOrientedStep(String name) {
 		super(name);
@@ -135,8 +135,8 @@ public class ItemOrientedStep extends AbstractStep {
 	 * @param listeners an array of listener objects of known types.
 	 */
 	public void setStepExecutionListeners(StepExecutionListener[] listeners) {
-		for (int i = 0; i < listeners.length; i++) {
-			registerStepExecutionListener(listeners[i]);
+		for (StepExecutionListener listener : listeners) {
+			registerStepExecutionListener(listener);
 		}
 	}
 
@@ -152,8 +152,8 @@ public class ItemOrientedStep extends AbstractStep {
 	 * @param streams an array of {@link ItemStream} objects.
 	 */
 	public void setStreams(ItemStream[] streams) {
-		for (int i = 0; i < streams.length; i++) {
-			registerStream(streams[i]);
+		for (ItemStream itemStream : streams) {
+			registerStream(itemStream);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class ItemOrientedStep extends AbstractStep {
 	 * Register a single {@link ItemStream} for callbacks to the stream
 	 * interface.
 	 * 
-	 * @param stream
+	 * @param stream stream
 	 */
 	public void registerStream(ItemStream stream) {
 		this.stream.register(stream);
@@ -244,7 +244,7 @@ public class ItemOrientedStep extends AbstractStep {
 				}
 				interruptionPolicy.checkInterrupted(stepExecution);
 
-				ExitStatus exitStatus = ExitStatus.CONTINUABLE;
+				ExitStatus exitStatus;
 
 				TransactionStatus transaction = transactionManager.getTransaction(transactionAttribute);
 
@@ -312,7 +312,7 @@ public class ItemOrientedStep extends AbstractStep {
 					}
 
 				}
-				catch (Error e) {
+				catch (Error | Exception e) {
 					try {
 						processRollback(stepExecution, contribution, fatalException, transaction);
 					}
@@ -321,18 +321,7 @@ public class ItemOrientedStep extends AbstractStep {
 						throw rollbackException;
 					}
 					throw e;
-				}
-				catch (Exception e) {
-					try {
-						processRollback(stepExecution, contribution, fatalException, transaction);
-					}
-					catch (Exception rollbackException) {
-						logger.error("Rollback failed, original exception that caused the rollback is", e);
-						throw rollbackException;
-					}
-					throw e;
-				}
-				finally {
+				} finally {
 					// only release the lock if we acquired it
 					if (locked) {
 						synchronizer.release(stepExecution);
@@ -386,7 +375,7 @@ public class ItemOrientedStep extends AbstractStep {
 				}
 				// check for interruption before each item as well
 				interruptionPolicy.checkInterrupted(execution);
-				ExitStatus exitStatus = ExitStatus.FINISHED;
+				ExitStatus exitStatus;
 
 				exitStatus = itemHandler.handle(contribution);
 
@@ -399,10 +388,10 @@ public class ItemOrientedStep extends AbstractStep {
 	}
 
 	/**
-	 * @param stepExecution
-	 * @param contribution
-	 * @param fatalException
-	 * @param transaction
+	 * @param stepExecution stepExecution
+	 * @param contribution contribution
+	 * @param fatalException fatalException
+	 * @param transaction transaction
 	 */
 	private void processRollback(final StepExecution stepExecution, final StepContribution contribution,
 			final ExceptionHolder fatalException, TransactionStatus transaction) {

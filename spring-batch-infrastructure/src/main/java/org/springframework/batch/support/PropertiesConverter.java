@@ -43,7 +43,7 @@ public final class PropertiesConverter {
 
 	// prevents the class from being instantiated
 	private PropertiesConverter() {
-	};
+	}
 
 	/**
 	 * Parse a String to a Properties object. If string is null, an empty Properties object will be returned. The input
@@ -86,7 +86,7 @@ public final class PropertiesConverter {
 	 * a properties object. If an empty properties object is passed in, a blank string is returned, otherwise it's
 	 * string representation is returned.
 	 * 
-	 * @param propertiesToParse
+	 * @param propertiesToParse propertiesToParse
 	 * @return String representation of properties object
 	 */
 	public static String propertiesToString(Properties propertiesToParse) {
@@ -109,6 +109,6 @@ public final class PropertiesConverter {
 	}
 
 	private static boolean contains(String str, String searchStr) {
-		return str.indexOf(searchStr) != -1;
+		return str.contains(searchStr);
 	}
 }

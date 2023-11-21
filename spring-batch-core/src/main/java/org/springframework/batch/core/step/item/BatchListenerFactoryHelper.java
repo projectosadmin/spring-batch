@@ -46,15 +46,14 @@ import org.springframework.util.Assert;
 abstract class BatchListenerFactoryHelper {
 
 	/**
-	 * @param itemReader
-	 * @param listeners
+	 * @param itemReader itemReader
+	 * @param listeners listeners
 	 */
 	public static ItemReader getItemReader(ItemReader itemReader, StepListener[] listeners) {
 
 		final CompositeItemReadListener multicaster = new CompositeItemReadListener();
 
-		for (int i = 0; i < listeners.length; i++) {
-			StepListener listener = listeners[i];
+		for (StepListener listener : listeners) {
 			if (listener instanceof ItemReadListener) {
 				multicaster.register((ItemReadListener) listener);
 			}
@@ -79,14 +78,13 @@ abstract class BatchListenerFactoryHelper {
 	}
 
 	/**
-	 * @param itemWriter
-	 * @param listeners
+	 * @param itemWriter itemWriter
+	 * @param listeners listeners
 	 */
 	public static ItemWriter getItemWriter(ItemWriter itemWriter, StepListener[] listeners) {
 		final CompositeItemWriteListener multicaster = new CompositeItemWriteListener();
 
-		for (int i = 0; i < listeners.length; i++) {
-			StepListener listener = listeners[i];
+		for (StepListener listener : listeners) {
 			if (listener instanceof ItemWriteListener) {
 				multicaster.register((ItemWriteListener) listener);
 			}
@@ -111,8 +109,8 @@ abstract class BatchListenerFactoryHelper {
 	}
 
 	/**
-	 * @param chunkOperations
-	 * @param listeners
+	 * @param chunkOperations chunkOperations
+	 * @param listeners listeners
 	 */
 	public static RepeatOperations addChunkListeners(RepeatOperations chunkOperations, StepListener[] listeners) {
 
@@ -120,8 +118,7 @@ abstract class BatchListenerFactoryHelper {
 
 		boolean hasChunkListener = false;
 
-		for (int i = 0; i < listeners.length; i++) {
-			StepListener listener = listeners[i];
+		for (StepListener listener : listeners) {
 			if (listener instanceof ChunkListener) {
 				hasChunkListener = true;
 			}
@@ -153,31 +150,29 @@ abstract class BatchListenerFactoryHelper {
 	}
 
 	/**
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public static StepExecutionListener[] getStepListeners(StepListener[] listeners) {
-		List list = new ArrayList();
-		for (int i = 0; i < listeners.length; i++) {
-			StepListener listener = listeners[i];
+		List<StepExecutionListener> list = new ArrayList<>();
+		for (StepListener listener : listeners) {
 			if (listener instanceof StepExecutionListener) {
-				list.add(listener);
+				list.add((StepExecutionListener)listener);
 			}
 		}
-		return (StepExecutionListener[]) list.toArray(new StepExecutionListener[list.size()]);
+		return list.toArray(new StepExecutionListener[0]);
 	}
 
 	/**
-	 * @param listeners
+	 * @param listeners listeners
 	 */
 	public static SkipListener[] getSkipListeners(StepListener[] listeners) {
-		List list = new ArrayList();
-		for (int i = 0; i < listeners.length; i++) {
-			StepListener listener = listeners[i];
+		List<SkipListener> list = new ArrayList<>();
+		for (StepListener listener : listeners) {
 			if (listener instanceof SkipListener) {
-				list.add(listener);
+				list.add((SkipListener)listener);
 			}
 		}
-		return (SkipListener[]) list.toArray(new SkipListener[list.size()]);
+		return list.toArray(new SkipListener[0]);
 	}
 
 }

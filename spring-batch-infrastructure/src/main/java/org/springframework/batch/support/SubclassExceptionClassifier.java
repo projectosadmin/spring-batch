@@ -15,98 +15,88 @@
  */
 package org.springframework.batch.support;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.springframework.util.Assert;
 
+import java.util.*;
+
 /**
- * 
  * @author Dave Syer
- * 
  */
 public class SubclassExceptionClassifier extends ExceptionClassifierSupport {
 
-	private Map classified = new HashMap();
+    private Map<Class<?>, Object> classified = new HashMap<>();
 
-	/**
-	 * Map of Throwable class types to keys for the classifier. Any subclass of
-	 * the type provided will be classified as of the type given by the
-	 * corresponding map entry value.
-	 * 
-	 * @param typeMap the typeMap to set
-	 */
-	public final void setTypeMap(Map typeMap) {
-		Map map = new HashMap();
-		for (Iterator iter = typeMap.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			addRetryableExceptionClass(entry.getKey(), entry.getValue(), map);
-		}
-		this.classified = map;
-	}
+    /**
+     * Map of Throwable class types to keys for the classifier. Any subclass of
+     * the type provided will be classified as of the type given by the
+     * corresponding map entry value.
+     *
+     * @param typeMap the typeMap to set
+     */
+    public final void setTypeMap(Map<Class<?>, Object> typeMap) {
+        Map<Class<?>, Object> map = new HashMap<>();
+        for (Map.Entry<Class<?>, Object> entry : typeMap.entrySet()) {
+            addRetryableExceptionClass(entry.getKey(), entry.getValue(), map);
+        }
+        this.classified = map;
+    }
 
-	/**
-	 * Return the value from the type map whose key is the class of the given
-	 * Throwable, or its nearest ancestor if a subclass.
-	 * 
-	 * @see org.springframework.batch.support.ExceptionClassifierSupport#classify(java.lang.Throwable)
-	 */
-	public Object classify(Throwable throwable) {
+    /**
+     * Return the value from the type map whose key is the class of the given
+     * Throwable, or its nearest ancestor if a subclass.
+     *
+     * @see org.springframework.batch.support.ExceptionClassifierSupport#classify(java.lang.Throwable)
+     */
+    public Object classify(Throwable throwable) {
 
-		if (throwable == null) {
-			return super.classify(throwable);
-		}
+        if (throwable == null) {
+            return super.classify(null);
+        }
 
-		Class exceptionClass = throwable.getClass();
-		if (classified.containsKey(exceptionClass)) {
-			return classified.get(exceptionClass);
-		}
+        Class<? extends Throwable> exceptionClass = throwable.getClass();
+        if (classified.containsKey(exceptionClass)) {
+            return classified.get(exceptionClass);
+        }
 
-		// check for subclasses
-		Set classes = new TreeSet(new ClassComparator());
-		classes.addAll(classified.keySet());
-		for (Iterator iterator = classes.iterator(); iterator.hasNext();) {
-			Class cls = (Class) iterator.next();
-			if (cls.isAssignableFrom(exceptionClass)) {
-				Object value = classified.get(cls);
-				addRetryableExceptionClass(exceptionClass, value, this.classified);
-				return value;
-			}
-		}
+        // check for subclasses
+        Set<Class<?>> classes = new TreeSet<>(new ClassComparator());
+        classes.addAll(classified.keySet());
+        for (Class<?> aClass : classes) {
+            if (aClass.isAssignableFrom(exceptionClass)) {
+                Object value = classified.get(aClass);
+                addRetryableExceptionClass(exceptionClass, value, this.classified);
+                return value;
+            }
+        }
 
-		return super.classify(throwable);
-	}
+        return super.classify(throwable);
+    }
 
-	private void addRetryableExceptionClass(Object candidateClass, Object classifiedAs, Map map) {
-		Assert.isAssignable(Class.class, candidateClass.getClass());
-		Class exceptionClass = (Class) candidateClass;
-		Assert.isAssignable(Throwable.class, exceptionClass);
-		map.put(exceptionClass, classifiedAs);
-	}
+    private void addRetryableExceptionClass(Class<?> candidateClass, Object classifiedAs, Map<Class<?>, Object> map) {
+        //Assert.isAssignable(Class.class, candidateClass.getClass());
+        Assert.isAssignable(Throwable.class, candidateClass);
+        map.put(candidateClass, classifiedAs);
+    }
 
-	/**
-	 * Comparator for classes to order by inheritance.
-	 * 
-	 * @author Dave Syer
-	 * 
-	 */
-	private class ClassComparator implements Comparator {
-		/**
-		 * @return 1 if arg0 is assignable from arg1, -1 otherwise
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
-		public int compare(Object arg0, Object arg1) {
-			Class cls0 = (Class) arg0;
-			Class cls1 = (Class) arg1;
-			if (cls0.isAssignableFrom(cls1)) {
-				return 1;
-			}
-			return -1;
-		}
-	}
+    /**
+     * Comparator for classes to order by inheritance.
+     *
+     * @author Dave Syer
+     */
+    private static class ClassComparator implements Comparator<Class<?>> {
+        /**
+         * @return 1 if arg0 is assignable from arg1, -1 otherwise
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        public int compare(Class<?> arg0, Class<?> arg1) {
+            if (arg0 == arg1) {
+                return 0;
+            }
+            if (arg0.isAssignableFrom(arg1)) {
+                return 1;
+            }
+            return -1;
+        }
+    }
 
 }

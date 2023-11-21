@@ -33,7 +33,7 @@ public class BinaryExceptionClassifier extends ExceptionClassifierSupport {
 	 */
 	public static final String NON_DEFAULT = "NON_DEFAULT";
 
-	private SubclassExceptionClassifier delegate = new SubclassExceptionClassifier();
+	private final SubclassExceptionClassifier delegate = new SubclassExceptionClassifier();
 
 	/**
 	 * Set the special exceptions. Any exception on the list, or subclasses
@@ -41,10 +41,10 @@ public class BinaryExceptionClassifier extends ExceptionClassifierSupport {
 	 * 
 	 * @param exceptionClasses defaults to {@link Exception}.
 	 */
-	public final void setExceptionClasses(Class[] exceptionClasses) {
-		Map temp = new HashMap();
-		for (int i = 0; i < exceptionClasses.length; i++) {
-			temp.put(exceptionClasses[i], NON_DEFAULT);
+	public final void setExceptionClasses(Class<?>[] exceptionClasses) {
+		Map<Class<?>, Object> temp = new HashMap<>();
+		for (Class<?> exceptionClass : exceptionClasses) {
+			temp.put(exceptionClass, NON_DEFAULT);
 		}
 		this.delegate.setTypeMap(temp);
 	}

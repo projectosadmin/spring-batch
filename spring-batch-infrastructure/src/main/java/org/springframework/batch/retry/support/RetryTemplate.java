@@ -75,7 +75,7 @@ public class RetryTemplate implements RetryOperations {
 	 * Setter for listeners. The listeners are executed before and after a retry
 	 * block (i.e. before and after all the attempts), and on an error (every
 	 * attempt).
-	 * @param listeners
+	 * @param listeners listeners
 	 * @see RetryListener
 	 */
 	public void setListeners(RetryListener[] listeners) {
@@ -84,18 +84,18 @@ public class RetryTemplate implements RetryOperations {
 
 	/**
 	 * Register an additional listener.
-	 * @param listener
+	 * @param listener listener
 	 * @see #setListeners(RetryListener[])
 	 */
 	public void registerListener(RetryListener listener) {
-		List list = new ArrayList(Arrays.asList(listeners));
+		List<RetryListener> list = new ArrayList<>(Arrays.asList(listeners));
 		list.add(listener);
-		listeners = (RetryListener[]) list.toArray(new RetryListener[list.size()]);
+		listeners = list.toArray(new RetryListener[0]);
 	}
 
 	/**
 	 * Setter for {@link BackOffPolicy}.
-	 * @param backOffPolicy
+	 * @param backOffPolicy backOffPolicy
 	 */
 	public void setBackOffPolicy(BackOffPolicy backOffPolicy) {
 		this.backOffPolicy = backOffPolicy;
@@ -104,7 +104,7 @@ public class RetryTemplate implements RetryOperations {
 	/**
 	 * Setter for {@link RetryPolicy}.
 	 * 
-	 * @param retryPolicy
+	 * @param retryPolicy retryPolicy
 	 */
 	public void setRetryPolicy(RetryPolicy retryPolicy) {
 		this.retryPolicy = retryPolicy;
@@ -215,8 +215,8 @@ public class RetryTemplate implements RetryOperations {
 
 		boolean result = true;
 
-		for (int i = 0; i < listeners.length; i++) {
-			result = result && listeners[i].open(context, callback);
+		for (RetryListener listener : listeners) {
+			result = result && listener.open(context, callback);
 		}
 
 		return result;

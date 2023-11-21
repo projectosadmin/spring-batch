@@ -42,7 +42,7 @@ import org.springframework.util.Assert;
  * @author Dave Syer
  * 
  */
-public abstract class AbstractStepFactoryBean implements FactoryBean, BeanNameAware {
+public abstract class AbstractStepFactoryBean implements FactoryBean<Step>, BeanNameAware {
 
 	private String name;
 
@@ -62,7 +62,7 @@ public abstract class AbstractStepFactoryBean implements FactoryBean, BeanNameAw
 
 	private boolean singleton = true;
 
-	private Validator jobRepositoryValidator = new TransactionInterceptorValidator(1);
+	private final Validator jobRepositoryValidator = new TransactionInterceptorValidator(1);
 
 	private ItemStream[] streams = new ItemStream[0];
 
@@ -216,14 +216,14 @@ public abstract class AbstractStepFactoryBean implements FactoryBean, BeanNameAw
 	 * 
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
-	public final Object getObject() throws Exception {
+	public final Step getObject() throws Exception {
 		ItemOrientedStep step = new ItemOrientedStep(getName());
 		applyConfiguration(step);
 		return step;
 	}
 
 	/**
-	 * @param step
+	 * @param step step
 	 * 
 	 */
 	protected void applyConfiguration(ItemOrientedStep step) {
@@ -276,7 +276,7 @@ public abstract class AbstractStepFactoryBean implements FactoryBean, BeanNameAw
 
 	}
 
-	public Class getObjectType() {
+	public Class<Step> getObjectType() {
 		return Step.class;
 	}
 

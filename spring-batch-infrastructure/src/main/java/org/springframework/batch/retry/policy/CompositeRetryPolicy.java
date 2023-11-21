@@ -39,7 +39,7 @@ public class CompositeRetryPolicy extends AbstractStatelessRetryPolicy {
 	/**
 	 * Setter for policies.
 	 * 
-	 * @param policies
+	 * @param policies policies
 	 */
 	public void setPolicies(RetryPolicy[] policies) {
 		this.policies = policies;
@@ -97,9 +97,9 @@ public class CompositeRetryPolicy extends AbstractStatelessRetryPolicy {
 	 * RetryContext)
 	 */
 	public RetryContext open(RetryCallback callback, RetryContext parent) {
-		List list = new ArrayList();
-		for (int i = 0; i < policies.length; i++) {
-			list.add(policies[i].open(callback, parent));
+		List<RetryContext> list = new ArrayList<>();
+		for (RetryPolicy policy : policies) {
+			list.add(policy.open(callback, parent));
 		}
 		return new CompositeRetryContext(parent, list);
 	}
@@ -124,9 +124,9 @@ public class CompositeRetryPolicy extends AbstractStatelessRetryPolicy {
 
 		RetryPolicy[] policies;
 
-		public CompositeRetryContext(RetryContext parent, List contexts) {
+		public CompositeRetryContext(RetryContext parent, List<RetryContext> contexts) {
 			super(parent);
-			this.contexts = (RetryContext[]) contexts.toArray(new RetryContext[0]);
+			this.contexts = contexts.toArray(new RetryContext[0]);
 			this.policies = CompositeRetryPolicy.this.policies;
 		}
 

@@ -66,13 +66,13 @@ public interface ItemHandler {
 	 * 
 	 * @see org.springframework.batch.item.ItemWriter#flush()
 	 */
-	public void flush() throws FlushFailedException;
+	void flush() throws FlushFailedException;
 
 	/**
 	 * Implementations should delegate to an {@link ItemWriter}.
 	 * 
 	 * @see org.springframework.batch.item.ItemWriter#clear()
 	 */
-	public void clear() throws ClearFailedException;
+	void clear() throws ClearFailedException;
 
 }

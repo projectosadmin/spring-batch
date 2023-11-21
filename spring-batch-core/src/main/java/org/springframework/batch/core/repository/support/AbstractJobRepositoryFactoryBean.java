@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
  * @author Lucas Ward
  * @author Robert Kasanicky
  */
-public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean, InitializingBean {
+public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean<JobRepository>, InitializingBean {
 
 	/**
 	 * Default value for isolation level in create* method.
@@ -54,8 +54,8 @@ public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean, I
 	 */
 	protected abstract StepExecutionDao createStepExecutionDao() throws Exception;
 
-	public Object getObject() throws Exception {
-		return proxyFactory.getProxy();
+	public JobRepository getObject() throws Exception {
+		return (JobRepository) proxyFactory.getProxy();
 	}
 
 	/**
@@ -64,7 +64,7 @@ public abstract class AbstractJobRepositoryFactoryBean implements FactoryBean, I
 	 * @return JobRepository.class
 	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
 	 */
-	public Class getObjectType() {
+	public Class<JobRepository> getObjectType() {
 		return JobRepository.class;
 	}
 
